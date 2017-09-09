@@ -3,10 +3,11 @@ package com.xwkj.domains.domain;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "domains_domain")
-public class Domain {
+public class Domain implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid")
