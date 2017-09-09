@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>服务器管理</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/AdminManager.js"></script>
+    <script src="/dwr/interface/ServerManager.js"></script>
+    <script src="/static/js/servers.js"></script>
+    <style>
+        #add-server {
+            cursor: pointer
+        }
+
+        #server-list .server-list-template i {
+            cursor: pointer;
+        }
+
+        #add-server-modal .input-group {
+            margin-bottom: 5px;
+        }
+
+        #add-server-modal .input-group .input-group-addon {
+            min-width: 45px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="project-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>服务器列表</span>
+                <a id="add-server"><i class="fa fa-plus pull-right" data-toggle="modal" data-target="#add-server-modal"></i></a>
+            </h1>
+        </div>
+        <table id="server-list" class="table">
+            <thead>
+            <tr>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>服务器名称</th>
+                <th>服务器地址</th>
+                <th>备注</th>
+                <th>域名数量</th>
+                <th>域名管理</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="${sid}$" class="mengular-template server-list-template">
+                <td>${createAt}$</td>
+                <td>${updateAt}$</td>
+                <td class="server-list-name">${name}$</td>
+                <td>${address}$</td>
+                <td>${remark}$</td>
+                <td>${domains}$</td>
+                <td><a href="domains.html?sid=${sid}$"><i class="fa fa-lg fa-font text-primary"></i></a></td>
+                <td class="server-list-edit"><a href="edit.html?pid=${pid}$"><i class="fa fa-lg fa-gear text-success"></i></a></td>
+                <td class="server-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="add-server-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">新建服务器</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon form-icon"><i class="fa fa-server fa-lg"></i></span>
+                    <input id="add-server-name" type="text" class="form-control" placeholder="服务器名称">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon form-icon"><i class="fa fa-link fa-lg"></i></span>
+                    <input id="add-server-address" type="text" class="form-control" placeholder="服务器地址">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon form-icon"><i class="fa fa-info fa-lg"></i></span>
+                    <input id="add-server-remark" type="text" class="form-control" placeholder="备注">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="add-server-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

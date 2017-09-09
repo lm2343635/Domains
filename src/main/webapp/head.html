@@ -1,0 +1,24 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed glyphicon glyphicon-th-list" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1"></button>
+            <a class="navbar-brand" href="javascript:void(0)">域名管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul id="menu-bar" class="nav navbar-nav logined-btn">
+                <li><a href="servers.html">服务器管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout/admin">退出</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<script type="text/javascript">
+    var map = {
+        servers: 0,
+        doamins: 0
+    }
+    $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
+</script>

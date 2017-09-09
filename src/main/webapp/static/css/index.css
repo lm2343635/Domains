@@ -1,0 +1,28 @@
+
+
+#main-container {
+    margin-bottom: 80px;
+}
+
+#main-container img {
+    margin-top: 50px;
+    height: 150px;
+}
+
+.form-icon i {
+    width: 20px;
+}
+
+.row div {
+    padding: 2px 0;
+}
+
+#label {
+    color: rgb(0, 0, 0);
+    padding: 15px 0;
+    background-color: rgba(255, 255, 255, 0.8)
+}
+
+.main-container-a {
+    margin: 5px;
+}

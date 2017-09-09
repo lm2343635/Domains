@@ -1,6 +1,9 @@
-package com.xwkj.domains.services;
+package com.xwkj.domains.service;
+
+import com.xwkj.domains.bean.ServerBean;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface ServerManager {
 
@@ -14,5 +17,13 @@ public interface ServerManager {
      * @return
      */
     String add(String name, String address, String remark, HttpSession session);
+
+    /**
+     * Get all servers.
+     *
+     * @param session
+     * @return
+     */
+    List<ServerBean> getAll(HttpSession session);
 
 }

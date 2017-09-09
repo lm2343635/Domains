@@ -1,4 +1,4 @@
-package com.xwkj.domains.services;
+package com.xwkj.domains.service;
 
 public interface DomainManager {
 }

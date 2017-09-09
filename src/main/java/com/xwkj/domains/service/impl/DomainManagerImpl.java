@@ -1,12 +1,12 @@
-package com.xwkj.domains.services.impl;
+package com.xwkj.domains.service.impl;
 
-import com.xwkj.domains.services.DomainManager;
-import com.xwkj.domains.services.common.ManagerTemplate;
+import com.xwkj.domains.service.DomainManager;
+import com.xwkj.domains.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
 
 @Service
 @RemoteProxy(name = "DomainManager")
 public class DomainManagerImpl extends ManagerTemplate implements DomainManager {
-    
+
 }

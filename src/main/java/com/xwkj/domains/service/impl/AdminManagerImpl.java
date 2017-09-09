@@ -1,8 +1,8 @@
-package com.xwkj.domains.services.impl;
+package com.xwkj.domains.service.impl;
 
 import com.xwkj.common.util.JsonTool;
-import com.xwkj.domains.services.AdminManager;
-import com.xwkj.domains.services.common.ManagerTemplate;
+import com.xwkj.domains.service.AdminManager;
+import com.xwkj.domains.service.common.ManagerTemplate;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.directwebremoting.WebContextFactory;
