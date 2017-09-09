@@ -1,7 +1,7 @@
 function checkAdminSession(done) {
     AdminManager.checkSession(function (username) {
         if (username == null) {
-            location.href = "/admin";
+            location.href = "/";
         } else {
             done(username);
         }

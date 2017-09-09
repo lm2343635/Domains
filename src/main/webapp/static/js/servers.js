@@ -34,8 +34,9 @@ $(document).ready(function () {
         }
     });
 
-    $("#add-server-submit").on("hidden.bs.modal", function () {
-        $("#add-server-modal input").text("");
+    $("#add-server-modal").on("hidden.bs.modal", function () {
+        $("#add-server-modal .input-group").removeClass("has-error");
+        $("#add-server-modal input").val("");
     });
     
 });

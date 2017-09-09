@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>域名管理</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/AdminManager.js"></script>
+    <script src="/dwr/interface/ServerManager.js"></script>
+    <script src="/dwr/interface/DomainManager.js"></script>
+    <script src="/static/js/domains.js"></script>
+    <style>
+        #add-domain {
+            cursor: pointer
+        }
+
+        #domain-list .domain-list-template i {
+            cursor: pointer;
+        }
+
+        #add-domain-modal .input-group {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="domain-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>域名列表</span>
+                <a id="add-domain"><i class="fa fa-plus pull-right" data-toggle="modal" data-target="#add-domain-modal"></i></a>
+            </h1>
+        </div>
+        <table id="domain-list" class="table">
+            <thead>
+            <tr>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>网站名称</th>
+                <th>域名</th>
+                <th>语言</th>
+                <th>解析</th>
+                <th>路径</th>
+                <th>备注</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="${did}$" class="mengular-template domain-list-template">
+                <td>${createAt}$</td>
+                <td>${updateAt}$</td>
+                <td class="domain-list-name">${name}$</td>
+                <td>${domains}$</td>
+                <td>${language}$</td>
+                <td>${resolution}$</td>
+                <td>${path}$</td>
+                <td>${remark}$</td>
+                <td class="domain-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
+                <td class="domain-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="add-domain-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">新建域名</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">网站名称</span>
+                    <input id="add-domain-name" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">绑定域名</span>
+                    <input id="add-domain-domains" type="text" class="form-control" placeholder="多个域名用英文逗号(,)隔开">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">编程语言</span>
+                    <select id="add-domain-language" class="form-control">
+                        <option value="PHP">PHP</option>
+                        <option value="Java">Java</option>
+                        <option value="ASP">ASP</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">解析方式</span>
+                    <select id="add-domain-resolution" class="form-control">
+                        <option value="CNAME">CNAME</option>
+                        <option value="A">A</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">存储路径</span>
+                    <input id="add-domain-path" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">备注信息</span>
+                    <input id="add-domain-remark" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="add-domain-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

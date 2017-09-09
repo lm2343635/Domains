@@ -18,7 +18,7 @@ public class Domain implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private String address;
+    private String domains;
 
     @Column(nullable = false)
     private String language;
@@ -57,12 +57,12 @@ public class Domain implements Serializable {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getDomains() {
+        return domains;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDomains(String domains) {
+        this.domains = domains;
     }
 
     public String getLanguage() {

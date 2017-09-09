@@ -31,10 +31,6 @@
             margin-bottom: 5px;
         }
 
-        #add-server-modal .input-group .input-group-addon {
-            min-width: 45px;
-        }
-
     </style>
 </head>
 <body>
@@ -72,7 +68,7 @@
                 <td>${remark}$</td>
                 <td>${domains}$</td>
                 <td><a href="domains.html?sid=${sid}$"><i class="fa fa-lg fa-font text-primary"></i></a></td>
-                <td class="server-list-edit"><a href="edit.html?pid=${pid}$"><i class="fa fa-lg fa-gear text-success"></i></a></td>
+                <td class="server-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
                 <td class="server-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
             </tr>
             </tbody>
@@ -88,16 +84,16 @@
             </div>
             <div class="modal-body">
                 <div class="input-group">
-                    <span class="input-group-addon form-icon"><i class="fa fa-server fa-lg"></i></span>
-                    <input id="add-server-name" type="text" class="form-control" placeholder="服务器名称">
+                    <span class="input-group-addon">服务器名称</span>
+                    <input id="add-server-name" type="text" class="form-control" placeholder="">
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon form-icon"><i class="fa fa-link fa-lg"></i></span>
-                    <input id="add-server-address" type="text" class="form-control" placeholder="服务器地址">
+                    <span class="input-group-addon">服务器地址</span>
+                    <input id="add-server-address" type="text" class="form-control" placeholder="">
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon form-icon"><i class="fa fa-info fa-lg"></i></span>
-                    <input id="add-server-remark" type="text" class="form-control" placeholder="备注">
+                    <span class="input-group-addon">服务器备注</span>
+                    <input id="add-server-remark" type="text" class="form-control" placeholder="">
                 </div>
             </div>
             <div class="modal-footer">
