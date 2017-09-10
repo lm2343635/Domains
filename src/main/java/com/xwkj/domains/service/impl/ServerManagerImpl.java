@@ -58,4 +58,42 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         }
         return new ServerBean(server);
     }
+
+    @RemoteMethod
+    @Transactional
+    public boolean modify(String sid, String name, String address, String remark, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Server server = serverDao.get(sid);
+        if (server == null) {
+            Debug.error("Cannot find a server by this sid.");
+            return false;
+        }
+        server.setName(name);
+        server.setAddress(address);
+        server.setRemark(remark);
+        server.setUpdateAt(System.currentTimeMillis());
+        serverDao.update(server);
+        return true;
+    }
+
+    @RemoteMethod
+    @Transactional
+    public boolean remove(String sid, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Server server = serverDao.get(sid);
+        if (server == null) {
+            Debug.error("Cannot find a server by this sid.");
+            return false;
+        }
+        if (server.getDomains() > 0) {
+            return false;
+        }
+        serverDao.delete(server);
+        return true;
+    }
+
 }

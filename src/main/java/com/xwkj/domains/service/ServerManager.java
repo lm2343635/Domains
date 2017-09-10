@@ -35,4 +35,25 @@ public interface ServerManager {
      */
     ServerBean get(String sid, HttpSession session);
 
+    /**
+     * Modify a domain.
+     *
+     * @param sid
+     * @param name
+     * @param address
+     * @param remark
+     * @param session
+     * @return
+     */
+    boolean modify(String sid, String name, String address, String remark, HttpSession session);
+
+    /**
+     * Remove a domain.
+     *
+     * @param sid
+     * @param session
+     * @return
+     */
+    boolean remove(String sid, HttpSession session);
+
 }
