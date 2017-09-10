@@ -1,5 +1,6 @@
 package com.xwkj.domains.service.impl;
 
+import com.xwkj.common.util.Debug;
 import com.xwkj.domains.bean.ServerBean;
 import com.xwkj.domains.domain.Server;
 import com.xwkj.domains.service.ServerManager;
@@ -45,4 +46,16 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         return serverBeans;
     }
 
+    @RemoteMethod
+    public ServerBean get(String sid, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return null;
+        }
+        Server server = serverDao.get(sid);
+        if (server == null) {
+            Debug.error("Cannot find a server by this sid.");
+            return null;
+        }
+        return new ServerBean(server);
+    }
 }

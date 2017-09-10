@@ -27,7 +27,7 @@ $(document).ready(function () {
                     location.href = "session.html";
                     return;
                 }
-                $("#add-server-submit").modal("hide");
+                $("#add-server-modal").modal("hide");
                 $.messager.popup("新建成功！");
                 loadServers();
             });
@@ -52,8 +52,8 @@ function loadServers() {
             var server = servers[i];
             $("#server-list tbody").mengular(".server-list-template", {
                 sid: server.sid,
-                createAt: server.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
-                updateAt: server.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                createAt: server.createAt.format(DATE_HOUR_MINUTE_FORMAT),
+                updateAt: server.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
                 name: server.name,
                 address: server.address,
                 domains: server.domains,

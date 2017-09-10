@@ -3,7 +3,19 @@ var sid = request("sid");
 $(document).ready(function () {
 
     checkAdminSession(function () {
+        ServerManager.get(sid, function (server) {
+            if (server == null) {
+                location.href = "session.html";
+                return;
+            }
+            $("#domain-panel .panel-title").fillText({
+                name: server.name,
+                address: server.address,
+                domains: server.domains
+            })
 
+            loadDomains();
+        });
     });
 
     $("#add-domain-submit").click(function () {
@@ -33,12 +45,12 @@ $(document).ready(function () {
             $("#add-domain-path").parent().removeClass("has-error");
         }
         if (validate) {
-            DomainManager.add(name, domains, language, resolution, path, remark, function (did) {
+            DomainManager.add(sid, name, domains, language, resolution, path, remark, function (did) {
                 if (did == null) {
                     location.href = "session.html";
                     return;
                 }
-                $("#add-domain-submit").modal("hide");
+                $("#add-domain-modal").modal("hide");
                 $.messager.popup("新建成功！");
                 loadDomains();
             });
@@ -53,5 +65,25 @@ $(document).ready(function () {
 });
 
 function loadDomains() {
-    
+    DomainManager.getBySid(sid, function (domains) {
+        if (domains == null) {
+            location.href = "session.html";
+            return;
+        }
+        $("#domain-list tbody").mengularClear();
+        for (var i in domains) {
+            var domain = domains[i];
+            $("#domain-list tbody").mengular(".domain-list-template", {
+                did: domain.did,
+                createAt: domain.createAt.format(DATE_HOUR_MINUTE_FORMAT),
+                updateAt: domain.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
+                name: domain.name,
+                domains: domain.domains,
+                language: domain.language,
+                resolution: domain.resolution,
+                path: domain.path,
+                remark: domain.remark
+            });
+        }
+    });
 }

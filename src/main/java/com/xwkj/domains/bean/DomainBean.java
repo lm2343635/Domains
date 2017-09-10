@@ -1,52 +1,24 @@
-package com.xwkj.domains.domain;
+package com.xwkj.domains.bean;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.xwkj.domains.domain.Domain;
+import org.directwebremoting.annotations.DataTransferObject;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Date;
 
-@Entity
-@Table(name = "domains_domain")
-public class Domain implements Serializable {
+@DataTransferObject
+public class DomainBean {
 
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
     private String did;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String domains;
-
-    @Column(nullable = false)
     private String language;
-
-    @Column(nullable = false)
     private String resolution;
-
-    @Column(nullable = false)
     private String path;
-
-    @Column
     private String remark;
-
-    @Column(nullable = false)
-    private Boolean highlight;
-
-    @Column(nullable = false)
-    private Integer state;
-
-    @Column(nullable = false)
-    private Long createAt;
-
-    @Column(nullable = false)
-    private Long updateAt;
-
-    @ManyToOne
-    @JoinColumn(name = "sid", nullable = false)
-    private Server server;
+    private boolean highlight;
+    private Date createAt;
+    private Date updateAt;
+    private String sid;
 
     public String getDid() {
         return did;
@@ -104,44 +76,49 @@ public class Domain implements Serializable {
         this.remark = remark;
     }
 
-    public Boolean getHighlight() {
+    public boolean isHighlight() {
         return highlight;
     }
 
-    public void setHighlight(Boolean highlight) {
+    public void setHighlight(boolean highlight) {
         this.highlight = highlight;
     }
 
-    public Integer getState() {
-        return state;
-    }
-
-    public void setState(Integer state) {
-        this.state = state;
-    }
-
-    public Long getCreateAt() {
+    public Date getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Long createAt) {
+    public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
 
-    public Long getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Long updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 
-    public Server getServer() {
-        return server;
+    public String getSid() {
+        return sid;
     }
 
-    public void setServer(Server server) {
-        this.server = server;
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
+    public DomainBean(Domain domain) {
+        this.did = domain.getDid();
+        this.name = domain.getName();
+        this.domains = domain.getDomains();
+        this.language = domain.getLanguage();
+        this.resolution = domain.getResolution();
+        this.path = domain.getPath();
+        this.remark = domain.getRemark() == null ? "" : domain.getRemark();
+        this.highlight = domain.getHighlight();
+        this.createAt = new Date(domain.getCreateAt());
+        this.updateAt = new Date(domain.getUpdateAt());
+        this.sid = domain.getServer().getSid();
+    }
 }

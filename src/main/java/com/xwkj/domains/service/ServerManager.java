@@ -26,4 +26,13 @@ public interface ServerManager {
      */
     List<ServerBean> getAll(HttpSession session);
 
+    /**
+     * Get a server by sid.
+     *
+     * @param sid
+     * @param session
+     * @return
+     */
+    ServerBean get(String sid, HttpSession session);
+
 }
