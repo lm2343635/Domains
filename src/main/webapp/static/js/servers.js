@@ -59,6 +59,10 @@ function loadServers() {
                 domains: server.domains,
                 remark: server.remark
             });
+            
+            $("#" + server.sid + " .server-list-edit").click(function () {
+                var sid = $(this).mengularId();
+            });
         }
     });
 }

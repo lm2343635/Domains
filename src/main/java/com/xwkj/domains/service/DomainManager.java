@@ -34,4 +34,38 @@ public interface DomainManager {
      */
     List<DomainBean> getBySid(String sid, HttpSession session);
 
+    /**
+     * Get a domain by did.
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    DomainBean get(String did, HttpSession session);
+
+    /**
+     * Modify a domain.
+     *
+     * @param did
+     * @param name
+     * @param domains
+     * @param language
+     * @param resolution
+     * @param path
+     * @param remark
+     * @param session
+     * @return
+     */
+    boolean modify(String did, String name, String domains, String language,
+                   String resolution, String path, String remark, HttpSession session);
+
+    /**
+     * Remove a domain.
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    boolean remove(String did, HttpSession session);
+
 }

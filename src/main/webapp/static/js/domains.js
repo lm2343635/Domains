@@ -1,4 +1,5 @@
 var sid = request("sid");
+var editingDid = null;
 
 $(document).ready(function () {
 
@@ -44,7 +45,10 @@ $(document).ready(function () {
         } else {
             $("#add-domain-path").parent().removeClass("has-error");
         }
-        if (validate) {
+        if (!validate) {
+            return;
+        }
+        if (editingDid == null) {
             DomainManager.add(sid, name, domains, language, resolution, path, remark, function (did) {
                 if (did == null) {
                     location.href = "session.html";
@@ -54,12 +58,23 @@ $(document).ready(function () {
                 $.messager.popup("新建成功！");
                 loadDomains();
             });
+        } else {
+            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, function (success) {
+                if (!success) {
+                    location.href = "session.html";
+                    return;
+                }
+                $("#add-domain-modal").modal("hide");
+                $.messager.popup("修改成功！");
+                loadDomains();
+            });
         }
     });
 
     $("#add-domain-modal").on("hidden.bs.modal", function () {
         $("#add-domain-modal .input-group").removeClass("has-error");
         $("#add-domain-modal input").val("");
+        editingDid = null;
     });
 
 });
@@ -83,6 +98,40 @@ function loadDomains() {
                 resolution: domain.resolution,
                 path: domain.path,
                 remark: domain.remark
+            });
+            
+            $("#" + domain.did + " .domain-list-edit").click(function () {
+                editingDid = $(this).mengularId();
+                DomainManager.get(editingDid, function (domain) {
+                    if (domain == null) {
+                        location.href = "session.html";
+                        return;
+                    }
+                    fillValue({
+                        "add-domain-name": domain.name,
+                        "add-domain-domains": domain.domains,
+                        "add-domain-language": domain.language,
+                        "add-domain-resolution": domain.resolution,
+                        "add-domain-path": domain.path,
+                        "add-domain-remark": domain.remark
+                    });
+                    $("#add-domain-modal").modal("show");
+                })
+            });
+
+            $("#" + domain.did + " .domain-list-remove").click(function () {
+                var did = $(this).mengularId();
+                var name = $("#" + did + " .domain-list-name").text();
+                $.messager.confirm("删除域名", "确认删除域名" + name + "吗？", function () {
+                    DomainManager.remove(did, function (success) {
+                        if (!success) {
+                            location.href = "session.html";
+                            return;
+                        }
+                        $("#" + did).remove();
+                        $.messager.popup("删除成功！");
+                    });
+                });
             });
         }
     });

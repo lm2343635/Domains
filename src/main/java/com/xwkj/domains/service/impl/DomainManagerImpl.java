@@ -69,4 +69,58 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         return domainBeans;
     }
 
+    @RemoteMethod
+    public DomainBean get(String did, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return null;
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return null;
+        }
+        return new DomainBean(domain);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public boolean modify(String did, String name, String domains, String language,
+                          String resolution, String path, String remark, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return false;
+        }
+        domain.setName(name);
+        domain.setDomains(domains);
+        domain.setLanguage(language);
+        domain.setResolution(resolution);
+        domain.setPath(path);
+        domain.setRemark(remark);
+        domain.setUpdateAt(System.currentTimeMillis());
+        domainDao.update(domain);
+        return true;
+    }
+
+    @RemoteMethod
+    @Transactional
+    public boolean remove(String did, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return false;
+        }
+        Server server = domain.getServer();
+        server.setDomains(server.getDomains() - 1);
+        serverDao.update(server);
+        domainDao.delete(domain);
+        return true;
+    }
+
 }
