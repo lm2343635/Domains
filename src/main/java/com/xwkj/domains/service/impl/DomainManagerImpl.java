@@ -123,4 +123,30 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         return true;
     }
 
+    @RemoteMethod
+    @Transactional
+    public boolean transfer(String did, String sid, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return false;
+        }
+        Server newServer = serverDao.get(sid);
+        if (newServer == null) {
+            Debug.error("Cannot find a server by this sid");
+            return false;
+        }
+        Server oldServer = domain.getServer();
+        oldServer.setDomains(oldServer.getDomains() - 1);
+        serverDao.update(oldServer);
+        domain.setServer(newServer);
+        domainDao.update(domain);
+        newServer.setDomains(newServer.getDomains() + 1);
+        serverDao.update(newServer);
+        return true;
+    }
+
 }

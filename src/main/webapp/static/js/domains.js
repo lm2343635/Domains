@@ -17,6 +17,20 @@ $(document).ready(function () {
 
             loadDomains();
         });
+        
+        ServerManager.getAll(function (servers) {
+            if (servers == null) {
+                location.href = "session.html";
+                return;
+            }
+            for (var i in servers) {
+                var server = servers[i];
+                if (server.sid != sid) {
+                    $("<option>").val(server.sid).text(server.name).appendTo("#transfer-domain-server");
+                }
+
+            }
+        });
     });
 
     $("#add-domain-submit").click(function () {
@@ -76,6 +90,27 @@ $(document).ready(function () {
         $("#add-domain-modal input").val("");
         editingDid = null;
     });
+    
+    $("#transfer-domain-submit").click(function () {
+        var sid = $("#transfer-domain-server").val();
+        if (sid == null || sid == "") {
+            $.messager.popup("请选择服务器！");
+            return;
+        }
+        DomainManager.transfer(editingDid, sid, function (success) {
+            if (!success) {
+                location.href = "success.html";
+                return;
+            }
+            $("#" + editingDid).remove();
+            $("#transfer-domain-modal").modal("hide");
+            editingDid = null;
+        });
+    });
+
+    $("#transfer-domain-modal").on("hidden.bs.modal", function () {
+        editingDid = null;
+    });
 
 });
 
@@ -117,6 +152,11 @@ function loadDomains() {
                     });
                     $("#add-domain-modal").modal("show");
                 })
+            });
+            
+            $("#" + domain.did + " .domain-list-transfer").click(function () {
+                editingDid = $(this).mengularId();
+                $("#transfer-domain-modal").modal("show");
             });
 
             $("#" + domain.did + " .domain-list-remove").click(function () {

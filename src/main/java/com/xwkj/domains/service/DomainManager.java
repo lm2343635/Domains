@@ -68,4 +68,14 @@ public interface DomainManager {
      */
     boolean remove(String did, HttpSession session);
 
+    /**
+     * Transfer a domain to a new server.
+     *
+     * @param did
+     * @param sid
+     * @param session
+     * @return
+     */
+    boolean transfer(String did, String sid, HttpSession session);
+
 }

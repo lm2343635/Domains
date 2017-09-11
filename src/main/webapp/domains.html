@@ -58,6 +58,7 @@
                 <th>路径</th>
                 <th>备注</th>
                 <th>编辑</th>
+                <th>转移</th>
                 <th>删除</th>
             </tr>
             </thead>
@@ -72,6 +73,7 @@
                 <td>${path}$</td>
                 <td>${remark}$</td>
                 <td class="domain-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
+                <td class="domain-list-transfer"><i class="fa fa-lg  fa-random text-primary"></i></td>
                 <td class="domain-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
             </tr>
             </tbody>
@@ -121,6 +123,26 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="add-domain-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="transfer-domain-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">新建域名</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">编程语言</span>
+                    <select id="transfer-domain-server" class="form-control"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="transfer-domain-submit" type="button" class="btn btn-success">确认</button>
             </div>
         </div>
     </div>
