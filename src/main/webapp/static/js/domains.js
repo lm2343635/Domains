@@ -123,12 +123,21 @@ function loadDomains() {
         $("#domain-list tbody").mengularClear();
         for (var i in domains) {
             var domain = domains[i];
+            var sites = domain.domains.split(",");
+            var links = ""
+            for (var j in sites) {
+                links += "<a href='http://" + sites[j] + "' target='_blank'>" + sites[j] + "</a>";
+                if (j != sites.length - 1) {
+                    links += ",";
+                }
+            }
+
             $("#domain-list tbody").mengular(".domain-list-template", {
                 did: domain.did,
                 createAt: domain.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: domain.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
                 name: domain.name,
-                domains: domain.domains,
+                domains: links,
                 language: domain.language,
                 resolution: domain.resolution,
                 path: domain.path,
