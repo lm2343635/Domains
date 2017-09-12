@@ -128,7 +128,7 @@ function loadDomains() {
             for (var j in sites) {
                 links += "<a href='http://" + sites[j] + "' target='_blank'>" + sites[j] + "</a>";
                 if (j != sites.length - 1) {
-                    links += ",";
+                    links += "<br>";
                 }
             }
 

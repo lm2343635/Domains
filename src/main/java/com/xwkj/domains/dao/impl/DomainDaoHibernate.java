@@ -17,7 +17,7 @@ public class DomainDaoHibernate extends BaseHibernateDaoSupport<Domain> implemen
     }
 
     public List<Domain> findByServer(Server server) {
-        String hql = "from Domain where server = ? order by createAt desc";
+        String hql = "from Domain where server = ? order by updateAt desc";
         return (List<Domain>) getHibernateTemplate().find(hql, server);
     }
 
