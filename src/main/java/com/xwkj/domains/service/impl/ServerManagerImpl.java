@@ -40,7 +40,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
             return null;
         }
         List<ServerBean> serverBeans = new ArrayList<ServerBean>();
-        for (Server server : serverDao.findAll("createAt", true)) {
+        for (Server server : serverDao.findAll("updateAt", true)) {
             serverBeans.add(new ServerBean(server));
         }
         return serverBeans;
