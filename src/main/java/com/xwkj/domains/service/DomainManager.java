@@ -35,6 +35,14 @@ public interface DomainManager {
     List<DomainBean> getBySid(String sid, HttpSession session);
 
     /**
+     * Get all highlight domains.
+     *
+     * @param session
+     * @return
+     */
+    List<DomainBean> getHightlightDomains(HttpSession session);
+
+    /**
      * Get a domain by did.
      *
      * @param did

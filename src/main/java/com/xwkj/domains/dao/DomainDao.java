@@ -16,4 +16,11 @@ public interface DomainDao extends BaseDao<Domain> {
      */
     List<Domain> findByServer(Server server);
 
+    /**
+     * Find all highlight domains.
+     *
+     * @return
+     */
+    List<Domain> findHighlightDomains();
+
 }

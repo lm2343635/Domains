@@ -21,4 +21,9 @@ public class DomainDaoHibernate extends BaseHibernateDaoSupport<Domain> implemen
         return (List<Domain>) getHibernateTemplate().find(hql, server);
     }
 
+    public List<Domain> findHighlightDomains() {
+        String hql = "from Domain where highlight = true order by updateAt desc";
+        return (List<Domain>) getHibernateTemplate().find(hql);
+    }
+
 }

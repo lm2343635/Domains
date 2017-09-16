@@ -70,6 +70,18 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
+    public List<DomainBean> getHightlightDomains(HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return null;
+        }
+        List<DomainBean> domainBeans = new ArrayList<DomainBean>();
+        for (Domain domain : domainDao.findHighlightDomains()) {
+            domainBeans.add(new DomainBean(domain));
+        }
+        return domainBeans;
+    }
+
+    @RemoteMethod
     public DomainBean get(String did, HttpSession session) {
         if (!checkAdminSession(session)) {
             return null;
