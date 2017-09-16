@@ -141,7 +141,8 @@ function loadDomains() {
                 language: domain.language,
                 resolution: domain.resolution,
                 path: domain.path,
-                remark: domain.remark
+                remark: domain.remark,
+                highlight: domain.highlight ? "highlight" : ""
             });
             
             $("#" + domain.did + " .domain-list-edit").click(function () {
@@ -166,6 +167,23 @@ function loadDomains() {
             $("#" + domain.did + " .domain-list-transfer").click(function () {
                 editingDid = $(this).mengularId();
                 $("#transfer-domain-modal").modal("show");
+            });
+
+            $("#" + domain.did + " .domain-list-highlight input").bootstrapSwitch({
+                state: domain.highlight
+            }).on("switchChange.bootstrapSwitch", function (event, state) {
+                var did = $(this).mengularId();
+                DomainManager.setHighlight(did, state, function(success) {
+                    if (!success) {
+                        location.href = "session.html";
+                        return;
+                    }
+                    if (state) {
+                        $("#" + did).addClass("highlight");
+                    } else {
+                        $("#" + did).removeClass("highlight");
+                    }
+                });
             });
 
             $("#" + domain.did + " .domain-list-remove").click(function () {

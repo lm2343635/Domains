@@ -9,9 +9,11 @@
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
     <link href="/static/css/mengular.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-switch.min.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap-switch.min.js"></script>
     <script src="/static/js/mengular.js"></script>
     <script src="/static/js/tools.js"></script>
     <script src="/dwr/engine.js"></script>
@@ -22,6 +24,10 @@
     <style>
         #add-domain {
             cursor: pointer
+        }
+
+        #domain-list .highlight {
+            background: yellow;
         }
 
         #domain-list .domain-list-template i {
@@ -58,11 +64,12 @@
                 <th>备注</th>
                 <th>编辑</th>
                 <th>转移</th>
+                <th>状态</th>
                 <th>删除</th>
             </tr>
             </thead>
             <tbody>
-            <tr id="${did}$" class="mengular-template domain-list-template">
+            <tr id="${did}$" class="mengular-template domain-list-template ${highlight}$">
                 <td>${updateAt}$</td>
                 <td class="domain-list-name">${name}$</td>
                 <td>${domains}$</td>
@@ -72,6 +79,7 @@
                 <td>${remark}$</td>
                 <td class="domain-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
                 <td class="domain-list-transfer"><i class="fa fa-lg  fa-random text-primary"></i></td>
+                <td class="domain-list-highlight"><input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常"></td>
                 <td class="domain-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
             </tr>
             </tbody>

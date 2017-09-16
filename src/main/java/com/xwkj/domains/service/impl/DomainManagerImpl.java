@@ -149,4 +149,19 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         return true;
     }
 
+    @RemoteMethod
+    @Transactional
+    public boolean setHighlight(String did, boolean highlight, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return false;
+        }
+        domain.setHighlight(highlight);
+        return true;
+    }
+
 }

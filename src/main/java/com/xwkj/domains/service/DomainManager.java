@@ -78,4 +78,14 @@ public interface DomainManager {
      */
     boolean transfer(String did, String sid, HttpSession session);
 
+    /**
+     * Set highlight state of a domain.
+     *
+     * @param did
+     * @param highlight
+     * @param session
+     * @return
+     */
+    boolean setHighlight(String did, boolean highlight, HttpSession session);
+
 }
