@@ -1,9 +1,9 @@
-package com.xwkj.domains.dao.impl;
+package com.xwkj.customer.dao.impl;
 
 import com.xwkj.common.hibernate.BaseHibernateDaoSupport;
-import com.xwkj.domains.dao.DomainDao;
-import com.xwkj.domains.domain.Domain;
-import com.xwkj.domains.domain.Server;
+import com.xwkj.customer.dao.DomainDao;
+import com.xwkj.customer.domain.Domain;
+import com.xwkj.customer.domain.Server;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

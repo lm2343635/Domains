@@ -1,8 +1,8 @@
-package com.xwkj.domains.service.common;
+package com.xwkj.customer.service.common;
 
-import com.xwkj.domains.dao.DomainDao;
-import com.xwkj.domains.dao.ServerDao;
-import com.xwkj.domains.service.AdminManager;
+import com.xwkj.customer.dao.DomainDao;
+import com.xwkj.customer.dao.ServerDao;
+import com.xwkj.customer.service.AdminManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;

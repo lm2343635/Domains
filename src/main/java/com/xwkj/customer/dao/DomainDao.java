@@ -1,15 +1,15 @@
-package com.xwkj.domains.dao;
+package com.xwkj.customer.dao;
 
 import com.xwkj.common.hibernate.BaseDao;
-import com.xwkj.domains.domain.Domain;
-import com.xwkj.domains.domain.Server;
+import com.xwkj.customer.domain.Domain;
+import com.xwkj.customer.domain.Server;
 
 import java.util.List;
 
 public interface DomainDao extends BaseDao<Domain> {
 
     /**
-     * Find all domains of a server.
+     * Find all customer of a server.
      *
      * @param server
      * @return
@@ -17,7 +17,7 @@ public interface DomainDao extends BaseDao<Domain> {
     List<Domain> findByServer(Server server);
 
     /**
-     * Find all highlight domains.
+     * Find all highlight customer.
      *
      * @return
      */

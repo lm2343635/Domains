@@ -1,6 +1,6 @@
-package com.xwkj.domains.service;
+package com.xwkj.customer.service;
 
-import com.xwkj.domains.bean.DomainBean;
+import com.xwkj.customer.bean.DomainBean;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -26,7 +26,7 @@ public interface DomainManager {
                String resolution, String path, String remark, HttpSession session);
 
     /**
-     * Get all domains of a server.
+     * Get all customer of a server.
      *
      * @param sid
      * @param session
@@ -35,7 +35,7 @@ public interface DomainManager {
     List<DomainBean> getBySid(String sid, HttpSession session);
 
     /**
-     * Get all highlight domains.
+     * Get all highlight customer.
      *
      * @param session
      * @return

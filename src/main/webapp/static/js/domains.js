@@ -35,7 +35,7 @@ $(document).ready(function () {
 
     $("#add-domain-submit").click(function () {
         var name = $("#add-domain-name").val();
-        var domains = $("#add-domain-domains").val();
+        var domains = $("#add-domain-customer").val();
         var language = $("#add-domain-language").val();
         var resolution = $("#add-domain-resolution").val();
         var path = $("#add-domain-path").val();
@@ -48,10 +48,10 @@ $(document).ready(function () {
             $("#add-domain-name").parent().removeClass("has-error");
         }
         if (domains == "" || domains == null) {
-            $("#add-domain-domains").parent().addClass("has-error");
+            $("#add-domain-customer").parent().addClass("has-error");
             validate = false;
         } else {
-            $("#add-domain-domains").parent().removeClass("has-error");
+            $("#add-domain-customer").parent().removeClass("has-error");
         }
         if (path == "" || path == null) {
             $("#add-domain-path").parent().addClass("has-error");

@@ -1,7 +1,7 @@
-package com.xwkj.domains.dao;
+package com.xwkj.customer.dao;
 
 import com.xwkj.common.hibernate.BaseDao;
-import com.xwkj.domains.domain.Server;
+import com.xwkj.customer.domain.Server;
 
 public interface ServerDao extends BaseDao<Server> {
 }

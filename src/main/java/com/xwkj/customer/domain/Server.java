@@ -1,4 +1,4 @@
-package com.xwkj.domains.domain;
+package com.xwkj.customer.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "domains_server")
+@Table(name = "customer_server")
 public class Server implements Serializable {
 
     @Id

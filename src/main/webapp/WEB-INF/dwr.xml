@@ -10,7 +10,7 @@
 	<dwr:annotation-config/>
 	<dwr:controller id="dwrController" debug="true"/>
 	<dwr:url-mapping/>
-	<dwr:annotation-scan base-package="com.xwkj.domains" scanDataTransferObject="true" scanRemoteProxy="true"/>
+	<dwr:annotation-scan base-package="com.xwkj.customer" scanDataTransferObject="true" scanRemoteProxy="true"/>
 	<dwr:configuration/>
 
 </beans>

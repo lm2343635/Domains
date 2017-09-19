@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.xwkj</groupId>
-    <artifactId>domains</artifactId>
+    <artifactId>customer</artifactId>
     <packaging>war</packaging>
     <version>1.0</version>
-    <name>Domains Maven Webapp</name>
+    <name>Customer Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <properties>
         <spring.version>4.3.6.RELEASE</spring.version>

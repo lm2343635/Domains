@@ -95,7 +95,7 @@ function loadServers() {
             $("#" + server.sid + " .server-list-remove").click(function () {
                 var sid = $(this).mengularId();
                 var name = $("#" + sid + " .server-list-name").text();
-                var domains = parseInt($("#" + sid + " .server-list-domains").text());
+                var domains = parseInt($("#" + sid + " .server-list-customer").text());
                 if (domains > 0) {
                     $.messager.popup("该服务器下有域名，无法删除！");
                     return;

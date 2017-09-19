@@ -1,6 +1,6 @@
-package com.xwkj.domains.service;
+package com.xwkj.customer.service;
 
-import com.xwkj.domains.bean.ServerBean;
+import com.xwkj.customer.bean.ServerBean;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;

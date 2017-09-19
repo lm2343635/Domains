@@ -1,10 +1,10 @@
-package com.xwkj.domains.service.impl;
+package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
-import com.xwkj.domains.bean.ServerBean;
-import com.xwkj.domains.domain.Server;
-import com.xwkj.domains.service.ServerManager;
-import com.xwkj.domains.service.common.ManagerTemplate;
+import com.xwkj.customer.bean.ServerBean;
+import com.xwkj.customer.domain.Server;
+import com.xwkj.customer.service.ServerManager;
+import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.xwkj.domains.service;
+package com.xwkj.customer.service;
 
 import net.sf.json.JSONArray;
 

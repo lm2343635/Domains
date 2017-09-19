@@ -1,6 +1,6 @@
-package com.xwkj.domains.bean;
+package com.xwkj.customer.bean;
 
-import com.xwkj.domains.domain.Server;
+import com.xwkj.customer.domain.Server;
 import org.directwebremoting.annotations.DataTransferObject;
 
 import java.util.Date;
