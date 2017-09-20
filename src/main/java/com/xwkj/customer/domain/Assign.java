@@ -17,6 +17,18 @@ public class Assign implements Serializable {
     @Column(nullable = false)
     private Long createAt;
 
+    @Column(nullable = false)
+    private Boolean r;
+
+    @Column(nullable = false)
+    private Boolean w;
+
+    @Column(nullable = false)
+    private Boolean d;
+
+    @Column(nullable = false)
+    private Boolean assign;
+
     @ManyToOne
     @JoinColumn(name = "cid", nullable = false)
     private Customer customer;
@@ -41,6 +53,38 @@ public class Assign implements Serializable {
         this.createAt = createAt;
     }
 
+    public Boolean getR() {
+        return r;
+    }
+
+    public void setR(Boolean r) {
+        this.r = r;
+    }
+
+    public Boolean getW() {
+        return w;
+    }
+
+    public void setW(Boolean w) {
+        this.w = w;
+    }
+
+    public Boolean getD() {
+        return d;
+    }
+
+    public void setD(Boolean d) {
+        this.d = d;
+    }
+
+    public Boolean getAssign() {
+        return assign;
+    }
+
+    public void setAssign(Boolean assign) {
+        this.assign = assign;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -56,5 +100,5 @@ public class Assign implements Serializable {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-    
+
 }

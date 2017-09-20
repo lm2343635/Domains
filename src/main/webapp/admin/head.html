@@ -7,8 +7,8 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="menu-bar" class="nav navbar-nav logined-btn">
-                <li><a href="servers.html">服务器管理</a></li>
-                <li><a href="highlights.html">待处理域名</a></li>
+                <li><a href="roles.html">角色管理</a></li>
+                <li><a href="employees.html">员工管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout/admin">退出</a></li>
@@ -18,9 +18,7 @@
 </nav>
 <script type="text/javascript">
     var map = {
-        servers: 0,
-        doamins: 0,
-        highlights: 1
+        roles: 0,
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>

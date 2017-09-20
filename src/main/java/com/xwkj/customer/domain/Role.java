@@ -14,38 +14,85 @@ public class Role implements Serializable {
     @GenericGenerator(name = "uuid", strategy = "uuid")
     private String rid;
 
+    // role name
     @Column(nullable = false)
     private String name;
 
+    // privelge to read an undeveloped customer
     @Column(nullable = false)
-    private Boolean employee;
+    private Integer undevelopedR;
 
+    // privelge to create and update an undeveloped customer
     @Column(nullable = false)
-    private Boolean server;
+    private Integer undevelopedW;
 
+    // privelge to delete an undeveloped customer
     @Column(nullable = false)
-    private Boolean domain;
+    private Integer undevelopedD;
 
+    // privelge to read a developing customer
     @Column(nullable = false)
-    private Boolean undeveloped;
+    private Integer developingR;
 
+    // privelge to create and update a developing customer
     @Column(nullable = false)
-    private Boolean developing;
+    private Integer developingW;
 
+    // privelge to delete a developing customer
     @Column(nullable = false)
-    private Boolean developed;
+    private Integer developingD;
 
+    // privelge to read a developed customer
     @Column(nullable = false)
-    private Boolean lost;
+    private Integer developedR;
 
+    // privelge to create and update a developed customer
     @Column(nullable = false)
-    private Boolean assign;
+    private Integer developedW;
 
+    // privelge to delete a developed customer
     @Column(nullable = false)
-    private Boolean ruin;
+    private Integer developedD;
 
+    // privelge to read a lost customer
     @Column(nullable = false)
-    private Boolean recover;
+    private Integer lostR;
+
+    // privelge to create and update a lost customer
+    @Column(nullable = false)
+    private Integer lostW;
+
+    // privelge to delete a lost customer
+    @Column(nullable = false)
+    private Integer lostD;
+
+    // privelge to transfer an undeveloped customer to a developing customer
+    @Column(nullable = false)
+    private Integer develop;
+
+    // privelge to transfer an developing customer to a developed customer
+    @Column(nullable = false)
+    private Integer finish;
+
+    // privelge to transfer an developed customer to a lost customer
+    @Column(nullable = false)
+    private Integer ruin;
+
+    // privelge to transfer an lost customer to a developing customer
+    @Column(nullable = false)
+    private Integer recover;
+
+    // privelge to asign a new manager for the customer
+    @Column(nullable = false)
+    private Integer assign;
+
+    // privelge to create, update and delete server
+    @Column(nullable = false)
+    private Integer server;
+
+    // privelge to create, update and delete domain
+    @Column(nullable = false)
+    private Integer domain;
 
     public String getRid() {
         return rid;
@@ -63,83 +110,156 @@ public class Role implements Serializable {
         this.name = name;
     }
 
-    public Boolean getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Boolean employee) {
-        this.employee = employee;
-    }
-
-    public Boolean getServer() {
+    public Integer getServer() {
         return server;
     }
 
-    public void setServer(Boolean server) {
+    public void setServer(Integer server) {
         this.server = server;
     }
 
-    public Boolean getDomain() {
+    public Integer getDomain() {
         return domain;
     }
 
-    public void setDomain(Boolean domain) {
+    public void setDomain(Integer domain) {
         this.domain = domain;
     }
 
-    public Boolean getUndeveloped() {
-        return undeveloped;
+    public Integer getUndevelopedR() {
+        return undevelopedR;
     }
 
-    public void setUndeveloped(Boolean undeveloped) {
-        this.undeveloped = undeveloped;
+    public void setUndevelopedR(Integer undevelopedR) {
+        this.undevelopedR = undevelopedR;
     }
 
-    public Boolean getDeveloping() {
-        return developing;
+    public Integer getDevelopingR() {
+        return developingR;
     }
 
-    public void setDeveloping(Boolean developing) {
-        this.developing = developing;
+    public void setDevelopingR(Integer developingR) {
+        this.developingR = developingR;
     }
 
-    public Boolean getDeveloped() {
-        return developed;
+    public Integer getDevelopedR() {
+        return developedR;
     }
 
-    public void setDeveloped(Boolean developed) {
-        this.developed = developed;
+    public void setDevelopedR(Integer developedR) {
+        this.developedR = developedR;
     }
 
-    public Boolean getLost() {
-        return lost;
+    public Integer getLostR() {
+        return lostR;
     }
 
-    public void setLost(Boolean lost) {
-        this.lost = lost;
+    public void setLostR(Integer lostR) {
+        this.lostR = lostR;
     }
 
-    public Boolean getAssign() {
+    public Integer getUndevelopedW() {
+        return undevelopedW;
+    }
+
+    public void setUndevelopedW(Integer undevelopedW) {
+        this.undevelopedW = undevelopedW;
+    }
+
+    public Integer getDevelopingW() {
+        return developingW;
+    }
+
+    public void setDevelopingW(Integer developingW) {
+        this.developingW = developingW;
+    }
+
+    public Integer getDevelopedW() {
+        return developedW;
+    }
+
+    public void setDevelopedW(Integer developedW) {
+        this.developedW = developedW;
+    }
+
+    public Integer getLostW() {
+        return lostW;
+    }
+
+    public void setLostW(Integer lostW) {
+        this.lostW = lostW;
+    }
+
+    public Integer getUndevelopedD() {
+        return undevelopedD;
+    }
+
+    public void setUndevelopedD(Integer undevelopedD) {
+        this.undevelopedD = undevelopedD;
+    }
+
+    public Integer getDevelopingD() {
+        return developingD;
+    }
+
+    public void setDevelopingD(Integer developingD) {
+        this.developingD = developingD;
+    }
+
+    public Integer getDevelopedD() {
+        return developedD;
+    }
+
+    public void setDevelopedD(Integer developedD) {
+        this.developedD = developedD;
+    }
+
+    public Integer getLostD() {
+        return lostD;
+    }
+
+    public void setLostD(Integer lostD) {
+        this.lostD = lostD;
+    }
+
+    public Integer getAssign() {
         return assign;
     }
 
-    public void setAssign(Boolean assign) {
+    public void setAssign(Integer assign) {
         this.assign = assign;
     }
 
-    public Boolean getRuin() {
+    public Integer getDevelop() {
+        return develop;
+    }
+
+    public void setDevelop(Integer develop) {
+        this.develop = develop;
+    }
+
+    public Integer getFinish() {
+        return finish;
+    }
+
+    public void setFinish(Integer finish) {
+        this.finish = finish;
+    }
+
+    public Integer getRuin() {
         return ruin;
     }
 
-    public void setRuin(Boolean ruin) {
+    public void setRuin(Integer ruin) {
         this.ruin = ruin;
     }
 
-    public Boolean getRecover() {
+    public Integer getRecover() {
         return recover;
     }
 
-    public void setRecover(Boolean recover) {
+    public void setRecover(Integer recover) {
         this.recover = recover;
     }
+
 }

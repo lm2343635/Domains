@@ -8,6 +8,10 @@ function checkAdminSession(done) {
     });
 }
 
+function sessionError() {
+    location.href = "session.html";
+}
+
 var BROSWER_PC = "pc";
 var BROSWER_WAP = "wap";
 

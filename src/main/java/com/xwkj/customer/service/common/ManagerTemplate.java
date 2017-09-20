@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.common;
 
 import com.xwkj.customer.dao.DomainDao;
+import com.xwkj.customer.dao.RoleDao;
 import com.xwkj.customer.dao.ServerDao;
 import com.xwkj.customer.service.AdminManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpSession;
 
 public class ManagerTemplate {
+
+    @Autowired
+    protected RoleDao roleDao;
 
     @Autowired
     protected ServerDao serverDao;
