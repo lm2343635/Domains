@@ -20,7 +20,7 @@ var previlegNames = {
     domain: "域名管理权限"
 }
 
-var previlegeSymbols = ["", "", ""];
+var symbols = ["<i class='fa fa-times text-muted'></i>", "<i class='fa fa-circle-o text-warning'></i>", "<i class='fa fa-check text-success'></i>"];
 
 $(document).ready(function () {
 
@@ -68,5 +68,48 @@ $(document).ready(function () {
 });
 
 function loadRoles() {
+    RoleManager.getAll(function (roles) {
+        if (roles == null) {
+            sessionError();
+            return;
+        }
 
+        $("#role-list tbody").mengularClear();
+
+        for (var i in roles) {
+            var role = roles[i];
+            $("#role-list tbody").mengular(".role-list-template", {
+                rid: role.rid,
+                name: role.name,
+                undeveloped: symbols[role.undevelopedR] + "|" + symbols[role.undevelopedW] + "|" + symbols[role.undevelopedD],
+                developing: symbols[role.developingR] + "|" + symbols[role.developingW] + "|" + symbols[role.developingD],
+                developed: symbols[role.developedR] + "|" + symbols[role.developedW] + "|" + symbols[role.developedD],
+                lost: symbols[role.lostR] + "|" + symbols[role.lostW] + "|" + symbols[role.lostD],
+                develop: symbols[role.develop],
+                finish: symbols[role.finish],
+                ruin: symbols[role.ruin],
+                recover: symbols[role.recover],
+                assign: symbols[role.assign],
+                server: symbols[role.server],
+                domain: symbols[role.domain]
+            });
+
+            $("#" + role.rid + " .role-list-remove").click(function () {
+                var rid = $(this).mengularId();
+                var name = $("#" + rid + " .role-list-name").text();
+                $.messager.confirm("删除角色", "确认删除角色" + name + "吗？", function () {
+                    RoleManager.remove(rid, function (success) {
+                        if (!success) {
+                            sessionError();
+                            return;
+                        }
+                        $("#" + rid).remove();
+                        $.messager.popup("删除成功！");
+                    });
+                });
+            });
+        }
+
+
+    });
 }

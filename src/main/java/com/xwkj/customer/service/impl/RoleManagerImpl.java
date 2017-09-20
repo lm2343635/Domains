@@ -1,5 +1,7 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.RoleBean;
 import com.xwkj.customer.domain.Role;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RemoteProxy(name = "RoleManager")
@@ -42,6 +46,33 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
         role.setServer(privelges[17]);
         role.setDomain(privelges[18]);
         return roleDao.save(role);
+    }
+
+    @RemoteMethod
+    public List<RoleBean> getAll(HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return null;
+        }
+        List<RoleBean> roleBeans = new ArrayList<RoleBean>();
+        for (Role role : roleDao.findAll()) {
+            roleBeans.add(new RoleBean(role));
+        }
+        return roleBeans;
+    }
+
+    @RemoteMethod
+    @Transactional
+    public boolean remove(String rid, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Role role = roleDao.get(rid);
+        if (role == null) {
+            Debug.error("Cannot find a role by this rid.");
+            return false;
+        }
+        roleDao.delete(role);
+        return true;
     }
 
 }

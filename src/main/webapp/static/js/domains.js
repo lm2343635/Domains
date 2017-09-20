@@ -6,7 +6,7 @@ $(document).ready(function () {
     checkAdminSession(function () {
         ServerManager.get(sid, function (server) {
             if (server == null) {
-                location.href = "../../admin/session.html";
+                sessionError();
                 return;
             }
             $("#domain-panel .panel-title").fillText({
@@ -20,7 +20,7 @@ $(document).ready(function () {
         
         ServerManager.getAll(function (servers) {
             if (servers == null) {
-                location.href = "../../admin/session.html";
+                sessionError();
                 return;
             }
             for (var i in servers) {
@@ -65,7 +65,7 @@ $(document).ready(function () {
         if (editingDid == null) {
             DomainManager.add(sid, name, domains, language, resolution, path, remark, function (did) {
                 if (did == null) {
-                    location.href = "../../admin/session.html";
+                    sessionError();
                     return;
                 }
                 $("#add-domain-modal").modal("hide");
@@ -75,7 +75,7 @@ $(document).ready(function () {
         } else {
             DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, function (success) {
                 if (!success) {
-                    location.href = "../../admin/session.html";
+                    sessionError();
                     return;
                 }
                 $("#add-domain-modal").modal("hide");
@@ -117,7 +117,7 @@ $(document).ready(function () {
 function loadDomains() {
     DomainManager.getBySid(sid, function (domains) {
         if (domains == null) {
-            location.href = "../../admin/session.html";
+            sessionError();
             return;
         }
         $("#domain-list tbody").mengularClear();
@@ -149,7 +149,7 @@ function loadDomains() {
                 editingDid = $(this).mengularId();
                 DomainManager.get(editingDid, function (domain) {
                     if (domain == null) {
-                        location.href = "../../admin/session.html";
+                        sessionError();
                         return;
                     }
                     fillValue({
@@ -175,7 +175,7 @@ function loadDomains() {
                 var did = $(this).mengularId();
                 DomainManager.setHighlight(did, state, function(success) {
                     if (!success) {
-                        location.href = "../../admin/session.html";
+                        sessionError();
                         return;
                     }
                     if (state) {
@@ -192,7 +192,7 @@ function loadDomains() {
                 $.messager.confirm("删除域名", "确认删除域名" + name + "吗？", function () {
                     DomainManager.remove(did, function (success) {
                         if (!success) {
-                            location.href = "../../admin/session.html";
+                            sessionError();
                             return;
                         }
                         $("#" + did).remove();
