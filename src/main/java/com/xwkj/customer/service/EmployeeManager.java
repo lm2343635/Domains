@@ -81,4 +81,12 @@ public interface EmployeeManager {
      */
     String login(String username, String password, HttpSession session);
 
+    /**
+     * Check employee session.
+     *
+     * @param session
+     * @return
+     */
+    EmployeeBean checkSession(HttpSession session);
+
 }

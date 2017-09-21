@@ -1,16 +1,30 @@
 function checkAdminSession(done) {
     AdminManager.checkSession(function (username) {
         if (username == null) {
-            location.href = "/";
-        } else {
-            done(username);
+            location.href = "/admin";
+            return;
         }
+        done(username);
+    });
+}
+
+function checkEmployeeSession(done) {
+    EmployeeManager.checkSession(function (employee) {
+        if (employee == null) {
+            location.href = "/employee";
+            return;
+        }
+        done(employee);
     });
 }
 
 function sessionError() {
     location.href = "session.html";
 }
+
+var RolePrevilgeNone = 0;
+var RolePrevilgeAssign = 1;
+var RolePrevilgeHold = 2;
 
 var BROSWER_PC = "pc";
 var BROSWER_WAP = "wap";

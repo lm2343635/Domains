@@ -23,6 +23,7 @@ $(document).ready(function () {
                     $.messager.popup("用户名或密码错误");
                     return;
                 }
+
                 location.href = firstPage + ".html";
             });
         }

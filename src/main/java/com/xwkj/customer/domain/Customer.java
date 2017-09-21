@@ -21,6 +21,9 @@ public class Customer implements Serializable {
     private Long updateAt;
 
     @Column(nullable = false)
+    private Integer state;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -47,6 +50,14 @@ public class Customer implements Serializable {
 
     public void setCid(String cid) {
         this.cid = cid;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public Long getCreateAt() {

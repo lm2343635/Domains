@@ -165,4 +165,13 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         return "";
     }
 
+    @RemoteMethod
+    public EmployeeBean checkSession(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return null;
+        }
+        return new EmployeeBean(employee);
+    }
+
 }
