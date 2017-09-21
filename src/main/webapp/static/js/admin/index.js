@@ -18,7 +18,7 @@ $(document).ready(function () {
         if (validate) {
             AdminManager.login(name, password, function (success) {
                 if (success) {
-                    location.href = "roles.html";
+                    location.href = "employees.html";
                 } else {
                     $("#admin-number-input").parent().addClass("has-error");
                     $("#admin-password-input").parent().addClass("has-error");

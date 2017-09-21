@@ -31,12 +31,9 @@
             cursor: pointer;
         }
 
-        #add-employee-modal .input-group {
+        #add-employee-modal .input-group,
+        #edit-employee-modal .input-group {
             margin-bottom: 5px;
-        }
-
-        #add-employee-modal .input-group .radio-inline {
-            margin: 7px;
         }
 
     </style>
@@ -60,16 +57,18 @@
                 <th>更新时间</th>
                 <th>员工姓名</th>
                 <th>员工角色</th>
+                <th>密码</th>
                 <th>编辑</th>
                 <th>删除</th>
             </tr>
             </thead>
             <tbody>
-            <tr id="${rid}$" class="mengular-template employee-list-template">
+            <tr id="${eid}$" class="mengular-template employee-list-template">
                 <td>${createAt}$</td>
                 <td>${updateAt}$</td>
                 <td class="employee-list-name">${name}$</td>
                 <td>${role}$</td>
+                <td class="employee-list-password"><i class="fa fa-lg fa-lock text-warning"></i></td>
                 <td class="employee-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
                 <td class="employee-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
             </tr>
@@ -101,6 +100,50 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="add-employee-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="edit-employee-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">编辑员工</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">员工姓名</span>
+                    <input id="edit-employee-name" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">员工角色</span>
+                    <select id="edit-employee-role" class="form-control"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="edit-employee-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="reset-password-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">重置员工<span id="reset-password-title"></span>的密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">新密码</span>
+                    <input id="reset-password" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="reset-password-submit" type="button" class="btn btn-success">确认</button>
             </div>
         </div>
     </div>

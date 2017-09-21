@@ -45,6 +45,7 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
         role.setAssign(privelges[16]);
         role.setServer(privelges[17]);
         role.setDomain(privelges[18]);
+        role.setEmployees(0);
         return roleDao.save(role);
     }
 
@@ -69,6 +70,10 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
         Role role = roleDao.get(rid);
         if (role == null) {
             Debug.error("Cannot find a role by this rid.");
+            return false;
+        }
+        // Cannot delete a role who has employees.
+        if (role.getEmployees() > 0) {
             return false;
         }
         roleDao.delete(role);

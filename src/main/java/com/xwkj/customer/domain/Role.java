@@ -94,6 +94,9 @@ public class Role implements Serializable {
     @Column(nullable = false)
     private Integer domain;
 
+    @Column(nullable = false)
+    private Integer employees;
+
     public String getRid() {
         return rid;
     }
@@ -260,6 +263,14 @@ public class Role implements Serializable {
 
     public void setRecover(Integer recover) {
         this.recover = recover;
+    }
+
+    public Integer getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Integer employees) {
+        this.employees = employees;
     }
 
 }
