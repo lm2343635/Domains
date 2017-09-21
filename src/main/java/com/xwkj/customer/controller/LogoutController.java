@@ -15,7 +15,7 @@ public class LogoutController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public void adminLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.getSession().removeAttribute(AdminManager.ADMIN_FLAG);
+        request.getSession().removeAttribute(AdminManager.AdminFlag);
         response.sendRedirect("/admin");
     }
 

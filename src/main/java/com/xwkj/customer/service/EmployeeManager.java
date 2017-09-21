@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface EmployeeManager {
 
+    public static final String EmployeeFlag = "675ea2340289fea2003b6e3f00a7d015";
+
+    // ************* For admin ****************
+
     /**
      * Admin add a new employee.
      *
@@ -64,5 +68,17 @@ public interface EmployeeManager {
      * @return
      */
     boolean resetPassword(String eid, String password, HttpSession session);
+
+    // ************* For employee ****************
+
+    /**
+     * Employee login
+     *
+     * @param username
+     * @param password
+     * @param session
+     * @return first page.
+     */
+    String login(String username, String password, HttpSession session);
 
 }

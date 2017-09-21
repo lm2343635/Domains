@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface RoleManager {
 
+    public final static int RolePrevilgeNone = 0;
+    public final static int RolePrevilgeAssign = 1;
+    public final static int RolePrevilgeHold = 2;
+
     /**
      * Add a new role
      *

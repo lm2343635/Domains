@@ -5,6 +5,7 @@ import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Role;
 import com.xwkj.customer.service.EmployeeManager;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -18,6 +19,8 @@ import java.util.List;
 @Service
 @RemoteProxy(name = "EmployeeManager")
 public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeManager {
+
+    // ************* For admin ****************
 
     @RemoteMethod
     @Transactional
@@ -127,6 +130,39 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         employee.setPassword(password);
         employeeDao.update(employee);
         return true;
+    }
+
+    // ************* For employee ****************
+
+    @RemoteMethod
+    public String login(String username, String password, HttpSession session) {
+        Employee employee = employeeDao.getByName(username);
+        if (employee == null) {
+            Debug.error("Cannot find a employee by this name.");
+            return null;
+        }
+        if (!employee.getPassword().equals(password)) {
+            Debug.error("Password error.");
+            return null;
+        }
+        session.setAttribute(EmployeeFlag, employee.getEid());
+        Role role = employee.getRole();
+        if (role.getUndevelopedR() > RoleManager.RolePrevilgeNone) {
+            return "undeveloped";
+        }
+        if (role.getDevelopedR() > RoleManager.RolePrevilgeNone) {
+            return "developing";
+        }
+        if (role.getDevelopedR() > RoleManager.RolePrevilgeNone) {
+            return "developed";
+        }
+        if (role.getLostR() > RoleManager.RolePrevilgeNone) {
+            return "lost";
+        }
+        if (role.getServer() > RoleManager.RolePrevilgeNone) {
+            return "domains";
+        }
+        return "";
     }
 
 }
