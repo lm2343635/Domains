@@ -2,6 +2,7 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.CustomerBean;
+import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.service.CustomerManager;
@@ -156,7 +157,42 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             customer.setDocument(document);
         }
         customerDao.update(customer);
-        return Result.WithData(null);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result develop(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.NoPrivilege();
+        }
+        if (employee.getRole().getDevelop() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
+        }
+        if (customer.getState() != CustomerStateUndeveloped) {
+            return Result.WithData(false);
+        }
+        Assign assign = new Assign();
+        assign.setCreateAt(System.currentTimeMillis());
+        assign.setR(employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeHold);
+        assign.setW(employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeHold);
+        assign.setD(employee.getRole().getDevelopingD() == RoleManager.RolePrevilgeHold);
+        assign.setAssign(true);
+        assign.setCustomer(customer);
+        assign.setEmployee(employee);
+        if (assignDao.save(assign) == null) {
+            return Result.WithData(false);
+        }
+        customer.setState(CustomerStateDeveloping);
+        customer.setUpdateAt(System.currentTimeMillis());
+        customerDao.update(customer);
+        return Result.WithData(true);
     }
 
 }

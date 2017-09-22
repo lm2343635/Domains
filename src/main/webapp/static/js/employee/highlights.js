@@ -5,7 +5,7 @@ $(document).ready(function () {
     checkAdminSession(function () {
         ServerManager.getAll(function (servers) {
             if (servers == null) {
-                location.href = "../../admin/session.html";
+                location.href = "../../../admin/session.html";
                 return;
             }
             for (var i in servers) {
@@ -23,7 +23,7 @@ function loadHighlightDomains() {
     DomainManager.getHightlightDomains(function (domains) {
 
         if (domains == null) {
-            location.href = "../../admin/session.html";
+            location.href = "../../../admin/session.html";
             return;
         }
         $("#domain-list tbody").mengularClear();
@@ -57,7 +57,7 @@ function loadHighlightDomains() {
                 $.messager.confirm("移除待处理域名", "确认从待处理域名列表中移除该域名吗？", function () {
                     DomainManager.setHighlight(did, false, function(success) {
                         if (!success) {
-                            location.href = "../../admin/session.html";
+                            location.href = "../../../admin/session.html";
                             return;
                         }
                         $("#" + did).remove();

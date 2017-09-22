@@ -29,7 +29,7 @@ $(document).ready(function () {
         if (editingSid == null) {
             ServerManager.add(name, address, remark, function (sid) {
                 if (sid == null) {
-                    location.href = "../../admin/session.html";
+                    location.href = "../../../admin/session.html";
                     return;
                 }
                 $("#add-server-modal").modal("hide");
@@ -39,7 +39,7 @@ $(document).ready(function () {
         } else {
             ServerManager.modify(editingSid, name, address, remark, function (success) {
                 if (!success) {
-                    location.href = "../../admin/session.html";
+                    location.href = "../../../admin/session.html";
                     return;
                 }
                 $("#add-server-modal").modal("hide");
@@ -60,7 +60,7 @@ $(document).ready(function () {
 function loadServers() {
     ServerManager.getAll(function (servers) {
         if (servers == null) {
-            location.href = "../../admin/session.html";
+            location.href = "../../../admin/session.html";
             return;
         }
         $("#server-list tbody").mengularClear();
@@ -80,7 +80,7 @@ function loadServers() {
                 editingSid = $(this).mengularId();
                 ServerManager.get(editingSid, function (server) {
                     if (server == null) {
-                        location.href = "../../admin/session.html";
+                        location.href = "../../../admin/session.html";
                         return;
                     }
                     fillValue({
@@ -103,7 +103,7 @@ function loadServers() {
                 $.messager.confirm("删除服务器", "确认删除服务器" + name + "吗？", function () {
                     ServerManager.remove(sid, function (success) {
                         if (!success) {
-                            location.href = "../../admin/session.html";
+                            location.href = "../../../admin/session.html";
                             return;
                         }
                         $("#" + sid).remove();

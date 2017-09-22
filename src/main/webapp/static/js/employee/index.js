@@ -24,7 +24,7 @@ $(document).ready(function () {
                     return;
                 }
 
-                location.href = firstPage + ".html";
+                location.href = "customers.html";
             });
         }
     });

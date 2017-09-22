@@ -58,4 +58,13 @@ public interface CustomerManager {
      */
     Result edit(String cid, String name, int capital, String contact, String items, int money, String remark, String document, HttpSession session);
 
+    /**
+     * Develop a customer.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result develop(String cid, HttpSession session);
+
 }

@@ -39,7 +39,7 @@ $(document).ready(function () {
                 $("#customer-panel .customer-developed").remove();
             }
 
-            if (state != CustomerStateUndeveloped || customer.role.develop == RolePrevilgeNone) {
+            if (state != CustomerStateUndeveloped || employee.role.develop == RolePrevilgeNone) {
                 $("#customer-develop").remove();
             }
 
@@ -48,7 +48,22 @@ $(document).ready(function () {
     
     $("#customer-develop").click(function () {
         $.messager.confirm("申请开发客户", "申请开发客户后该账户将自动成为该客户的负责人。", function () {
-
+            CustomerManager.develop(cid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("改账户无权申请开发客户！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("该客户已被开发！");
+                    return;
+                }
+                $.messager.popup("申请开发成功！");
+                $("#customer-develop").remove();
+            })
         });
     });
     

@@ -7,6 +7,7 @@ public class Result {
 
     private boolean session;
     private boolean privilege;
+    private boolean success;
     private Object data = null;
 
     public boolean isSession() {
