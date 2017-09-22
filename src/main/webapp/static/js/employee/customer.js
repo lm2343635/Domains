@@ -17,6 +17,7 @@ $(document).ready(function () {
             }
 
             var customer = result.data;
+            // console.log(customer);
             state = customer.state;
             fillValue({
                 "customer-name": customer.name,
@@ -27,7 +28,7 @@ $(document).ready(function () {
             if (state == CustomerStateDeveloped) {
                 fillValue({
                     "customer-money": customer.money,
-                    "customer-itmes": customer.itmes,
+                    "customer-items": customer.items,
                     "customer-remark": customer.remark
                 })
                 $("#customer-document").summernote({
@@ -42,6 +43,19 @@ $(document).ready(function () {
             if (state != CustomerStateUndeveloped || employee.role.develop == RolePrevilgeNone) {
                 $("#customer-develop").remove();
             }
+
+            if (state != CustomerStateDeveloping || employee.role.finish == RolePrevilgeNone) {
+                $("#customer-finish").remove();
+            } else {
+                EmployeeManager.getDevelopingAssignableEmployees(function (employees) {
+                    for (var i in employees) {
+                        var employee = employees[i];
+                        $("<option>").val(employee.eid).text(employee.name + "（" + employee.role.name + "）").appendTo("#customer-finish-manager");
+                    }
+                });
+            }
+
+            $("#customer-managers").mengular(".customer-managers-template", customer.managers);
 
         });
     });
@@ -58,11 +72,13 @@ $(document).ready(function () {
                     return;
                 }
                 if (!result.data) {
-                    $.messager.popup("该客户已被开发！");
+                    $.messager.popup("该客户已被开发，请勿重复操作！");
                     return;
                 }
                 $.messager.popup("申请开发成功！");
-                $("#customer-develop").remove();
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
             })
         });
     });
@@ -122,6 +138,34 @@ $(document).ready(function () {
             }
             $("#customer-edit").text("保存客户信息").removeAttr("disabled");
             $.messager.popup("修改成功！");
+        });
+    });
+    
+    $("#customer-finish-submit").click(function () {
+        var eid = $("#customer-finish-manager").val();
+        if (eid == null || eid == "") {
+            $("#customer-finish-manager").parent().addClass("has-error");
+            return;
+        } else {
+            $("#customer-finish-manager").parent().removeClass("has-error");
+        }
+        CustomerManager.finish(cid, eid, function (result) {
+            if (!result.session) {
+                sessionError();
+                return;
+            }
+            if (!result.privilege) {
+                $.messager.popup("改账户无权限更改该客户的详细信息！");
+                return;
+            }
+            if (!result.data) {
+                $.messager.popup("该客户已完成开发，请勿重复操作！");
+                return;
+            }
+            $.messager.popup("完成开发成功！");
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
         });
     });
 

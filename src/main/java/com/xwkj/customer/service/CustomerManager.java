@@ -60,11 +60,23 @@ public interface CustomerManager {
 
     /**
      * Develop a customer.
+     * The state of this customer will transfer from undeveloped to developing.
      *
      * @param cid
      * @param session
      * @return
      */
     Result develop(String cid, HttpSession session);
+
+    /**
+     * Assign a new manager and finish developing a customer.
+     * The state of this customer will transfer from developing to developed.
+     *
+     * @param cid
+     * @param eid
+     * @param session
+     * @return
+     */
+    Result finish(String cid, String eid, HttpSession session);
 
 }

@@ -174,4 +174,20 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         return new EmployeeBean(employee);
     }
 
+    @RemoteMethod
+    public List<EmployeeBean> getDevelopingAssignableEmployees(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return null;
+        }
+        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
+        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeHold)) {
+            employeeBeans.add(new EmployeeBean(manager));
+        }
+        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeAssign)) {
+            employeeBeans.add(new EmployeeBean(manager));
+        }
+        return employeeBeans;
+    }
+
 }

@@ -89,4 +89,12 @@ public class Employee implements Serializable {
         this.role = role;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj.getClass() != Employee.class) {
+            return false;
+        }
+        Employee employee = (Employee) obj;
+        return this.eid == employee.getEid();
+    }
 }

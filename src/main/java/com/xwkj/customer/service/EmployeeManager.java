@@ -89,4 +89,12 @@ public interface EmployeeManager {
      */
     EmployeeBean checkSession(HttpSession session);
 
+    /**
+     * Get employees who can be a manager of a developing customer.
+     *
+     * @param session
+     * @return
+     */
+    List<EmployeeBean> getDevelopingAssignableEmployees(HttpSession session);
+
 }

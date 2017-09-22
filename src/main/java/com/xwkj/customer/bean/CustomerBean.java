@@ -4,6 +4,7 @@ import com.xwkj.customer.domain.Customer;
 import org.directwebremoting.annotations.DataTransferObject;
 
 import java.util.Date;
+import java.util.List;
 
 @DataTransferObject
 public class CustomerBean {
@@ -19,6 +20,7 @@ public class CustomerBean {
     private int money;
     private String remark;
     private String document;
+    private List<EmployeeBean> managers;
 
     public String getCid() {
         return cid;
@@ -108,6 +110,14 @@ public class CustomerBean {
         this.remark = remark;
     }
 
+    public List<EmployeeBean> getManagers() {
+        return managers;
+    }
+
+    public void setManagers(List<EmployeeBean> managers) {
+        this.managers = managers;
+    }
+
     public CustomerBean(Customer customer, boolean full) {
         this.cid = customer.getCid();
         this.createAt = new Date(customer.getCreateAt());
@@ -115,8 +125,8 @@ public class CustomerBean {
         this.state = customer.getState();
         this.name = customer.getName();
         this.contact = customer.getContact();
+        this.capital = customer.getCapital();
         if (full) {
-            this.capital = customer.getCapital();
             this.items = customer.getItems();
             this.money = customer.getMoney() == null ? 0 : customer.getMoney();
             this.document = customer.getDocument();

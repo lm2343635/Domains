@@ -2,9 +2,11 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.CustomerBean;
+import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
+import com.xwkj.customer.domain.Role;
 import com.xwkj.customer.service.CustomerManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -65,12 +67,31 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 }
                 break;
             case CustomerStateDeveloping:
+                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeHold) {
+                    customers = customerDao.findByState(state);
+                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign) {
 
+                } else {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateDeveloped:
+                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeHold) {
+                    customers = customerDao.findByState(state);
+                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
 
+                } else {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateLost:
+                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeHold) {
+                    customers = customerDao.findByState(state);
+                } else if (employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign) {
+
+                } else {
+                    return Result.NoPrivilege();
+                }
                 break;
             default:
                 break;
@@ -112,7 +133,13 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             default:
                 break;
         }
-        return Result.WithData(new CustomerBean(customer, true));
+        CustomerBean customerBean = new CustomerBean(customer, true);
+        List<EmployeeBean> managers = new ArrayList<EmployeeBean>();
+        for (Assign assign : assignDao.findByCustomer(customer)) {
+            managers.add(new EmployeeBean(assign.getEmployee()));
+        }
+        customerBean.setManagers(managers);
+        return Result.WithData(customerBean);
     }
 
     @RemoteMethod
@@ -167,13 +194,13 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
+        if (employee.getRole().getDevelop() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
+        }
         Customer customer = customerDao.get(cid);
         if (customer == null) {
             Debug.error("Cannot find a customer by this cid.");
-            return Result.NoPrivilege();
-        }
-        if (employee.getRole().getDevelop() != RoleManager.RolePrevilgeHold) {
-            return Result.NoPrivilege();
+            return Result.WithData(false);
         }
         if (customer.getState() != CustomerStateUndeveloped) {
             return Result.WithData(false);
@@ -191,6 +218,45 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         customer.setState(CustomerStateDeveloping);
         customer.setUpdateAt(System.currentTimeMillis());
+        customerDao.update(customer);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result finish(String cid, String eid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getFinish() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        Employee manager = employeeDao.get(eid);
+        if (manager == null) {
+            Debug.error("Cannot find an employee by this eid");
+            return Result.WithData(false);
+        }
+        if (customer.getState() != CustomerStateDeveloping) {
+            return Result.WithData(false);
+        }
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (!employee.equals(manager)) {
+            assign.setEmployee(manager);
+            assign.setCreateAt(System.currentTimeMillis());
+        }
+        assign.setR(manager.getRole().getDevelopedR() >= RoleManager.RolePrevilgeAssign);
+        assign.setW(manager.getRole().getDevelopedW() >= RoleManager.RolePrevilgeAssign);
+        assign.setD(manager.getRole().getDevelopedD() >= RoleManager.RolePrevilgeAssign);
+        assign.setAssign(manager.getRole().getAssign() >= RoleManager.RolePrevilgeAssign);
+        assignDao.update(assign);
+        customer.setUpdateAt(System.currentTimeMillis());
+        customer.setState(CustomerStateDeveloped);
         customerDao.update(customer);
         return Result.WithData(true);
     }

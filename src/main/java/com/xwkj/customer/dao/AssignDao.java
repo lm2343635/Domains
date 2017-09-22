@@ -5,6 +5,8 @@ import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
 
+import java.util.List;
+
 public interface AssignDao extends BaseDao<Assign> {
 
     /**
@@ -15,5 +17,13 @@ public interface AssignDao extends BaseDao<Assign> {
      * @return
      */
     Assign getByCustomerForEmployee(Customer customer, Employee employee);
+
+    /**
+     * Find assigns by customer.
+     *
+     * @param customer
+     * @return
+     */
+    List<Assign> findByCustomer(Customer customer);
 
 }

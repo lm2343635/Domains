@@ -23,4 +23,9 @@ public class EmployeeDaoHibernate extends BaseHibernateDaoSupport<Employee> impl
         }
         return employees.get(0);
     }
+
+    public List<Employee> findByRolePrivilege(String privilegeName, int privilegeValue) {
+        String hql = "from Employee where role." + privilegeName+ " = ?";
+        return (List<Employee>) getHibernateTemplate().find(hql, privilegeValue);
+    }
 }

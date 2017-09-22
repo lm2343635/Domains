@@ -1,4 +1,13 @@
+var state = request("state");
+if (state != CustomerStateDeveloping
+    && state != CustomerStateDeveloped
+    && state != CustomerStateLost) {
+    state = CustomerStateUndeveloped;
+}
+
 $(document).ready(function () {
+
+    $("#customer-panel .panel-heading .nav li").eq(state).addClass("active");
 
     checkEmployeeSession(function (employee) {
         if (employee.role.undevelopedR == RolePrevilgeNone) {
@@ -51,13 +60,13 @@ $(document).ready(function () {
 });
 
 function loadUndeveloped() {
-    CustomerManager.getByState(CustomerStateUndeveloped, function (result) {
+    CustomerManager.getByState(state, function (result) {
         if (!result.session) {
             sessionError();
             return;
         }
         if (!result.privilege) {
-            $.messager.popup("当前账户无权限查看未开发客户！");
+            $.messager.popup("当前账户无权限查看" + CustomerStateNames[state] + "的客户！");
             return;
         }
 

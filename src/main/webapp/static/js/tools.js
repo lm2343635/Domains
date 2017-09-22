@@ -31,6 +31,8 @@ var CustomerStateDeveloping = 1;
 var CustomerStateDeveloped = 2;
 var CustomerStateLost = 3;
 
+var CustomerStateNames = ["未开发", "开发中", "已开发", "已流失"];
+
 var BROSWER_PC = "pc";
 var BROSWER_WAP = "wap";
 
