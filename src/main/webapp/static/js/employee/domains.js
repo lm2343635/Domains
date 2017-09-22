@@ -3,9 +3,9 @@ var editingDid = null;
 
 $(document).ready(function () {
 
-    checkAdminSession(function () {
-        ServerManager.get(sid, function (server) {
-            if (server == null) {
+    checkEmployeeSession(function (employee) {
+        ServerManager.get(sid, function (result) {
+            if (!result.privilege) {
                 sessionError();
                 return;
             }
@@ -17,7 +17,7 @@ $(document).ready(function () {
 
             loadDomains();
         });
-        
+
         ServerManager.getAll(function (servers) {
             if (servers == null) {
                 sessionError();

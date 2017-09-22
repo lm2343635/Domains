@@ -35,7 +35,7 @@
             background: #888;
         }
 
-        #undeveloped-list .undeveloped-list-template i {
+        #customer-list .customer-list-template i {
             cursor: pointer;
         }
 
@@ -62,7 +62,7 @@
             <i id="add-undeveloped" class="fa fa-plus fa-lg" data-toggle="modal" data-target="#add-undeveloped-modal"></i>
         </div>
 
-        <table id="undeveloped-list" class="table">
+        <table id="customer-list" class="table">
             <thead>
             <tr>
                 <th>创建时间</th>
@@ -74,11 +74,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr id="${cid}$" class="mengular-template undeveloped-list-template">
+            <tr id="${cid}$" class="mengular-template customer-list-template">
                 <td>${createAt}$</td>
                 <td>${updateAt}$</td>
-                <td class="undeveloped-list-name">${name}$</td>
-                <td>${capital}$元</td>
+                <td class="customer-list-name">${name}$</td>
+                <td>${capital}$万元</td>
                 <td>${contact}$</td>
                 <td><a href="customer.html?cid=${cid}$"><i class="fa fa-lg fa-tag text-primary"></a></td>
             </tr>
@@ -101,7 +101,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">注册资金</span>
                     <input id="add-undeveloped-capital" type="number" class="form-control" placeholder="">
-                    <span class="input-group-addon">元</span>
+                    <span class="input-group-addon">万元</span>
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">联系方式</span>

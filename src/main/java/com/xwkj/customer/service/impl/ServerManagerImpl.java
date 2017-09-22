@@ -1,8 +1,11 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.ServerBean;
+import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Server;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.ServerManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
@@ -35,15 +38,19 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
     }
 
     @RemoteMethod
-    public List<ServerBean> getAll(HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result getAll(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         List<ServerBean> serverBeans = new ArrayList<ServerBean>();
         for (Server server : serverDao.findAll("updateAt", true)) {
             serverBeans.add(new ServerBean(server));
         }
-        return serverBeans;
+        return Result.WithData(serverBeans);
     }
 
     @RemoteMethod

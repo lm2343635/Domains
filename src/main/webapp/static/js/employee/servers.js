@@ -1,8 +1,8 @@
 var editingSid = null;
 
 $(document).ready(function () {
-   
-    checkAdminSession(function () {
+
+    checkEmployeeSession(function () {
         loadServers();
     });
     
@@ -58,14 +58,19 @@ $(document).ready(function () {
 });
 
 function loadServers() {
-    ServerManager.getAll(function (servers) {
-        if (servers == null) {
-            location.href = "../../../admin/session.html";
+    ServerManager.getAll(function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $.messager.popup("当前账户无权限查看服务器！");
             return;
         }
         $("#server-list tbody").mengularClear();
-        for (var i in servers) {
-            var server = servers[i];
+        for (var i in result.data) {
+            var server = result.data[i];
+            
             $("#server-list tbody").mengular(".server-list-template", {
                 sid: server.sid,
                 createAt: server.createAt.format(DATE_HOUR_MINUTE_FORMAT),
@@ -80,7 +85,7 @@ function loadServers() {
                 editingSid = $(this).mengularId();
                 ServerManager.get(editingSid, function (server) {
                     if (server == null) {
-                        location.href = "../../../admin/session.html";
+                        sessionError();
                         return;
                     }
                     fillValue({
@@ -103,7 +108,7 @@ function loadServers() {
                 $.messager.confirm("删除服务器", "确认删除服务器" + name + "吗？", function () {
                     ServerManager.remove(sid, function (success) {
                         if (!success) {
-                            location.href = "../../../admin/session.html";
+                            sessionError();
                             return;
                         }
                         $("#" + sid).remove();

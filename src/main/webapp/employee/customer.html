@@ -58,8 +58,12 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">注册资金</label>
                         <div class="col-sm-10">
-                            <input id="customer-capital" type="number" class="form-control">
+                            <div class="input-group">
+                                <input id="customer-capital" type="number" class="form-control">
+                                <span class="input-group-addon">万元</span>
+                            </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -93,6 +97,7 @@
                             <div id="customer-managers">
                                 <button id="${eid}$" class="btn btn-default mengular-template customer-managers-template">${name}$（${role.name}$）</button>
                             </div>
+                            <button id="customer-managers-add" class="btn btn-default">添加负责人</button>
                         </div>
                     </div>
                 </div>

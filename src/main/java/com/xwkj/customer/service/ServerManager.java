@@ -1,5 +1,6 @@
 package com.xwkj.customer.service;
 
+import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.ServerBean;
 
 import javax.servlet.http.HttpSession;
@@ -24,7 +25,7 @@ public interface ServerManager {
      * @param session
      * @return
      */
-    List<ServerBean> getAll(HttpSession session);
+    Result getAll(HttpSession session);
 
     /**
      * Get a server by sid.

@@ -6,6 +6,9 @@ if (state != CustomerStateDeveloping
 }
 
 $(document).ready(function () {
+    if (state != CustomerStateUndeveloped) {
+        $("#add-undeveloped").remove();
+    }
 
     $("#customer-panel .panel-heading .nav li").eq(state).addClass("active");
 
@@ -15,6 +18,8 @@ $(document).ready(function () {
             return;
         }
         loadUndeveloped();
+
+
     });
     
     $("#add-undeveloped-submit").click(function () {
@@ -70,11 +75,11 @@ function loadUndeveloped() {
             return;
         }
 
-        $("#undeveloped-list tbody").mengularClear();
+        $("#customer-list tbody").mengularClear();
 
         for (var i in result.data) {
             var customer = result.data[i];
-            $("#undeveloped-list tbody").mengular(".undeveloped-list-template", {
+            $("#customer-list tbody").mengular(".customer-list-template", {
                 cid: customer.cid,
                 createAt: customer.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: customer.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
