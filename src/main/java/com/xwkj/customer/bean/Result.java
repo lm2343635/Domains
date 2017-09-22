@@ -6,7 +6,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 public class Result {
 
     private boolean session;
-    private boolean success;
+    private boolean privilege;
     private Object data = null;
 
     public boolean isSession() {
@@ -17,12 +17,12 @@ public class Result {
         this.session = session;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public boolean isPrivilege() {
+        return privilege;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setPrivilege(boolean privilege) {
+        this.privilege = privilege;
     }
 
     public Object getData() {
@@ -33,19 +33,27 @@ public class Result {
         this.data = data;
     }
 
-    public Result(boolean session, boolean success) {
+    public Result(boolean session, boolean privilege) {
         this.session = session;
-        this.success = success;
+        this.privilege = privilege;
     }
 
-    public Result(boolean session, boolean success, Object data) {
+    public Result(boolean session, boolean privilege, Object data) {
         this.session = session;
-        this.success = success;
+        this.privilege = privilege;
         this.data = data;
     }
 
     public static Result NoSession() {
         return new Result(false, false);
+    }
+
+    public static Result NoPrivilege() {
+        return new Result(true, false);
+    }
+
+    public static Result WithData(Object data) {
+        return new Result(true, true, data);
     }
 
 }

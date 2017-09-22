@@ -39,10 +39,10 @@ public class Customer implements Serializable {
     private Integer money;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String document;
+    private String remark;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String remark;
+    private String document;
 
     public String getCid() {
         return cid;

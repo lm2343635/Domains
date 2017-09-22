@@ -1,5 +1,7 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.CustomerBean;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.service.CustomerManager;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RemoteProxy(name = "CustomerManager")
@@ -28,7 +32,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return new Result(true, false);
         }
         Customer customer = new Customer();
-        customer.setState(CustomerSataeUndeveloped);
+        customer.setState(CustomerStateUndeveloped);
         customer.setCreateAt(System.currentTimeMillis());
         customer.setUpdateAt(customer.getCreateAt());
         customer.setName(name);
@@ -36,9 +40,123 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         customer.setContact(contact);
         String cid = customerDao.save(customer);
         if (cid == null) {
-            return new Result(true, false);
+            Debug.error("Internal error: save customer failed.");
+            return Result.NoPrivilege();
         }
-        return new Result(true, true, cid);
+        return Result.WithData(cid);
+    }
+
+    @RemoteMethod
+    public Result getByState(int state, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        List<Customer> customers = null;
+        switch (state) {
+            case CustomerStateUndeveloped:
+                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeHold) {
+                    customers = customerDao.findByState(state);
+                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
+
+                } else {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case CustomerStateDeveloping:
+
+                break;
+            case CustomerStateDeveloped:
+
+                break;
+            case CustomerStateLost:
+                break;
+            default:
+                break;
+        }
+        List<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
+        for (Customer customer : customers) {
+            customerBeans.add(new CustomerBean(customer, false));
+        }
+        return Result.WithData(customerBeans);
+    }
+
+    @RemoteMethod
+    public Result get(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.NoPrivilege();
+        }
+        switch (customer.getState()) {
+            case CustomerStateUndeveloped:
+                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
+
+                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case CustomerStateDeveloping:
+
+                break;
+            case CustomerStateDeveloped:
+
+                break;
+            case CustomerStateLost:
+                break;
+            default:
+                break;
+        }
+        return Result.WithData(new CustomerBean(customer, true));
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result edit(String cid, String name, int capital, String contact, String items, int money, String remark, String document, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.NoPrivilege();
+        }
+        switch (customer.getState()) {
+            case CustomerStateUndeveloped:
+                if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeAssign) {
+
+                } else if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case CustomerStateDeveloping:
+
+                break;
+            case CustomerStateDeveloped:
+
+                break;
+            case CustomerStateLost:
+                break;
+            default:
+                break;
+        }
+        customer.setUpdateAt(System.currentTimeMillis());
+        customer.setName(name);
+        customer.setCapital(capital);
+        customer.setContact(contact);
+        if (customer.getState() == CustomerStateDeveloped) {
+            customer.setItems(items);
+            customer.setMoney(money);
+            customer.setRemark(remark);
+            customer.setDocument(document);
+        }
+        customerDao.update(customer);
+        return Result.WithData(null);
     }
 
 }

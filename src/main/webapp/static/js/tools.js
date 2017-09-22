@@ -26,6 +26,11 @@ var RolePrevilgeNone = 0;
 var RolePrevilgeAssign = 1;
 var RolePrevilgeHold = 2;
 
+var CustomerStateUndeveloped = 0;
+var CustomerStateDeveloping = 1;
+var CustomerStateDeveloped = 2;
+var CustomerStateLost = 3;
+
 var BROSWER_PC = "pc";
 var BROSWER_WAP = "wap";
 

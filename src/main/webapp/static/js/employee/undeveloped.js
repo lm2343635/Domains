@@ -39,7 +39,7 @@ $(document).ready(function () {
                 sessionError();
                 return;
             }
-            if (!result.success) {
+            if (!result.privilege) {
                 $.messager.popup("当前账户无权限创建未开发客户！");
             } else {
                 loadUndeveloped();
@@ -51,5 +51,28 @@ $(document).ready(function () {
 });
 
 function loadUndeveloped() {
+    CustomerManager.getByState(CustomerStateUndeveloped, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $.messager.popup("当前账户无权限查看未开发客户！");
+            return;
+        }
 
+        $("#undeveloped-list tbody").mengularClear();
+
+        for (var i in result.data) {
+            var customer = result.data[i];
+            $("#undeveloped-list tbody").mengular(".undeveloped-list-template", {
+                cid: customer.cid,
+                createAt: customer.createAt.format(DATE_HOUR_MINUTE_FORMAT),
+                updateAt: customer.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
+                name: customer.name,
+                contact: customer.contact,
+                capital: customer.capital
+            });
+        }
+    });
 }
