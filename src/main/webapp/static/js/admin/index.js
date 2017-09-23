@@ -16,7 +16,7 @@ $(document).ready(function () {
             $("#admin-password-input").parent().removeClass("has-error");
         }
         if (validate) {
-            AdminManager.login(name, password, function (success) {
+            AdminManager.login(name, md5(password), function (success) {
                 if (success) {
                     location.href = "employees.html";
                 } else {
@@ -33,4 +33,5 @@ $(document).ready(function () {
             $("#admin-submit-button").click();
         }
     });
+
 });
