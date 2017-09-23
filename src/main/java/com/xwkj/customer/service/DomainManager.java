@@ -1,6 +1,7 @@
 package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.DomainBean;
+import com.xwkj.customer.bean.Result;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -32,7 +33,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    List<DomainBean> getBySid(String sid, HttpSession session);
+    Result getBySid(String sid, HttpSession session);
 
     /**
      * Get all highlight customer.

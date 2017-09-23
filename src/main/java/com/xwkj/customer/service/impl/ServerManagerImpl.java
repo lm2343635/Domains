@@ -54,16 +54,20 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
     }
 
     @RemoteMethod
-    public ServerBean get(String sid, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result get(String sid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
         if (server == null) {
             Debug.error("Cannot find a server by this sid.");
-            return null;
+            return Result.WithData(null);
         }
-        return new ServerBean(server);
+        return Result.WithData(new ServerBean(server));
     }
 
     @RemoteMethod

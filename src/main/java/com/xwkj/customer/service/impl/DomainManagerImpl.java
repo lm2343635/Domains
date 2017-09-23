@@ -2,9 +2,12 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.DomainBean;
+import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Domain;
+import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Server;
 import com.xwkj.customer.service.DomainManager;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -53,20 +56,24 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
-    public List<DomainBean> getBySid(String sid, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result getBySid(String sid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
         if (server == null) {
             Debug.error("Cannot find a server by this sid.");
-            return null;
+            return Result.WithData(null);
         }
         List<DomainBean> domainBeans = new ArrayList<DomainBean>();
         for (Domain domain : domainDao.findByServer(server)) {
             domainBeans.add(new DomainBean(domain));
         }
-        return domainBeans;
+        return Result.WithData(domainBeans);
     }
 
     @RemoteMethod

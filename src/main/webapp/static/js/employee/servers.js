@@ -70,7 +70,7 @@ function loadServers() {
         $("#server-list tbody").mengularClear();
         for (var i in result.data) {
             var server = result.data[i];
-            
+
             $("#server-list tbody").mengular(".server-list-template", {
                 sid: server.sid,
                 createAt: server.createAt.format(DATE_HOUR_MINUTE_FORMAT),

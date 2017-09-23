@@ -34,7 +34,7 @@ public interface ServerManager {
      * @param session
      * @return
      */
-    ServerBean get(String sid, HttpSession session);
+    Result get(String sid, HttpSession session);
 
     /**
      * Modify a domain.

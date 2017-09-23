@@ -5,10 +5,14 @@ $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
         ServerManager.get(sid, function (result) {
-            if (!result.privilege) {
+            if (!result.session) {
                 sessionError();
                 return;
             }
+            if (!result.privilege) {
+                return;
+            }
+            var server = result.data;
             $("#domain-panel .panel-title").fillText({
                 name: server.name,
                 address: server.address,
@@ -18,13 +22,16 @@ $(document).ready(function () {
             loadDomains();
         });
 
-        ServerManager.getAll(function (servers) {
-            if (servers == null) {
+        ServerManager.getAll(function (result) {
+            if (!result.session) {
                 sessionError();
                 return;
             }
-            for (var i in servers) {
-                var server = servers[i];
+            if (!result.privilege) {
+                return;
+            }
+            for (var i in result.data) {
+                var server = result.data[i];
                 if (server.sid != sid) {
                     $("<option>").val(server.sid).text(server.name).appendTo("#transfer-domain-server");
                 }
@@ -115,14 +122,18 @@ $(document).ready(function () {
 });
 
 function loadDomains() {
-    DomainManager.getBySid(sid, function (domains) {
-        if (domains == null) {
+    DomainManager.getBySid(sid, function (result) {
+        if (!result.session) {
             sessionError();
             return;
         }
+        if (!result.privilege) {
+            $.messager.popup("当前用户无权限查看域名！");
+            return;
+        }
         $("#domain-list tbody").mengularClear();
-        for (var i in domains) {
-            var domain = domains[i];
+        for (var i in result.data) {
+            var domain = result.data[i];
             var sites = domain.domains.split(",");
             var links = ""
             for (var j in sites) {
