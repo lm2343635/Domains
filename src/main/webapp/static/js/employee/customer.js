@@ -27,10 +27,20 @@ $(document).ready(function () {
 
             if (state == CustomerStateDeveloped) {
                 fillValue({
-                    "customer-money": customer.money,
+                    "customer-money": customer.money == 0 ? "" : customer.money,
                     "customer-items": customer.items,
                     "customer-remark": customer.remark
                 })
+
+                $("#customer-expireAt").datetimepicker({
+                    format: "yyyy-mm-dd",
+                    autoclose: true,
+                    todayBtn: true,
+                    startView: 2,
+                    minView: 2,
+                    language: "zh-CN"
+                }).val(customer.expireAt == null ? "" : customer.expireAt.format(YEAR_MONTH_DATE_FORMAT));
+
                 $("#customer-document").summernote({
                     toolbar: SUMMERNOTE_TOOLBAR_FULL,
                     lang: "zh-CN",
@@ -108,14 +118,16 @@ $(document).ready(function () {
         }
         var items = null;
         var money = 0;
+        var expireAt = null;
         var remark = null;
         var document = null;
         if (state == CustomerStateDeveloped) {
             items = $("#customer-items").val();
             money = $("#customer-money").val();
             remark = $("#customer-remark").val();
+            expireAt = $("#customer-expireAt").val();
             document = $("#customer-document").summernote("code");
-            if (!isInteger(money)) {
+            if (money != "" && !isInteger(money)) {
                 $("#customer-money").parent().addClass("has-error");
                 validate = false;
             } else {
@@ -127,7 +139,7 @@ $(document).ready(function () {
         }
 
         $(this).text("提交中...").attr("disabled", "disabled");
-        CustomerManager.edit(cid, name, capital, contact, items, money, remark, document, function (result) {
+        CustomerManager.edit(cid, name, capital, contact, items, money, expireAt, remark, document, function (result) {
             if (!result.session) {
                 sessionError();
                 return;

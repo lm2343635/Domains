@@ -1,16 +1,16 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.CustomerBean;
 import com.xwkj.customer.bean.EmployeeBean;
+import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
-import com.xwkj.customer.domain.Role;
 import com.xwkj.customer.service.CustomerManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
-import com.xwkj.customer.bean.Result;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
@@ -144,7 +144,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
 
     @RemoteMethod
     @Transactional
-    public Result edit(String cid, String name, int capital, String contact, String items, int money, String remark, String document, HttpSession session) {
+    public Result edit(String cid, String name, int capital, String contact, String items, int money, String expireAt, String remark, String document, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -180,6 +180,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (customer.getState() == CustomerStateDeveloped) {
             customer.setItems(items);
             customer.setMoney(money);
+            customer.setExpireAt(expireAt == "" || expireAt == null ? null : DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
             customer.setRemark(remark);
             customer.setDocument(document);
         }

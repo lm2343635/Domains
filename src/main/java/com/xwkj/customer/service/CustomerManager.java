@@ -56,7 +56,7 @@ public interface CustomerManager {
      * @param session
      * @return
      */
-    Result edit(String cid, String name, int capital, String contact, String items, int money, String remark, String document, HttpSession session);
+    Result edit(String cid, String name, int capital, String contact, String items, int money, String expireAt, String remark, String document, HttpSession session);
 
     /**
      * Develop a customer.

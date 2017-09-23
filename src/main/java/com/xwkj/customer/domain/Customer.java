@@ -38,6 +38,9 @@ public class Customer implements Serializable {
     @Column
     private Integer money;
 
+    @Column
+    private Long expireAt;
+
     @Column(columnDefinition = "LONGTEXT")
     private String remark;
 
@@ -74,6 +77,14 @@ public class Customer implements Serializable {
 
     public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public Long getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(Long expireAt) {
+        this.expireAt = expireAt;
     }
 
     public String getName() {
