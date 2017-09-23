@@ -26,4 +26,12 @@ public interface AssignDao extends BaseDao<Assign> {
      */
     List<Assign> findByCustomer(Customer customer);
 
+    /**
+     * Find assigns by employee.
+     *
+     * @param employee
+     * @return
+     */
+    List<Assign> findByEmployee(Employee employee);
+
 }

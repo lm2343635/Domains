@@ -31,4 +31,8 @@ public class AssignDaoHibernate extends BaseHibernateDaoSupport<Assign> implemen
         return (List<Assign>) getHibernateTemplate().find(hql, customer);
     }
 
+    public List<Assign> findByEmployee(Employee employee) {
+        String hql = "from Assign where employee = ? order by createAt";
+        return (List<Assign>) getHibernateTemplate().find(hql, employee);
+    }
 }

@@ -13,13 +13,36 @@ $(document).ready(function () {
     $("#customer-panel .panel-heading .nav li").eq(state).addClass("active");
 
     checkEmployeeSession(function (employee) {
-        if (employee.role.undevelopedR == RolePrevilgeNone) {
-            $.messager.popup("当前用户无权查看未开发客户！");
+        var listable = true;
+        switch (state) {
+            case CustomerStateUndeveloped:
+                if (employee.role.undevelopedR == RolePrevilgeNone) {
+                    listable = false;
+                }
+                break;
+            case CustomerStateDeveloping:
+                if (employee.role.developingR == RolePrevilgeNone) {
+                    listable = false;
+                }
+                break;
+            case CustomerStateDeveloped:
+                if (employee.role.developedR == RolePrevilgeNone) {
+                    listable = false;
+                }
+                break;
+            case CustomerStateLost:
+                if (employee.role.lostR == RolePrevilgeNone) {
+                    listable = false;
+                }
+                break;
+            default:
+                break;
+        }
+        if (!listable) {
+            $.messager.popup("当前用户无权查看" + CustomerStateNames[state] + "客户！");
             return;
         }
-        loadUndeveloped();
-
-
+        loadCustomers();
     });
     
     $("#add-undeveloped-submit").click(function () {
@@ -56,7 +79,7 @@ $(document).ready(function () {
             if (!result.privilege) {
                 $.messager.popup("当前账户无权限创建未开发客户！");
             } else {
-                loadUndeveloped();
+                loadCustomers();
             }
             $("#add-undeveloped-modal").modal("hide");
         });
@@ -64,7 +87,7 @@ $(document).ready(function () {
 
 });
 
-function loadUndeveloped() {
+function loadCustomers() {
     CustomerManager.getByState(state, function (result) {
         if (!result.session) {
             sessionError();

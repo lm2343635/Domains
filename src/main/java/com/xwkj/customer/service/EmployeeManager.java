@@ -1,6 +1,7 @@
 package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.EmployeeBean;
+import com.xwkj.customer.bean.Result;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -95,6 +96,23 @@ public interface EmployeeManager {
      * @param session
      * @return
      */
-    List<EmployeeBean> getDevelopingAssignableEmployees(HttpSession session);
+    Result getDevelopingAssignableEmployees(HttpSession session);
+
+    /**
+     * Get employees who can be a manager of a developed customer.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result getDevelopedAssinableEmployees(String cid, HttpSession session);
+
+    /**
+     * Grt assign state of a employee for a developed customer.
+     *
+     * @param cid
+     * @return
+     */
+    Result assignForCustomer(String cid, HttpSession session);
 
 }

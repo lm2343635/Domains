@@ -25,12 +25,17 @@
     <script src="/dwr/interface/CustomerManager.js"></script>
     <script src="/static/js/employee/customer.js"></script>
     <style>
-        #customer-panel .form-group {
+        #customer-panel .form-group,
+        #add-manager-modal .input-group {
             margin: 10px 0;
         }
 
         #customer-panel .form-group label {
             line-height: 34px;
+        }
+
+        #customer-managers button {
+            margin-right: 10px;
         }
 
     </style>
@@ -43,7 +48,7 @@
     <div id="customer-panel" class="panel panel-default">
         <div class="panel-heading">
             <h1 class="panel-title">
-                <span>客户详情</span>
+                <span>@{state}客户：@{name}</span>
                 <a href="javascript:history.back(-1)" class="btn btn-default btn-xs pull-right">返回</a>
             </h1>
         </div>
@@ -107,10 +112,10 @@
                     <div class="form-group">
                         <label class="col-sm-1 control-label">负责人</label>
                         <div class="col-sm-11">
-                            <div id="customer-managers">
+                            <div id="customer-managers" class="pull-left">
                                 <button id="${eid}$" class="btn btn-default mengular-template customer-managers-template">${name}$（${role.name}$）</button>
                             </div>
-                            <button id="customer-managers-add" class="btn btn-default">添加负责人</button>
+                            <button id="customer-managers-add" class="btn btn-info customer-developed" data-toggle="modal" data-target="#add-manager-modal">添加负责人</button>
                         </div>
                     </div>
                 </div>
@@ -157,6 +162,54 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="customer-finish-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="add-manager-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">添加负责人</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">负责人</span>
+                    <select id="add-manager-eid" class="form-control"></select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">读权限</span>
+                    <select id="add-manager-r" class="form-control">
+                        <option value="true">有</option>
+                        <option value="false">无</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">写权限</span>
+                    <select id="add-manager-w" class="form-control">
+                        <option value="true">有</option>
+                        <option value="false">无</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">删权限</span>
+                    <select id="add-manager-d" class="form-control">
+                        <option value="true">有</option>
+                        <option value="false">无</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">指派权</span>
+                    <select id="add-manager-assign" class="form-control">
+                        <option value="true">有</option>
+                        <option value="false">无</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="add-manager-submit" type="button" class="btn btn-success">确认</button>
             </div>
         </div>
     </div>

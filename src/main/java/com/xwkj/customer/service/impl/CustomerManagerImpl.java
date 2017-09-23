@@ -55,7 +55,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
-        List<Customer> customers = null;
+        List<Customer> customers = new ArrayList<Customer>();
         switch (state) {
             case CustomerStateUndeveloped:
                 if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeHold) {
@@ -79,7 +79,11 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeHold) {
                     customers = customerDao.findByState(state);
                 } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
-
+                    for (Assign assign : assignDao.findByEmployee(employee)) {
+                        if (assign.getR()) {
+                            customers.add(assign.getCustomer());
+                        }
+                    }
                 } else {
                     return Result.NoPrivilege();
                 }
@@ -247,18 +251,88 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return Result.WithData(false);
         }
         Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            if (employee.getRole().getAssign() != RoleManager.RolePrevilgeHold) {
+                return Result.NoPrivilege();
+            } else {
+                // If the assign is not the old manager, create a new assign object.
+                assign = new Assign();
+                assign.setCustomer(customer);
+                // Remove old manager.
+                for (Assign oldAsign : assignDao.findByCustomer(customer)) {
+                    assignDao.delete(oldAsign);
+                }
+            }
+        }
         if (!employee.equals(manager)) {
             assign.setEmployee(manager);
             assign.setCreateAt(System.currentTimeMillis());
         }
-        assign.setR(manager.getRole().getDevelopedR() >= RoleManager.RolePrevilgeAssign);
-        assign.setW(manager.getRole().getDevelopedW() >= RoleManager.RolePrevilgeAssign);
-        assign.setD(manager.getRole().getDevelopedD() >= RoleManager.RolePrevilgeAssign);
-        assign.setAssign(manager.getRole().getAssign() >= RoleManager.RolePrevilgeAssign);
-        assignDao.update(assign);
+        // The first manager of a developed customer should hold all privilges.
+        assign.setR(true);
+        assign.setW(true);
+        assign.setD(true);
+        assign.setAssign(true);
+        if (assign.getAid() == null) {
+            if (assignDao.save(assign) == null) {
+                return Result.WithData(false);
+            }
+        } else {
+            assignDao.update(assign);
+        }
         customer.setUpdateAt(System.currentTimeMillis());
         customer.setState(CustomerStateDeveloped);
         customerDao.update(customer);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result assign(String cid, String eid, boolean r, boolean w, boolean d, boolean a, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        // Deny employees without assign privilege directly.
+        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeNone) {
+            return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeAssign) {
+            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+            if (assign == null) {
+                return Result.NoPrivilege();
+            }
+            if (!assign.getAssign()) {
+                return Result.NoPrivilege();
+            }
+        }
+        Employee manager = employeeDao.get(eid);
+        if (manager == null) {
+            Debug.error("Cannot find a employee by this eid.");
+            return Result.WithData(false);
+        }
+        // New employee do not have privilege to be a manager of developed customer.
+        if (manager.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone ||
+                manager.getRole().getDevelopedW() == RoleManager.RolePrevilgeNone ||
+                manager.getRole().getDevelopedD() == RoleManager.RolePrevilgeNone) {
+            return Result.WithData(false);
+        }
+        Assign assign = new Assign();
+        assign.setCreateAt(System.currentTimeMillis());
+        assign.setCustomer(customer);
+        assign.setEmployee(manager);
+        assign.setR(r);
+        assign.setW(w);
+        assign.setD(d);
+        assign.setAssign(a);
+        if (assignDao.save(assign) == null) {
+            Result.WithData(false);
+        }
         return Result.WithData(true);
     }
 

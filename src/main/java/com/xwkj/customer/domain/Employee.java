@@ -95,6 +95,7 @@ public class Employee implements Serializable {
             return false;
         }
         Employee employee = (Employee) obj;
-        return this.eid == employee.getEid();
+        return this.eid.equals(employee.getEid());
     }
+
 }

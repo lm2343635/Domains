@@ -1,7 +1,12 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.AssignBean;
 import com.xwkj.customer.bean.EmployeeBean;
+import com.xwkj.customer.bean.Result;
+import com.xwkj.customer.bean.RoleBean;
+import com.xwkj.customer.domain.Assign;
+import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Role;
 import com.xwkj.customer.service.EmployeeManager;
@@ -175,10 +180,10 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     }
 
     @RemoteMethod
-    public List<EmployeeBean> getDevelopingAssignableEmployees(HttpSession session) {
+    public Result getDevelopingAssignableEmployees(HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
-            return null;
+            return Result.NoSession();
         }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
         for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeHold)) {
@@ -187,7 +192,68 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeAssign)) {
             employeeBeans.add(new EmployeeBean(manager));
         }
-        return employeeBeans;
+        return Result.WithData(employeeBeans);
+    }
+
+    @RemoteMethod
+    public Result getDevelopedAssinableEmployees(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(null);
+        }
+
+        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
+        List<Assign> assigns = assignDao.findByCustomer(customer);
+        List<Employee> managers = employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeHold);
+        managers.addAll(employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeAssign));
+        for (Assign assign : assigns) {
+            if (managers.contains(assign.getEmployee())) {
+                managers.remove(assign.getEmployee());
+            }
+        }
+        for (Employee manager : managers) {
+            employeeBeans.add(new EmployeeBean(manager));
+        }
+        return Result.WithData(employeeBeans);
+    }
+
+    @RemoteMethod
+    public Result assignForCustomer(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(null);
+        }
+        Role role = employee.getRole();
+        AssignBean assignBean = new AssignBean(role.getDevelopedR() == RoleManager.RolePrevilgeHold,
+                        role.getDevelopedW() == RoleManager.RolePrevilgeHold,
+                        role.getDevelopedD() == RoleManager.RolePrevilgeHold,
+                        role.getAssign() == RoleManager.RolePrevilgeHold);
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign != null) {
+            if (assign.getR()) {
+                assignBean.setR(true);
+            }
+            if (assign.getW()) {
+                assignBean.setW(true);
+            }
+            if (assign.getD()) {
+                assign.setD(true);
+            }
+            if (assign.getAssign()) {
+                assign.setAssign(true);
+            }
+        }
+        return Result.WithData(assignBean);
     }
 
 }

@@ -17,8 +17,13 @@ $(document).ready(function () {
             }
 
             var customer = result.data;
-            // console.log(customer);
             state = customer.state;
+
+            $("#customer-panel .panel-heading").fillText({
+                state: CustomerStateNames[state],
+                name: customer.name
+            });
+
             fillValue({
                 "customer-name": customer.name,
                 "customer-capital": customer.capital,
@@ -46,6 +51,48 @@ $(document).ready(function () {
                     lang: "zh-CN",
                     height: 400
                 }).summernote("code", customer.document);
+
+                EmployeeManager.getDevelopedAssinableEmployees(cid, function (result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        return;
+                    }
+                    for (var i in result.data) {
+                        var employee = result.data[i];
+                        $("<option>").val(employee.eid).text(employee.name + "（" + employee.role.name + "）")
+                            .appendTo("#add-manager-eid");
+                    }
+                });
+
+                EmployeeManager.assignForCustomer(cid, function (result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        return;
+                    }
+                    var assign = result.data;
+                    if (!assign.r) {
+                        $("#add-manager-r option[value=true]").remove();
+                    }
+                    if (!assign.w) {
+                        $("#add-manager-w option[value=true]").remove();
+                        $("#customer-edit").remove();
+                    }
+                    if (!assign.d) {
+                        $("#add-manager-d option[value=true]").remove();
+                        $("#customer-remove").remove();
+                    }
+                    if (!assign.assign) {
+                        $("#customer-managers-add").remove();
+                        $("#add-manager-modal").remove();
+                    }
+                });
+                
             } else {
                 $("#customer-panel .customer-developed").remove();
             }
@@ -57,10 +104,18 @@ $(document).ready(function () {
             if (state != CustomerStateDeveloping || employee.role.finish == RolePrevilgeNone) {
                 $("#customer-finish").remove();
             } else {
-                EmployeeManager.getDevelopingAssignableEmployees(function (employees) {
-                    for (var i in employees) {
-                        var employee = employees[i];
-                        $("<option>").val(employee.eid).text(employee.name + "（" + employee.role.name + "）").appendTo("#customer-finish-manager");
+                EmployeeManager.getDevelopingAssignableEmployees(function (result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        return;
+                    }
+                    for (var i in result.data) {
+                        var employee = result.data[i];
+                        $("<option>").val(employee.eid).text(employee.name + "（" + employee.role.name + "）")
+                            .appendTo("#customer-finish-manager");
                     }
                 });
             }
@@ -179,6 +234,16 @@ $(document).ready(function () {
                 location.reload();
             }, 1000);
         });
+    });
+
+    $("#add-manager-submit").click(function () {
+        var eid = $("#add-manager-eid").val();
+        if (eid == null || eid == "") {
+            $("#add-manager-eid").parent().addClass("has-error");
+            return;
+        } else {
+            $("#add-manager-eid").parent().removeClass("has-error");
+        }
     });
 
 });
