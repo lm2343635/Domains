@@ -24,15 +24,19 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public String add(String sid, String name, String domains, String language,
+    public Result add(String sid, String name, String domains, String language,
                       String resolution, String path, String remark, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
         if (server == null) {
             Debug.error("Cannot find a server by this sid.");
-            return null;
+            return Result.WithData(null);
         }
         Domain domain = new Domain();
         domain.setName(name);
@@ -48,11 +52,11 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setServer(server);
         String did = domainDao.save(domain);
         if (did == null) {
-            return null;
+            return Result.WithData(null);
         }
         server.setDomains(server.getDomains() + 1);
         serverDao.update(server);
-        return did;
+        return Result.WithData(did);
     }
 
     @RemoteMethod
@@ -77,41 +81,53 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
-    public List<DomainBean> getHightlightDomains(HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result getHightlightDomains(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         List<DomainBean> domainBeans = new ArrayList<DomainBean>();
         for (Domain domain : domainDao.findHighlightDomains()) {
             domainBeans.add(new DomainBean(domain));
         }
-        return domainBeans;
+        return Result.WithData(domainBeans);
     }
 
     @RemoteMethod
-    public DomainBean get(String did, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result get(String did, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
         if (domain == null) {
             Debug.error("Cannot find a domain by this did.");
-            return null;
+            return Result.WithData(null);
         }
-        return new DomainBean(domain);
+        return Result.WithData(new DomainBean(domain));
     }
 
     @RemoteMethod
     @Transactional
-    public boolean modify(String did, String name, String domains, String language,
+    public Result modify(String did, String name, String domains, String language,
                           String resolution, String path, String remark, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
         if (domain == null) {
             Debug.error("Cannot find a domain by this did.");
-            return false;
+            return Result.WithData(false);
         }
         domain.setName(name);
         domain.setDomains(domains);
@@ -121,42 +137,50 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setRemark(remark);
         domain.setUpdateAt(System.currentTimeMillis());
         domainDao.update(domain);
-        return true;
+        return Result.WithData(true);
     }
 
     @RemoteMethod
     @Transactional
-    public boolean remove(String did, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+    public Result remove(String did, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
         if (domain == null) {
             Debug.error("Cannot find a domain by this did.");
-            return false;
+            return Result.WithData(false);
         }
         Server server = domain.getServer();
         server.setDomains(server.getDomains() - 1);
         serverDao.update(server);
         domainDao.delete(domain);
-        return true;
+        return Result.WithData(true);
     }
 
     @RemoteMethod
     @Transactional
-    public boolean transfer(String did, String sid, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+    public Result transfer(String did, String sid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
         if (domain == null) {
             Debug.error("Cannot find a domain by this did.");
-            return false;
+            return Result.WithData(false);
         }
         Server newServer = serverDao.get(sid);
         if (newServer == null) {
             Debug.error("Cannot find a server by this sid");
-            return false;
+            return Result.WithData(false);
         }
         Server oldServer = domain.getServer();
         oldServer.setDomains(oldServer.getDomains() - 1);
@@ -165,22 +189,26 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domainDao.update(domain);
         newServer.setDomains(newServer.getDomains() + 1);
         serverDao.update(newServer);
-        return true;
+        return Result.WithData(true);
     }
 
     @RemoteMethod
     @Transactional
-    public boolean setHighlight(String did, boolean highlight, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+    public Result setHighlight(String did, boolean highlight, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
         if (domain == null) {
             Debug.error("Cannot find a domain by this did.");
-            return false;
+            return Result.WithData(false);
         }
         domain.setHighlight(highlight);
-        return true;
+        return Result.WithData(true);
     }
 
 }

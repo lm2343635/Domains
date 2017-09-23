@@ -27,13 +27,17 @@ $(document).ready(function () {
             return;
         }
         if (editingSid == null) {
-            ServerManager.add(name, address, remark, function (sid) {
-                if (sid == null) {
-                    location.href = "../../../admin/session.html";
+            ServerManager.add(name, address, remark, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限创建服务器！");
                     return;
                 }
                 $("#add-server-modal").modal("hide");
-                $.messager.popup("新建成功！");
+                $.messager.popup(result.data != null ? "新建成功！" : "新建失败，请重试！");
                 loadServers();
             });
         } else {

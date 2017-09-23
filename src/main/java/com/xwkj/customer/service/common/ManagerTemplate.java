@@ -36,6 +36,10 @@ public class ManagerTemplate {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }
 
+    public boolean checkEmployeeSession(HttpSession session) {
+        return session.getAttribute(EmployeeManager.EmployeeFlag) != null;
+    }
+
     public Employee getEmployeeFromSession(HttpSession session) {
         if (session.getAttribute(EmployeeManager.EmployeeFlag) == null) {
             return null;

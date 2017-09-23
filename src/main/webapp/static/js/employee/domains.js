@@ -42,7 +42,7 @@ $(document).ready(function () {
 
     $("#add-domain-submit").click(function () {
         var name = $("#add-domain-name").val();
-        var domains = $("#add-domain-customer").val();
+        var domains = $("#add-domain-domains").val();
         var language = $("#add-domain-language").val();
         var resolution = $("#add-domain-resolution").val();
         var path = $("#add-domain-path").val();
@@ -55,10 +55,10 @@ $(document).ready(function () {
             $("#add-domain-name").parent().removeClass("has-error");
         }
         if (domains == "" || domains == null) {
-            $("#add-domain-customer").parent().addClass("has-error");
+            $("#add-domain-domains").parent().addClass("has-error");
             validate = false;
         } else {
-            $("#add-domain-customer").parent().removeClass("has-error");
+            $("#add-domain-domains").parent().removeClass("has-error");
         }
         if (path == "" || path == null) {
             $("#add-domain-path").parent().addClass("has-error");
@@ -70,23 +70,31 @@ $(document).ready(function () {
             return;
         }
         if (editingDid == null) {
-            DomainManager.add(sid, name, domains, language, resolution, path, remark, function (did) {
-                if (did == null) {
+            DomainManager.add(sid, name, domains, language, resolution, path, remark, function (result) {
+                if (!result.session) {
                     sessionError();
                     return;
                 }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限创建域名！");
+                    return;
+                }
+                $.messager.popup(result.data != null ? "新建成功！" : "创建失败，请重试！");
                 $("#add-domain-modal").modal("hide");
-                $.messager.popup("新建成功！");
                 loadDomains();
             });
         } else {
-            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, function (success) {
-                if (!success) {
+            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, function (result) {
+                if (!result.session) {
                     sessionError();
                     return;
                 }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权更改建域名！");
+                    return;
+                }
                 $("#add-domain-modal").modal("hide");
-                $.messager.popup("修改成功！");
+                $.messager.popup(result.data ? "修改成功！" : "修改失败，请重试！");
                 loadDomains();
             });
         }
@@ -104,12 +112,21 @@ $(document).ready(function () {
             $.messager.popup("请选择服务器！");
             return;
         }
-        DomainManager.transfer(editingDid, sid, function (success) {
-            if (!success) {
-                location.href = "success.html";
+        DomainManager.transfer(editingDid, sid, function (result) {
+            if (!result.session) {
+                sessionError();
                 return;
             }
-            $("#" + editingDid).remove();
+            if (!result.privilege) {
+                $.messager.popup("当前用户无权更转移域名！");
+                return;
+            }
+            if (result.data) {
+                $("#" + editingDid).remove();
+                $.messager.popup("转移成功！");
+            } else {
+                $.messager.popup("转移失败，请重试!");
+            }
             $("#transfer-domain-modal").modal("hide");
             editingDid = null;
         });
@@ -158,11 +175,15 @@ function loadDomains() {
             
             $("#" + domain.did + " .domain-list-edit").click(function () {
                 editingDid = $(this).mengularId();
-                DomainManager.get(editingDid, function (domain) {
-                    if (domain == null) {
+                DomainManager.get(editingDid, function (result) {
+                    if (!result.session) {
                         sessionError();
                         return;
                     }
+                    if (!result.privilege) {
+                        return;
+                    }
+                    var domain = result.data;
                     fillValue({
                         "add-domain-name": domain.name,
                         "add-domain-domains": domain.domains,
@@ -184,9 +205,13 @@ function loadDomains() {
                 state: domain.highlight
             }).on("switchChange.bootstrapSwitch", function (event, state) {
                 var did = $(this).mengularId();
-                DomainManager.setHighlight(did, state, function(success) {
-                    if (!success) {
+                DomainManager.setHighlight(did, state, function(result) {
+                    if (!result.session) {
                         sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        $.messager.popup("当前用户无权更改建域名！");
                         return;
                     }
                     if (state) {
@@ -201,13 +226,21 @@ function loadDomains() {
                 var did = $(this).mengularId();
                 var name = $("#" + did + " .domain-list-name").text();
                 $.messager.confirm("删除域名", "确认删除域名" + name + "吗？", function () {
-                    DomainManager.remove(did, function (success) {
-                        if (!success) {
+                    DomainManager.remove(did, function (result) {
+                        if (!result.session) {
                             sessionError();
                             return;
                         }
-                        $("#" + did).remove();
-                        $.messager.popup("删除成功！");
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权限删除域名！");
+                            return;
+                        }
+                        if (result.data) {
+                            $("#" + did).remove();
+                            $.messager.popup("删除成功！");
+                        } else {
+                            $.messager.popup("删除失败，请重试！");
+                        }
                     });
                 });
             });

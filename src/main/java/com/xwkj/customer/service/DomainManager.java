@@ -1,10 +1,8 @@
 package com.xwkj.customer.service;
 
-import com.xwkj.customer.bean.DomainBean;
 import com.xwkj.customer.bean.Result;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 public interface DomainManager {
 
@@ -23,7 +21,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    String add(String sid, String name, String domains, String language,
+    Result add(String sid, String name, String domains, String language,
                String resolution, String path, String remark, HttpSession session);
 
     /**
@@ -41,7 +39,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    List<DomainBean> getHightlightDomains(HttpSession session);
+    Result getHightlightDomains(HttpSession session);
 
     /**
      * Get a domain by did.
@@ -50,7 +48,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    DomainBean get(String did, HttpSession session);
+    Result get(String did, HttpSession session);
 
     /**
      * Modify a domain.
@@ -65,7 +63,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    boolean modify(String did, String name, String domains, String language,
+    Result modify(String did, String name, String domains, String language,
                    String resolution, String path, String remark, HttpSession session);
 
     /**
@@ -75,7 +73,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    boolean remove(String did, HttpSession session);
+    Result remove(String did, HttpSession session);
 
     /**
      * Transfer a domain to a new server.
@@ -85,7 +83,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    boolean transfer(String did, String sid, HttpSession session);
+    Result transfer(String did, String sid, HttpSession session);
 
     /**
      * Set highlight state of a domain.
@@ -95,6 +93,6 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    boolean setHighlight(String did, boolean highlight, HttpSession session);
+    Result setHighlight(String did, boolean highlight, HttpSession session);
 
 }
