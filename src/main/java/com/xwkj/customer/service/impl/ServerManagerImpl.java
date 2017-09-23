@@ -23,9 +23,13 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
 
     @RemoteMethod
     @Transactional
-    public String add(String name, String address, String remark, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
+    public Result add(String name, String address, String remark, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = new Server();
         server.setName(name);
@@ -34,7 +38,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         server.setCreateAt(System.currentTimeMillis());
         server.setUpdateAt(server.getCreateAt());
         server.setDomains(0);
-        return serverDao.save(server);
+        return Result.WithData(serverDao.save(server));
     }
 
     @RemoteMethod
@@ -72,39 +76,47 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
 
     @RemoteMethod
     @Transactional
-    public boolean modify(String sid, String name, String address, String remark, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+    public Result modify(String sid, String name, String address, String remark, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
         if (server == null) {
             Debug.error("Cannot find a server by this sid.");
-            return false;
+            return Result.WithData(false);
         }
         server.setName(name);
         server.setAddress(address);
         server.setRemark(remark);
         server.setUpdateAt(System.currentTimeMillis());
         serverDao.update(server);
-        return true;
+        return Result.WithData(true);
     }
 
     @RemoteMethod
     @Transactional
-    public boolean remove(String sid, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return false;
+    public Result remove(String sid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+            return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
         if (server == null) {
             Debug.error("Cannot find a server by this sid.");
-            return false;
+            return Result.WithData(false);
         }
         if (server.getDomains() > 0) {
-            return false;
+            return Result.WithData(false);
         }
         serverDao.delete(server);
-        return true;
+        return Result.WithData(true);
     }
 
 }

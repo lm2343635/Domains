@@ -41,13 +41,17 @@ $(document).ready(function () {
                 loadServers();
             });
         } else {
-            ServerManager.modify(editingSid, name, address, remark, function (success) {
-                if (!success) {
-                    location.href = "../../../admin/session.html";
+            ServerManager.modify(editingSid, name, address, remark, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限编辑服务器！");
                     return;
                 }
                 $("#add-server-modal").modal("hide");
-                $.messager.popup("修改成功！");
+                $.messager.popup(result.data ? "修改成功！" : "修改失败，请重试！");
                 loadServers();
             })
         }
@@ -87,11 +91,15 @@ function loadServers() {
             
             $("#" + server.sid + " .server-list-edit").click(function () {
                 editingSid = $(this).mengularId();
-                ServerManager.get(editingSid, function (server) {
-                    if (server == null) {
+                ServerManager.get(editingSid, function (result) {
+                    if (!result.session) {
                         sessionError();
                         return;
                     }
+                    if (!result.privilege) {
+                        return;
+                    }
+                    var server = result.data;
                     fillValue({
                         "add-server-name": server.name,
                         "add-server-address": server.address,
@@ -104,22 +112,32 @@ function loadServers() {
             $("#" + server.sid + " .server-list-remove").click(function () {
                 var sid = $(this).mengularId();
                 var name = $("#" + sid + " .server-list-name").text();
-                var domains = parseInt($("#" + sid + " .server-list-customer").text());
+                var domains = parseInt($("#" + sid + " .server-list-domains").text());
                 if (domains > 0) {
                     $.messager.popup("该服务器下有域名，无法删除！");
                     return;
                 }
                 $.messager.confirm("删除服务器", "确认删除服务器" + name + "吗？", function () {
-                    ServerManager.remove(sid, function (success) {
-                        if (!success) {
+                    ServerManager.remove(sid, function (result) {
+                        if (!result.session) {
                             sessionError();
                             return;
                         }
-                        $("#" + sid).remove();
-                        $.messager.popup("删除成功！");
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权限删除服务器！");
+                            return;
+                        }
+                        if (result.data) {
+                            $("#" + sid).remove();
+                            $.messager.popup("删除成功！");
+                        } else {
+                            $.messager.popup("删除失败！");
+                        }
                     });
                 });
             });
         }
+
     });
+
 }

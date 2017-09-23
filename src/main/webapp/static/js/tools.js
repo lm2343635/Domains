@@ -33,6 +33,19 @@ var CustomerStateLost = 3;
 
 var CustomerStateNames = ["未开发", "开发中", "已开发", "已流失"];
 
+if ($.messager != undefined) {
+    $.messager.model = {
+        ok: {
+            text: "确定",
+            classed: "btn-danger"
+        },
+        cancel: {
+            text: "取消",
+            classed: "btn-default"
+        }
+    };
+}
+
 var BROSWER_PC = "pc";
 var BROSWER_WAP = "wap";
 

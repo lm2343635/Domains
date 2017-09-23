@@ -1,10 +1,8 @@
 package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.bean.ServerBean;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 public interface ServerManager {
 
@@ -17,7 +15,7 @@ public interface ServerManager {
      * @param session
      * @return
      */
-    String add(String name, String address, String remark, HttpSession session);
+    Result add(String name, String address, String remark, HttpSession session);
 
     /**
      * Get all servers.
@@ -46,7 +44,7 @@ public interface ServerManager {
      * @param session
      * @return
      */
-    boolean modify(String sid, String name, String address, String remark, HttpSession session);
+    Result modify(String sid, String name, String address, String remark, HttpSession session);
 
     /**
      * Remove a domain.
@@ -55,6 +53,6 @@ public interface ServerManager {
      * @param session
      * @return
      */
-    boolean remove(String sid, HttpSession session);
+    Result remove(String sid, HttpSession session);
 
 }
