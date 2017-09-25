@@ -47,6 +47,18 @@ public class Customer implements Serializable {
     @Column(columnDefinition = "LONGTEXT")
     private String document;
 
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "eid")
+    private Employee register;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "aid")
+    private Area area;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "iid")
+    private Industry industry;
+
     public String getCid() {
         return cid;
     }
@@ -143,4 +155,28 @@ public class Customer implements Serializable {
         this.remark = remark;
     }
 
+    public Employee getRegister() {
+        return register;
+    }
+
+    public void setRegister(Employee register) {
+        this.register = register;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public Industry getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(Industry industry) {
+        this.industry = industry;
+    }
+    
 }
