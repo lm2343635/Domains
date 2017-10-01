@@ -178,5 +178,5 @@ public class Customer implements Serializable {
     public void setIndustry(Industry industry) {
         this.industry = industry;
     }
-    
+
 }

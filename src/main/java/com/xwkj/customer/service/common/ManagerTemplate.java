@@ -15,6 +15,12 @@ public class ManagerTemplate {
     protected RoleDao roleDao;
 
     @Autowired
+    protected AreaDao areaDao;
+
+    @Autowired
+    protected IndustryDao industryDao;
+
+    @Autowired
     protected EmployeeDao employeeDao;
 
     @Autowired
