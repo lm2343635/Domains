@@ -1,6 +1,9 @@
 package com.xwkj.customer.service;
 
+import com.xwkj.customer.bean.AreaBean;
+
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface AreaManager {
 
@@ -31,5 +34,12 @@ public interface AreaManager {
      * @return
      */
     boolean remove(String aid, HttpSession session);
+
+    /**
+     * Get all areas.
+     *
+     * @return
+     */
+    List<AreaBean> getAll();
 
 }

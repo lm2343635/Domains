@@ -6,11 +6,26 @@ if (state != CustomerStateDeveloping
 }
 
 $(document).ready(function () {
+
     if (state != CustomerStateUndeveloped) {
         $("#add-undeveloped").remove();
     }
 
     $("#customer-panel .panel-heading .nav li").eq(state).addClass("active");
+
+    AreaManager.getAll(function (areas) {
+        for (var i in areas) {
+            var area = areas[i];
+            $("<option>").val(area.aid).text(area.name).appendTo("#add-undeveloped-area");
+        }
+    });
+
+    IndustryManager.getAll(function (industries) {
+        for (var i in industries) {
+            var industry = industries[i];
+            $("<option>").val(industry.iid).text(industry.name).appendTo("#add-undeveloped-industry");
+        }
+    });
 
     checkEmployeeSession(function (employee) {
         var listable = true;

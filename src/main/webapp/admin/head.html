@@ -3,12 +3,14 @@
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed glyphicon glyphicon-th-list" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1"></button>
-            <a class="navbar-brand" href="javascript:void(0)">域名管理系统</a>
+            <a class="navbar-brand" href="javascript:void(0)">客户管理系统</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="menu-bar" class="nav navbar-nav logined-btn">
                 <li><a href="employees.html">员工管理</a></li>
                 <li><a href="roles.html">角色管理</a></li>
+                <li><a href="areas.html">区域管理</a></li>
+                <li><a href="industries.html">行业管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout/admin">退出</a></li>
@@ -19,7 +21,9 @@
 <script type="text/javascript">
     var map = {
         employees: 0,
-        roles: 1
+        roles: 1,
+        areas: 2,
+        industries: 3
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>

@@ -17,6 +17,8 @@
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/CustomerManager.js"></script>
+    <script src="/dwr/interface/AreaManager.js"></script>
+    <script src="/dwr/interface/IndustryManager.js"></script>
     <script src="/static/js/employee/customers.js"></script>
     <style>
         #add-undeveloped {
@@ -106,6 +108,14 @@
                 <div class="input-group">
                     <span class="input-group-addon">联系方式</span>
                     <input id="add-undeveloped-contact" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">所在区域</span>
+                    <select id="add-undeveloped-area" class="form-control"></select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">行业信息</span>
+                    <select id="add-undeveloped-industry" class="form-control"></select>
                 </div>
             </div>
             <div class="modal-footer">

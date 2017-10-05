@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.AreaBean;
 import com.xwkj.customer.domain.Area;
 import com.xwkj.customer.service.AreaManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RemoteProxy(name = "AreaManager")
@@ -57,6 +60,15 @@ public class AreaManagerImpl extends ManagerTemplate implements AreaManager {
         }
         areaDao.delete(area);
         return true;
+    }
+
+    @RemoteMethod
+    public List<AreaBean> getAll() {
+        List<AreaBean> areaBeans = new ArrayList<AreaBean>();
+        for (Area area : areaDao.findAll("createAt", false)) {
+            areaBeans.add(new AreaBean(area));
+        }
+        return areaBeans;
     }
 
 }

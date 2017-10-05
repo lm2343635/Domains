@@ -1,6 +1,9 @@
 package com.xwkj.customer.service;
 
+import com.xwkj.customer.bean.IndustryBean;
+
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public interface IndustryManager {
 
@@ -31,5 +34,12 @@ public interface IndustryManager {
      * @return
      */
     boolean remove(String iid, HttpSession session);
+
+    /**
+     * Get all industry.
+     *
+     * @return
+     */
+    List<IndustryBean> getAll();
 
 }
