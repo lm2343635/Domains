@@ -1,6 +1,8 @@
 var cid = request("cid");
 var state;
 
+var assinableEmployees;
+
 $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
@@ -69,6 +71,10 @@ $(document).ready(function () {
                     height: 400
                 }).summernote("code", customer.document);
 
+
+
+                console.log(customer.document.getBytesLength())
+
                 EmployeeManager.getDevelopedAssinableEmployees(cid, function (result) {
                     if (!result.session) {
                         sessionError();
@@ -77,8 +83,9 @@ $(document).ready(function () {
                     if (!result.privilege) {
                         return;
                     }
-                    for (var i in result.data) {
-                        var employee = result.data[i];
+                    assinableEmployees = result.data;
+                    for (var i in assinableEmployees) {
+                        var employee = assinableEmployees[i];
                         $("<option>").val(employee.eid).text(employee.name + "（" + employee.role.name + "）")
                             .appendTo("#add-manager-eid");
                     }
@@ -138,6 +145,7 @@ $(document).ready(function () {
                 });
             }
 
+            // Add managers.
             $("#customer-managers").mengular(".customer-managers-template", customer.managers);
 
         });
@@ -264,6 +272,37 @@ $(document).ready(function () {
         } else {
             $("#add-manager-eid").parent().removeClass("has-error");
         }
+        var r = $("#add-manager-r").val();
+        var w = $("#add-manager-w").val();
+        var d = $("#add-manager-d").val();
+        var assign = $("#add-manager-assign").val();
+        CustomerManager.assign(cid, eid, r, w, d, assign, function (result) {
+            if (!result.session) {
+                sessionError();
+                return;
+            }
+            if (!result.privilege) {
+                $.messager.popup("改账户无权限添加新的负责人！");
+                return;
+            }
+            if (!result.data) {
+                $.messager.popup("该员工无权作为新的负责人！");
+                return;
+            }
+            $.messager.popup("新的负责人已添加！");
+
+            // Remove employee from selector.
+            $("#add-manager-eid option[val='" + eid + "']]").remove();
+
+            // Add employee in manager list.
+            for (var i in assinableEmployees) {
+                var employee = assinableEmployees[i];
+                if (employee.eid == eid) {
+                    $("#customer-managers").mengular(".customer-managers-template", employee);
+                }
+            }
+
+        });
     });
 
 });

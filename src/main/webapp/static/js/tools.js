@@ -354,3 +354,12 @@ function getPageFullName() {
 function getPageName() {
     return getPageFullName().split(".")[0];
 }
+
+String.prototype.getBytesLength = function() {
+    var length = this.replace(/[^\x00-\xff]/gi, "--").length;
+    if (length > 1024) {
+        length /= 1024;
+        return parseInt(length) + "KB";
+    }
+    return length + "B";
+}
