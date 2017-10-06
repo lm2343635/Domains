@@ -5,9 +5,7 @@ import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.CustomerBean;
 import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.domain.Assign;
-import com.xwkj.customer.domain.Customer;
-import com.xwkj.customer.domain.Employee;
+import com.xwkj.customer.domain.*;
 import com.xwkj.customer.service.CustomerManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -26,13 +24,23 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
 
     @RemoteMethod
     @Transactional
-    public Result addUndeveloped(String name, int capital, String contact, HttpSession session) {
+    public Result addUndeveloped(String name, int capital, String contact, String aid, String iid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
         }
         if (employee.getRole().getUndevelopedW() != RoleManager.RolePrevilgeHold) {
-            return new Result(true, false);
+            return Result.NoPrivilege();
+        }
+        Area area = areaDao.get(aid);
+        if (area == null) {
+            Debug.error("Cannot find an area by this aid.");
+            return Result.WithData(null);
+        }
+        Industry industry = industryDao.get(iid);
+        if (industry == null) {
+            Debug.error("Cannot find an industry by this iid.");
+            return Result.WithData(null);
         }
         Customer customer = new Customer();
         customer.setState(CustomerStateUndeveloped);
@@ -41,10 +49,13 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         customer.setName(name);
         customer.setCapital(capital);
         customer.setContact(contact);
+        customer.setArea(area);
+        customer.setIndustry(industry);
+        customer.setRegister(employee);
         String cid = customerDao.save(customer);
         if (cid == null) {
             Debug.error("Internal error: save customer failed.");
-            return Result.NoPrivilege();
+            return Result.WithData(null);
         }
         return Result.WithData(cid);
     }

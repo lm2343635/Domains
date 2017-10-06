@@ -21,6 +21,9 @@ public class CustomerBean {
     private String remark;
     private String document;
     private Date expireAt;
+    private AreaBean area;
+    private IndustryBean industry;
+    private EmployeeBean register;
     private List<EmployeeBean> managers;
 
     public String getCid() {
@@ -127,6 +130,30 @@ public class CustomerBean {
         this.managers = managers;
     }
 
+    public AreaBean getArea() {
+        return area;
+    }
+
+    public void setArea(AreaBean area) {
+        this.area = area;
+    }
+
+    public IndustryBean getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(IndustryBean industry) {
+        this.industry = industry;
+    }
+
+    public EmployeeBean getRegister() {
+        return register;
+    }
+
+    public void setRegister(EmployeeBean register) {
+        this.register = register;
+    }
+
     public CustomerBean(Customer customer, boolean full) {
         this.cid = customer.getCid();
         this.createAt = new Date(customer.getCreateAt());
@@ -134,13 +161,16 @@ public class CustomerBean {
         this.expireAt = customer.getExpireAt() == null ? null : new Date(customer.getExpireAt());
         this.state = customer.getState();
         this.name = customer.getName();
-        this.contact = customer.getContact();
         this.capital = customer.getCapital();
+        this.area = new AreaBean(customer.getArea());
+        this.industry = new IndustryBean(customer.getIndustry());
         if (full) {
+            this.contact = customer.getContact();
             this.items = customer.getItems();
             this.money = customer.getMoney() == null ? 0 : customer.getMoney();
             this.document = customer.getDocument();
             this.remark = customer.getRemark();
+            this.register = new EmployeeBean(customer.getRegister());
         }
     }
 }

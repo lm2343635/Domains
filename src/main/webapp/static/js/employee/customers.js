@@ -64,6 +64,8 @@ $(document).ready(function () {
         var name = $("#add-undeveloped-name").val();
         var capital = $("#add-undeveloped-capital").val();
         var contact = $("#add-undeveloped-contact").val();
+        var aid = $("#add-undeveloped-area").val();
+        var iid = $("#add-undeveloped-industry").val();
         var validate = true;
         if (name == "" || name == null) {
             $("#add-undeveloped-name").parent().addClass("has-error");
@@ -83,10 +85,22 @@ $(document).ready(function () {
         } else {
             $("#add-undeveloped-contact").parent().removeClass("has-error");
         }
+        if (aid == "" || aid == null) {
+            $("#add-undeveloped-area").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#add-undeveloped-area").parent().removeClass("has-error");
+        }
+        if (iid == "" || iid == null) {
+            $("#add-undeveloped-industry").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#add-undeveloped-industry").parent().removeClass("has-error");
+        }
         if (!validate) {
             return;
         }
-        CustomerManager.addUndeveloped(name, capital, contact, function (result) {
+        CustomerManager.addUndeveloped(name, capital, contact, aid, iid, function (result) {
             if (!result.session) {
                 sessionError();
                 return;
@@ -122,8 +136,9 @@ function loadCustomers() {
                 createAt: customer.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: customer.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
                 name: customer.name,
-                contact: customer.contact,
-                capital: customer.capital
+                capital: customer.capital,
+                area: customer.area.name,
+                industry: customer.industry.name
             });
         }
     });

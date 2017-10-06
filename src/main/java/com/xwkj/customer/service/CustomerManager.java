@@ -19,10 +19,12 @@ public interface CustomerManager {
      * @param name
      * @param capital
      * @param contact
+     * @param aid
+     * @param iid
      * @param session
      * @return
      */
-    Result addUndeveloped(String name, int capital, String contact, HttpSession session);
+    Result addUndeveloped(String name, int capital, String contact, String aid, String iid, HttpSession session);
 
     /**
      * Get customers by state for employees.
