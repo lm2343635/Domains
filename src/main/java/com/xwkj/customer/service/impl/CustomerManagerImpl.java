@@ -136,18 +136,39 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         switch (customer.getState()) {
             case CustomerStateUndeveloped:
                 if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
-
+                    if (!assignReadPrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
                 } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloping:
-
+                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign) {
+                    if (!assignReadPrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
+                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateDeveloped:
-
+                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
+                    if (!assignReadPrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
+                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateLost:
+                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign) {
+                    if (!assignReadPrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
+                } else if (employee.getRole().getLostR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             default:
                 break;
@@ -177,28 +198,36 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         switch (customer.getState()) {
             case CustomerStateUndeveloped:
                 if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeAssign) {
-
+                    if (!assignWritePrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
                 } else if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloping:
                 if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeAssign) {
-
+                    if (!assignWritePrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
                 } else if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloped:
                 if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeAssign) {
-
+                    if (!assignWritePrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
                 } else if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateLost:
                 if (employee.getRole().getLostW() == RoleManager.RolePrevilgeAssign) {
-
+                    if (!assignWritePrivilege(customer, employee)) {
+                        return Result.NoPrivilege();
+                    }
                 } else if (employee.getRole().getLostW() == RoleManager.RolePrevilgeNone) {
                     return Result.NoPrivilege();
                 }
@@ -428,6 +457,39 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         assignDao.delete(assign);
         return Result.WithData(true);
+    }
+
+    private boolean assignReadPrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getR() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean assignWritePrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getW() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean assignDeletePrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getD() == null) {
+            return false;
+        }
+        return true;
     }
 
 }
