@@ -50,6 +50,7 @@ $(document).ready(function () {
             });
 
             if (state == CustomerStateDeveloped) {
+
                 fillValue({
                     "customer-money": customer.money == 0 ? "" : customer.money,
                     "customer-items": customer.items,
@@ -71,9 +72,9 @@ $(document).ready(function () {
                     height: 400
                 }).summernote("code", customer.document);
 
-
-
-                console.log(customer.document.getBytesLength())
+                if (customer.document != "" && customer.document != null) {
+                    $("#customer-document-size").text(customer.document.getBytesLengthString());
+                }
 
                 EmployeeManager.getDevelopedAssinableEmployees(cid, function (result) {
                     if (!result.session) {
@@ -145,8 +146,11 @@ $(document).ready(function () {
                 });
             }
 
-            // Add managers.
-            $("#customer-managers").mengular(".customer-managers-template", customer.managers);
+            // Show all managers.
+            assinableEmployees = customer.managers;
+            for (var i in assinableEmployees) {
+                addManager(assinableEmployees[i]);
+            }
 
         });
     });
@@ -216,6 +220,11 @@ $(document).ready(function () {
             } else {
                 $("#customer-money").parent().removeClass("has-error");
             }
+            var length = document.getBytesLength();
+            if (length > 1024 * 1024) {
+                $.messager.popup("文档大小不能超过1024KB！当前大小：" + formatByte(length));
+                return;
+            }
         }
         if (!validate) {
             return;
@@ -233,6 +242,7 @@ $(document).ready(function () {
             }
             $("#customer-edit").text("保存客户信息").removeAttr("disabled");
             $.messager.popup("修改成功！");
+            $("#customer-document-size").text(formatByte(length));
         });
     });
     
@@ -290,15 +300,16 @@ $(document).ready(function () {
                 return;
             }
             $.messager.popup("新的负责人已添加！");
+            $("#add-manager-modal").modal("hide");
 
             // Remove employee from selector.
-            $("#add-manager-eid option[val='" + eid + "']]").remove();
+            $("#add-manager-eid option[value='" + eid + "']").remove();
 
             // Add employee in manager list.
             for (var i in assinableEmployees) {
                 var employee = assinableEmployees[i];
                 if (employee.eid == eid) {
-                    $("#customer-managers").mengular(".customer-managers-template", employee);
+                    addManager(employee);
                 }
             }
 
@@ -306,3 +317,30 @@ $(document).ready(function () {
     });
 
 });
+
+function addManager(employee) {
+    $("#customer-managers").mengular(".customer-managers-template", employee);
+
+    $("#" + employee.eid).click(function () {
+        var eid = $(this).mengularId();
+        var name = $("#" + eid + " span").text();
+        $.messager.confirm("移除负责人", "确认要移除负责人" + name + "吗？", function () {
+            CustomerManager.revokeAssign(cid, eid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("改账户无权限删除负责人！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("找不着该负责人，无法删除！");
+                    return;
+                }
+                $.messager.popup("删除成功！");
+                $("#" + eid).remove();
+            });
+        });
+    });
+}

@@ -239,7 +239,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (customer.getState() == CustomerStateDeveloped) {
             customer.setItems(items);
             customer.setMoney(money);
-            customer.setExpireAt(expireAt == "" || expireAt == null ? null : DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
+            customer.setExpireAt((expireAt.equals("") || expireAt == null) ? null : DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
             customer.setRemark(remark);
             customer.setDocument(document);
         }
@@ -388,6 +388,45 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (assignDao.save(assign) == null) {
             Result.WithData(false);
         }
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result revokeAssign(String cid, String eid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        // Deny employees without assign privilege directly.
+        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeNone) {
+            return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeAssign) {
+            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+            if (assign == null) {
+                return Result.NoPrivilege();
+            }
+            if (!assign.getAssign()) {
+                return Result.NoPrivilege();
+            }
+        }
+
+        Employee manager = employeeDao.get(eid);
+        if (manager == null) {
+            Debug.error("Cannot find a employee by this eid.");
+            return Result.WithData(false);
+        }
+        Assign assign = assignDao.getByCustomerForEmployee(customer, manager);
+        if (assign == null) {
+            return Result.WithData(false);
+        }
+        assignDao.delete(assign);
         return Result.WithData(true);
     }
 

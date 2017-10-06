@@ -94,4 +94,14 @@ public interface CustomerManager {
      */
     Result assign(String cid, String eid, boolean r, boolean w, boolean d, boolean assign, HttpSession session);
 
+    /**
+     * Revoke an existing manager for a customer.
+     *
+     * @param cid
+     * @param eid
+     * @param session
+     * @return
+     */
+    Result revokeAssign(String cid, String eid, HttpSession session);
+
 }

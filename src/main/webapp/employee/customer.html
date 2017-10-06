@@ -139,7 +139,10 @@
                         <label class="col-sm-1 control-label">负责人</label>
                         <div class="col-sm-11">
                             <div id="customer-managers" class="pull-left">
-                                <button id="${eid}$" class="btn btn-default mengular-template customer-managers-template">${name}$（${role.name}$）</button>
+                                <button id="${eid}$" class="btn btn-default mengular-template customer-managers-template">
+                                    <span>${name}$（${role.name}$）</span>
+                                    <i class="fa fa-lg fa-times-circle-o text-danger"></i>
+                                </button>
                             </div>
                             <button id="customer-managers-add" class="btn btn-info customer-developed" data-toggle="modal" data-target="#add-manager-modal">添加负责人</button>
                         </div>
@@ -158,8 +161,8 @@
                         <label class="col-sm-1 control-label">权限文档</label>
                         <div class="col-sm-11">
                             <div id="customer-document"></div>
-                            <h4 class="text-danger pull-left">权限文档中严禁存放大图片！</h4>
-                            <h4 class="text-info pull-right">文档大小：</h4>
+                            <h4 class="text-danger pull-left">文档大小限制为1MB，严禁存放大图片！</h4>
+                            <h4 class="text-info pull-right">文档大小：<span id="customer-document-size">0B</span></h4>
                         </div>
                     </div>
                 </div>
