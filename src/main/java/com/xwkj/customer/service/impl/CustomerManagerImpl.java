@@ -57,6 +57,10 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             Debug.error("Internal error: save customer failed.");
             return Result.WithData(null);
         }
+        area.setCustomers(area.getCustomers() + 1);
+        areaDao.update(area);
+        industry.setCustomers(industry.getCustomers() + 1);
+        industryDao.update(industry);
         return Result.WithData(cid);
     }
 
@@ -159,7 +163,8 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
 
     @RemoteMethod
     @Transactional
-    public Result edit(String cid, String name, int capital, String contact, String items, int money, String expireAt, String remark, String document, HttpSession session) {
+    public Result edit(String cid, String name, int capital, String contact, String aid, String iid,
+                       String items, int money, String expireAt, String remark, String document, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -178,12 +183,25 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 }
                 break;
             case CustomerStateDeveloping:
+                if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeAssign) {
 
+                } else if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateDeveloped:
+                if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeAssign) {
 
+                } else if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             case CustomerStateLost:
+                if (employee.getRole().getLostW() == RoleManager.RolePrevilgeAssign) {
+
+                } else if (employee.getRole().getLostW() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
                 break;
             default:
                 break;
@@ -192,6 +210,32 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         customer.setName(name);
         customer.setCapital(capital);
         customer.setContact(contact);
+        if (!customer.getArea().getAid().equals(aid)) {
+            Area newArea = areaDao.get(aid);
+            if (newArea == null) {
+                Debug.error("Cannot find an area by this aid.");
+                return Result.WithData(false);
+            }
+            Area oldArea = customer.getArea();
+            oldArea.setCustomers(oldArea.getCustomers() - 1);
+            areaDao.update(oldArea);
+            newArea.setCustomers(newArea.getCustomers() + 1);
+            areaDao.update(newArea);
+            customer.setArea(newArea);
+        }
+        if (!customer.getIndustry().getIid().equals(iid)) {
+            Industry newIndustry = industryDao.get(iid);
+            if (newIndustry == null) {
+                Debug.error("Cannot find an industry by this iid.");
+                return Result.WithData(false);
+            }
+            Industry oldIndustry = customer.getIndustry();
+            oldIndustry.setCustomers(oldIndustry.getCustomers() - 1);
+            industryDao.update(oldIndustry);
+            newIndustry.setCustomers(newIndustry.getCustomers() + 1);
+            industryDao.update(newIndustry);
+            customer.setIndustry(newIndustry);
+        }
         if (customer.getState() == CustomerStateDeveloped) {
             customer.setItems(items);
             customer.setMoney(money);

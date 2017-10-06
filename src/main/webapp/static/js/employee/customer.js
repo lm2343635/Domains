@@ -28,7 +28,7 @@ $(document).ready(function () {
                 "customer-name": customer.name,
                 "customer-capital": customer.capital,
                 "customer-contact": customer.contact,
-                "customer-register": customer.register.name
+                "customer-register": customer.register.name + "（" + customer.register.role.name + "）"
             });
 
             AreaManager.getAll(function (areas) {
@@ -93,6 +93,7 @@ $(document).ready(function () {
                         return;
                     }
                     var assign = result.data;
+
                     if (!assign.r) {
                         $("#add-manager-r option[value=true]").remove();
                     }
@@ -169,6 +170,8 @@ $(document).ready(function () {
         var name = $("#customer-name").val();
         var capital = $("#customer-capital").val();
         var contact = $("#customer-contact").val();
+        var aid = $("#customer-area").val();
+        var iid = $("#customer-industry").val();
         var validate = true;
         if (name == "" || name == null) {
             $("#customer-name").parent().addClass("has-error");
@@ -211,7 +214,7 @@ $(document).ready(function () {
         }
 
         $(this).text("提交中...").attr("disabled", "disabled");
-        CustomerManager.edit(cid, name, capital, contact, items, money, expireAt, remark, document, function (result) {
+        CustomerManager.edit(cid, name, capital, contact, aid, iid, items, money, expireAt, remark, document, function (result) {
             if (!result.session) {
                 sessionError();
                 return;
@@ -239,7 +242,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("改账户无权限更改该客户的详细信息！");
+                $.messager.popup("改账户无权限完成开发客户！");
                 return;
             }
             if (!result.data) {

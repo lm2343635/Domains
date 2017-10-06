@@ -50,6 +50,8 @@ public interface CustomerManager {
      * @param cid
      * @param name
      * @param capital
+     * @param aid
+     * @param iid
      * @param contact
      * @param items
      * @param money
@@ -58,7 +60,8 @@ public interface CustomerManager {
      * @param session
      * @return
      */
-    Result edit(String cid, String name, int capital, String contact, String items, int money, String expireAt, String remark, String document, HttpSession session);
+    Result edit(String cid, String name, int capital, String contact, String aid, String iid,
+                String items, int money, String expireAt, String remark, String document, HttpSession session);
 
     /**
      * Develop a customer.
