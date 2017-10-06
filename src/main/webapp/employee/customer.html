@@ -23,6 +23,8 @@
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/CustomerManager.js"></script>
+    <script src="/dwr/interface/AreaManager.js"></script>
+    <script src="/dwr/interface/IndustryManager.js"></script>
     <script src="/static/js/employee/customer.js"></script>
     <style>
         #customer-panel .form-group,
@@ -64,6 +66,14 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">创建人</label>
+                        <div class="col-sm-10">
+                            <input id="customer-register" type="text" class="form-control" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">注册资金</label>
                         <div class="col-sm-10">
                             <div class="input-group">
@@ -78,6 +88,22 @@
                         <label class="col-sm-2 control-label">联系方式</label>
                         <div class="col-sm-10">
                             <input id="customer-contact" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">区域</label>
+                        <div class="col-sm-10">
+                            <select id="customer-area" class="form-control"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">行业</label>
+                        <div class="col-sm-10">
+                            <select id="customer-industry" class="form-control"></select>
                         </div>
                     </div>
                 </div>

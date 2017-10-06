@@ -27,7 +27,24 @@ $(document).ready(function () {
             fillValue({
                 "customer-name": customer.name,
                 "customer-capital": customer.capital,
-                "customer-contact": customer.contact
+                "customer-contact": customer.contact,
+                "customer-register": customer.register.name
+            });
+
+            AreaManager.getAll(function (areas) {
+                for (var i in areas) {
+                    var area = areas[i];
+                    $("<option>").val(area.aid).text(area.name).appendTo("#customer-area");
+                }
+                $("#customer-area").val(customer.area.aid);
+            });
+
+            IndustryManager.getAll(function (industries) {
+                for (var i in industries) {
+                    var industry = industries[i];
+                    $("<option>").val(industry.iid).text(industry.name).appendTo("#customer-industry");
+                }
+                $("#customer-industry").val(customer.industry.iid);
             });
 
             if (state == CustomerStateDeveloped) {
