@@ -30,7 +30,8 @@ $(document).ready(function () {
                 "customer-name": customer.name,
                 "customer-capital": customer.capital,
                 "customer-contact": customer.contact,
-                "customer-register": customer.register.name + "（" + customer.register.role.name + "）"
+                "customer-register": customer.register.name + "（" + customer.register.role.name + "）",
+                "customer-remark": customer.remark
             });
 
             AreaManager.getAll(function (areas) {
@@ -53,8 +54,7 @@ $(document).ready(function () {
 
                 fillValue({
                     "customer-money": customer.money == 0 ? "" : customer.money,
-                    "customer-items": customer.items,
-                    "customer-remark": customer.remark
+                    "customer-items": customer.items
                 })
 
                 $("#customer-expireAt").datetimepicker({
@@ -184,6 +184,7 @@ $(document).ready(function () {
         var contact = $("#customer-contact").val();
         var aid = $("#customer-area").val();
         var iid = $("#customer-industry").val();
+        var remark = $("#customer-remark").val();
         var validate = true;
         if (name == "" || name == null) {
             $("#customer-name").parent().addClass("has-error");
@@ -206,12 +207,10 @@ $(document).ready(function () {
         var items = null;
         var money = 0;
         var expireAt = null;
-        var remark = null;
         var document = null;
         if (state == CustomerStateDeveloped) {
             items = $("#customer-items").val();
             money = $("#customer-money").val();
-            remark = $("#customer-remark").val();
             expireAt = $("#customer-expireAt").val();
             document = $("#customer-document").summernote("code");
             if (money != "" && !isInteger(money)) {

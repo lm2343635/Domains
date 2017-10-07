@@ -239,6 +239,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         customer.setName(name);
         customer.setCapital(capital);
         customer.setContact(contact);
+        customer.setRemark(remark);
         if (!customer.getArea().getAid().equals(aid)) {
             Area newArea = areaDao.get(aid);
             if (newArea == null) {
@@ -269,7 +270,6 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             customer.setItems(items);
             customer.setMoney(money);
             customer.setExpireAt((expireAt.equals("") || expireAt == null) ? null : DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
-            customer.setRemark(remark);
             customer.setDocument(document);
         }
         customerDao.update(customer);
