@@ -29,7 +29,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getUndevelopedW() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getUndevelopedW() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Area area = areaDao.get(aid);
@@ -84,37 +84,19 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 Debug.error("Cannot find an industry by this iid.");
             }
         }
-        boolean assign = false;
-        switch (state) {
-            case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeNone){
-                    return Result.NoPrivilege();
-                }
-                assign = employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign;
+        int count = 0;
+        switch (getPrivilegeForEmployee(employee, state, RoleManager.PrivilegeRead)) {
+            case RoleManager.RolePrivilgeHold:
+                count = customerDao.getCount(state, name, area, industry, lower, higher);
                 break;
-            case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                assign = employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign;
+            case RoleManager.RolePrivilgeAssign:
+                count = assignDao.getCountForEmployee(employee, state, name, area, industry, lower, higher);
                 break;
-            case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                assign = employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign;
-                break;
-            case CustomerStateLost:
-                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                assign = employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign;
-                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
             default:
                 break;
         }
-        int count = assign ? assignDao.getCountForEmployee(employee, state, name, area, industry, lower, higher) :
-                customerDao.getCount(state, name, area, industry, lower, higher);
         return Result.WithData(count);
     }
 
@@ -124,54 +106,38 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
-        List<Customer> customers = new ArrayList<Customer>();
-        switch (state) {
-            case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeHold) {
-
-                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
-
-                } else {
-                    return Result.NoPrivilege();
+        Area area = null;
+        if (aid != null && !aid.equals("")) {
+            area = areaDao.get(aid);
+            if (area == null) {
+                Debug.error("Cannot find an area by this aid");
+            }
+        }
+        Industry industry = null;
+        if (iid != null && !iid.equals("")) {
+            industry = industryDao.get(iid);
+            if (industry == null) {
+                Debug.error("Cannot find an industry by this iid.");
+            }
+        }
+        int offset = (page - 1) * pageSize;
+        List<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
+        switch (getPrivilegeForEmployee(employee, state, RoleManager.PrivilegeRead)) {
+            case RoleManager.RolePrivilgeHold:
+                for (Customer customer : customerDao.find(state, name, area, industry, lower, higher, offset, pageSize)) {
+                    customerBeans.add(new CustomerBean(customer, false));
                 }
                 break;
-            case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeHold) {
-
-                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign) {
-
-                } else {
-                    return Result.NoPrivilege();
+            case RoleManager.RolePrivilgeAssign:
+                for (Assign assign : assignDao.findByEmployee(employee, state, name, area, industry, lower, higher, offset, pageSize)) {
+                    System.out.println(assign.getCustomer().getName());
+                    customerBeans.add(new CustomerBean(assign.getCustomer(), false));
                 }
                 break;
-            case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeHold) {
-
-                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
-//                    for (Assign assign : assignDao.findByEmployee(employee)) {
-//                        if (assign.getR()) {
-//                            customers.add(assign.getCustomer());
-//                        }
-//                    }
-                } else {
-                    return Result.NoPrivilege();
-                }
-                break;
-            case CustomerStateLost:
-                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeHold) {
-
-                } else if (employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign) {
-
-                } else {
-                    return Result.NoPrivilege();
-                }
-                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
             default:
                 break;
-        }
-        List<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
-        for (Customer customer : customers) {
-            customerBeans.add(new CustomerBean(customer, false));
         }
         return Result.WithData(customerBeans);
     }
@@ -189,38 +155,38 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         switch (customer.getState()) {
             case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrivilgeAssign) {
                     if (!assignReadPrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeAssign) {
                     if (!assignReadPrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getDevelopedR() == RoleManager.RolePrivilgeAssign) {
                     if (!assignReadPrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateLost:
-                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getLostR() == RoleManager.RolePrivilgeAssign) {
                     if (!assignReadPrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getLostR() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getLostR() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
@@ -251,38 +217,38 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         switch (customer.getState()) {
             case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getUndevelopedW() == RoleManager.RolePrivilgeAssign) {
                     if (!assignWritePrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getUndevelopedW() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getUndevelopedW() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeAssign) {
                     if (!assignWritePrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getDevelopedW() == RoleManager.RolePrivilgeAssign) {
                     if (!assignWritePrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getDevelopedW() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getDevelopedW() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateLost:
-                if (employee.getRole().getLostW() == RoleManager.RolePrevilgeAssign) {
+                if (employee.getRole().getLostW() == RoleManager.RolePrivilgeAssign) {
                     if (!assignWritePrivilege(customer, employee)) {
                         return Result.NoPrivilege();
                     }
-                } else if (employee.getRole().getLostW() == RoleManager.RolePrevilgeNone) {
+                } else if (employee.getRole().getLostW() == RoleManager.RolePrivilgeNone) {
                     return Result.NoPrivilege();
                 }
                 break;
@@ -337,7 +303,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDevelop() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDevelop() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Customer customer = customerDao.get(cid);
@@ -350,9 +316,9 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         Assign assign = new Assign();
         assign.setCreateAt(System.currentTimeMillis());
-        assign.setR(employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeHold);
-        assign.setW(employee.getRole().getDevelopingW() == RoleManager.RolePrevilgeHold);
-        assign.setD(employee.getRole().getDevelopingD() == RoleManager.RolePrevilgeHold);
+        assign.setR(employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeHold);
+        assign.setW(employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeHold);
+        assign.setD(employee.getRole().getDevelopingD() == RoleManager.RolePrivilgeHold);
         assign.setAssign(true);
         assign.setCustomer(customer);
         assign.setEmployee(employee);
@@ -372,7 +338,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getFinish() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getFinish() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Customer customer = customerDao.get(cid);
@@ -390,7 +356,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
         if (assign == null) {
-            if (employee.getRole().getAssign() != RoleManager.RolePrevilgeHold) {
+            if (employee.getRole().getAssign() != RoleManager.RolePrivilgeHold) {
                 return Result.NoPrivilege();
             } else {
                 // If the assign is not the old manager, create a new assign object.
@@ -432,7 +398,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return Result.NoSession();
         }
         // Deny employees without assign privilege directly.
-        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeNone) {
+        if (employee.getRole().getAssign() == RoleManager.RolePrivilgeNone) {
             return Result.NoPrivilege();
         }
         Customer customer = customerDao.get(cid);
@@ -440,7 +406,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             Debug.error("Cannot find a customer by this cid.");
             return Result.WithData(false);
         }
-        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeAssign) {
+        if (employee.getRole().getAssign() == RoleManager.RolePrivilgeAssign) {
             Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
             if (assign == null) {
                 return Result.NoPrivilege();
@@ -455,9 +421,9 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return Result.WithData(false);
         }
         // New employee do not have privilege to be a manager of developed customer.
-        if (manager.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone ||
-                manager.getRole().getDevelopedW() == RoleManager.RolePrevilgeNone ||
-                manager.getRole().getDevelopedD() == RoleManager.RolePrevilgeNone) {
+        if (manager.getRole().getDevelopedR() == RoleManager.RolePrivilgeNone ||
+                manager.getRole().getDevelopedW() == RoleManager.RolePrivilgeNone ||
+                manager.getRole().getDevelopedD() == RoleManager.RolePrivilgeNone) {
             return Result.WithData(false);
         }
         Assign assign = new Assign();
@@ -482,7 +448,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return Result.NoSession();
         }
         // Deny employees without assign privilege directly.
-        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeNone) {
+        if (employee.getRole().getAssign() == RoleManager.RolePrivilgeNone) {
             return Result.NoPrivilege();
         }
         Customer customer = customerDao.get(cid);
@@ -490,7 +456,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             Debug.error("Cannot find a customer by this cid.");
             return Result.WithData(false);
         }
-        if (employee.getRole().getAssign() == RoleManager.RolePrevilgeAssign) {
+        if (employee.getRole().getAssign() == RoleManager.RolePrivilgeAssign) {
             Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
             if (assign == null) {
                 return Result.NoPrivilege();
@@ -544,6 +510,51 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return false;
         }
         return true;
+    }
+
+    private int getPrivilegeForEmployee(Employee employee, int state, int type) {
+        int privilege = RoleManager.RolePrivilgeNone;
+        switch (state) {
+            case CustomerStateUndeveloped:
+                if (type == RoleManager.PrivilegeRead) {
+                    privilege = employee.getRole().getUndevelopedR();
+                } else if (type == RoleManager.PrivilegeWrite) {
+                    privilege = employee.getRole().getUndevelopedW();
+                } else if (type == RoleManager.PrivilegeDelete) {
+                    privilege = employee.getRole().getUndevelopedD();
+                }
+                break;
+            case CustomerStateDeveloping:
+                if (type == RoleManager.PrivilegeRead) {
+                    privilege = employee.getRole().getDevelopingR();
+                } else if (type == RoleManager.PrivilegeWrite) {
+                    privilege = employee.getRole().getDevelopingW();
+                } else if (type == RoleManager.PrivilegeDelete) {
+                    privilege = employee.getRole().getDevelopingD();
+                }
+                break;
+            case CustomerStateDeveloped:
+                if (type == RoleManager.PrivilegeRead) {
+                    privilege = employee.getRole().getDevelopedR();
+                } else if (type == RoleManager.PrivilegeWrite) {
+                    privilege = employee.getRole().getDevelopedW();
+                } else if (type == RoleManager.PrivilegeDelete) {
+                    privilege = employee.getRole().getDevelopedD();
+                }
+                break;
+            case CustomerStateLost:
+                if (type == RoleManager.PrivilegeRead) {
+                    privilege = employee.getRole().getLostR();
+                } else if (type == RoleManager.PrivilegeWrite) {
+                    privilege = employee.getRole().getLostW();
+                } else if (type == RoleManager.PrivilegeDelete) {
+                    privilege = employee.getRole().getLostD();
+                }
+                break;
+            default:
+                break;
+        }
+        return privilege;
     }
 
 }

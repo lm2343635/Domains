@@ -64,7 +64,31 @@ public class CustomerDaoHibernate extends BaseHibernateDaoSupport<Customer> impl
     }
 
     public List<Customer> find(int state, String name, Area area, Industry industry, int lower, int higher, int offset, int pageSize) {
-        return null;
+        String hql = "from Customer where state = ?";
+        List<Object> values = new ArrayList<Object>();
+        values.add(state);
+        if (name != null && !name.equals("")) {
+            hql += " and name like ? ";
+            values.add("%" + name + "%");
+        }
+        if (area != null) {
+            hql += " and area = ? ";
+            values.add(area);
+        }
+        if (industry != null) {
+            hql += " and industry = ? ";
+            values.add(industry);
+        }
+        if (lower > 0) {
+            hql += " and capital >= ? ";
+            values.add(lower);
+        }
+        if (higher > 0) {
+            hql += " and capital <= ? ";
+            values.add(higher);
+        }
+        hql += " order by createAt desc";
+        return findByPage(hql, values, offset, pageSize);
     }
 
 }

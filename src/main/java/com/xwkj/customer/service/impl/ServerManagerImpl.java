@@ -28,7 +28,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = new Server();
@@ -47,7 +47,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         List<ServerBean> serverBeans = new ArrayList<ServerBean>();
@@ -63,7 +63,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
@@ -81,7 +81,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
@@ -104,7 +104,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getServer() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);

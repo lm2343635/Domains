@@ -30,7 +30,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
@@ -65,7 +65,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Server server = serverDao.get(sid);
@@ -86,7 +86,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         List<DomainBean> domainBeans = new ArrayList<DomainBean>();
@@ -102,7 +102,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
@@ -121,7 +121,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
@@ -147,7 +147,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
@@ -169,7 +169,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);
@@ -199,7 +199,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (employee == null) {
             return Result.NoSession();
         }
-        if (employee.getRole().getDomain() != RoleManager.RolePrevilgeHold) {
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         Domain domain = domainDao.get(did);

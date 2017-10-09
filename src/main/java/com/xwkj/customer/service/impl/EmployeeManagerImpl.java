@@ -4,7 +4,6 @@ import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.AssignBean;
 import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.bean.RoleBean;
 import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
@@ -152,19 +151,19 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         session.setAttribute(EmployeeFlag, employee.getEid());
         Role role = employee.getRole();
-        if (role.getUndevelopedR() > RoleManager.RolePrevilgeNone) {
+        if (role.getUndevelopedR() > RoleManager.RolePrivilgeNone) {
             return "undeveloped";
         }
-        if (role.getDevelopedR() > RoleManager.RolePrevilgeNone) {
+        if (role.getDevelopedR() > RoleManager.RolePrivilgeNone) {
             return "developing";
         }
-        if (role.getDevelopedR() > RoleManager.RolePrevilgeNone) {
+        if (role.getDevelopedR() > RoleManager.RolePrivilgeNone) {
             return "developed";
         }
-        if (role.getLostR() > RoleManager.RolePrevilgeNone) {
+        if (role.getLostR() > RoleManager.RolePrivilgeNone) {
             return "lost";
         }
-        if (role.getServer() > RoleManager.RolePrevilgeNone) {
+        if (role.getServer() > RoleManager.RolePrivilgeNone) {
             return "domains";
         }
         return "";
@@ -186,10 +185,10 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             return Result.NoSession();
         }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
-        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeHold)) {
+        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeHold)) {
             employeeBeans.add(new EmployeeBean(manager));
         }
-        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeAssign)) {
+        for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeAssign)) {
             employeeBeans.add(new EmployeeBean(manager));
         }
         return Result.WithData(employeeBeans);
@@ -209,8 +208,8 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
 
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
         List<Assign> assigns = assignDao.findByCustomer(customer);
-        List<Employee> managers = employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeHold);
-        managers.addAll(employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrevilgeAssign));
+        List<Employee> managers = employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeHold);
+        managers.addAll(employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeAssign));
         for (Assign assign : assigns) {
             if (managers.contains(assign.getEmployee())) {
                 managers.remove(assign.getEmployee());
@@ -234,10 +233,10 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             return Result.WithData(null);
         }
         Role role = employee.getRole();
-        AssignBean assignBean = new AssignBean(role.getDevelopedR() == RoleManager.RolePrevilgeHold,
-                        role.getDevelopedW() == RoleManager.RolePrevilgeHold,
-                        role.getDevelopedD() == RoleManager.RolePrevilgeHold,
-                        role.getAssign() == RoleManager.RolePrevilgeHold);
+        AssignBean assignBean = new AssignBean(role.getDevelopedR() == RoleManager.RolePrivilgeHold,
+                        role.getDevelopedW() == RoleManager.RolePrivilgeHold,
+                        role.getDevelopedD() == RoleManager.RolePrivilgeHold,
+                        role.getAssign() == RoleManager.RolePrivilgeHold);
         Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
         if (assign != null) {
             if (assign.getR()) {

@@ -76,7 +76,32 @@ public class AssignDaoHibernate extends BaseHibernateDaoSupport<Assign> implemen
     }
 
     public List<Assign> findByEmployee(Employee employee, int state, String name, Area area, Industry industry, int lower, int higher, int offset, int pageSize) {
-        return null;
+        String hql = "from Assign where employee = ? and customer.state = ?";
+        List<Object> values = new ArrayList<Object>();
+        values.add(employee);
+        values.add(state);
+        if (name != null && !name.equals("")) {
+            hql += " and customer.name like ? ";
+            values.add("%" + name + "%");
+        }
+        if (area != null) {
+            hql += " and customer.area = ? ";
+            values.add(area);
+        }
+        if (industry != null) {
+            hql += " and customer.industry = ? ";
+            values.add(industry);
+        }
+        if (lower > 0) {
+            hql += " and customer.capital >= ? ";
+            values.add(lower);
+        }
+        if (higher > 0) {
+            hql += " and customer.capital <= ? ";
+            values.add(higher);
+        }
+        hql += "order by customer.createAt desc";
+        return findByPage(hql, values, offset, pageSize);
     }
 
 }
