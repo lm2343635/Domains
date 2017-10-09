@@ -63,7 +63,46 @@
             </ul>
             <i id="add-undeveloped" class="fa fa-plus fa-lg" data-toggle="modal" data-target="#add-undeveloped-modal"></i>
         </div>
-
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-customer-name" type="text" class="form-control" placeholder="客户名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-location-arrow"></i></span>
+                        <select id="search-customer-area" class="form-control">
+                            <option value="">请选择区域</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-flag"></i></span>
+                        <select id="search-customer-industry" class="form-control">
+                            <option value="">请选择行业</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-cny"></i></span>
+                        <input id="search-customer-capital-lower" type="text" class="form-control" placeholder="资金下限">
+                        <span class="input-group-addon">~</span>
+                        <input id="search-customer-capital-higher" type="text" class="form-control" placeholder="资金上限">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-1">
+                    <button class="btn btn-block btn-info">重置</button>
+                </div>
+                <div class="col-xs-12 col-md-1">
+                    <button class="btn btn-block btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
         <table id="customer-list" class="table">
             <thead>
             <tr>
