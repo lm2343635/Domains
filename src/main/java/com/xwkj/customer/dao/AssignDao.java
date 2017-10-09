@@ -1,9 +1,7 @@
 package com.xwkj.customer.dao;
 
 import com.xwkj.common.hibernate.BaseDao;
-import com.xwkj.customer.domain.Assign;
-import com.xwkj.customer.domain.Customer;
-import com.xwkj.customer.domain.Employee;
+import com.xwkj.customer.domain.*;
 
 import java.util.List;
 
@@ -27,11 +25,24 @@ public interface AssignDao extends BaseDao<Assign> {
     List<Assign> findByCustomer(Customer customer);
 
     /**
+     *
+     * @param employee
+     * @param state
+     * @param name
+     * @param area
+     * @param industry
+     * @param lower
+     * @param higher
+     * @return
+     */
+    int getCountForEmployee(Employee employee, int state, final String name, final Area area, final Industry industry, final int lower, final int higher);
+
+    /**
      * Find assigns by employee.
      *
      * @param employee
      * @return
      */
-    List<Assign> findByEmployee(Employee employee);
+    List<Assign> findByEmployee(Employee employee, int state, final String name, final Area area, final Industry industry, final int lower, final int higher, int offset, int pageSize);
 
 }

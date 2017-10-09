@@ -65,7 +65,61 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
     }
 
     @RemoteMethod
-    public Result getByState(int state, HttpSession session) {
+    public Result getSearchCount(int state, String name, String aid, String iid, int lower, int higher, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Area area = null;
+        if (aid != null && !aid.equals("")) {
+            area = areaDao.get(aid);
+            if (area == null) {
+                Debug.error("Cannot find an area by this aid");
+            }
+        }
+        Industry industry = null;
+        if (iid != null && !iid.equals("")) {
+            industry = industryDao.get(iid);
+            if (industry == null) {
+                Debug.error("Cannot find an industry by this iid.");
+            }
+        }
+        boolean assign = false;
+        switch (state) {
+            case CustomerStateUndeveloped:
+                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeNone){
+                    return Result.NoPrivilege();
+                }
+                assign = employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign;
+                break;
+            case CustomerStateDeveloping:
+                if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
+                assign = employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign;
+                break;
+            case CustomerStateDeveloped:
+                if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
+                assign = employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign;
+                break;
+            case CustomerStateLost:
+                if (employee.getRole().getLostR() == RoleManager.RolePrevilgeNone) {
+                    return Result.NoPrivilege();
+                }
+                assign = employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign;
+                break;
+            default:
+                break;
+        }
+        int count = assign ? assignDao.getCountForEmployee(employee, state, name, area, industry, lower, higher) :
+                customerDao.getCount(state, name, area, industry, lower, higher);
+        return Result.WithData(count);
+    }
+
+    @RemoteMethod
+    public Result search(int state, String name, String aid, String iid, int lower, int higher, int page, int pageSize, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -74,7 +128,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         switch (state) {
             case CustomerStateUndeveloped:
                 if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeHold) {
-                    customers = customerDao.findByState(state);
+
                 } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrevilgeAssign) {
 
                 } else {
@@ -83,7 +137,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 break;
             case CustomerStateDeveloping:
                 if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeHold) {
-                    customers = customerDao.findByState(state);
+
                 } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrevilgeAssign) {
 
                 } else {
@@ -92,20 +146,20 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 break;
             case CustomerStateDeveloped:
                 if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeHold) {
-                    customers = customerDao.findByState(state);
+
                 } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrevilgeAssign) {
-                    for (Assign assign : assignDao.findByEmployee(employee)) {
-                        if (assign.getR()) {
-                            customers.add(assign.getCustomer());
-                        }
-                    }
+//                    for (Assign assign : assignDao.findByEmployee(employee)) {
+//                        if (assign.getR()) {
+//                            customers.add(assign.getCustomer());
+//                        }
+//                    }
                 } else {
                     return Result.NoPrivilege();
                 }
                 break;
             case CustomerStateLost:
                 if (employee.getRole().getLostR() == RoleManager.RolePrevilgeHold) {
-                    customers = customerDao.findByState(state);
+
                 } else if (employee.getRole().getLostR() == RoleManager.RolePrevilgeAssign) {
 
                 } else {

@@ -27,13 +27,33 @@ public interface CustomerManager {
     Result addUndeveloped(String name, int capital, String contact, String aid, String iid, HttpSession session);
 
     /**
-     * Get customers by state for employees.
+     * Get search count.
      *
      * @param state
+     * @param name
+     * @param aid
+     * @param iid
+     * @param lower
+     * @param higher
+     * @return
+     */
+    Result getSearchCount(int state, String name, String aid, String iid, int lower, int higher, HttpSession session);
+
+    /**
+     * Search customers for employees.
+     *
+     * @param state
+     * @param name
+     * @param aid
+     * @param iid
+     * @param lower
+     * @param higher
+     * @param page
+     * @param pageSize
      * @param session
      * @return
      */
-    Result getByState(int state, HttpSession session);
+    Result search(int state, String name, String aid, String iid, int lower, int higher, int page, int pageSize, HttpSession session);
 
     /**
      * Get a customer for a employee.
