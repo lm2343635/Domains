@@ -17,4 +17,12 @@ public interface LogManager {
      */
     Result add(String cid, String title, String content, HttpSession session);
 
+    /**
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result getByCid(String cid, HttpSession session);
+
 }

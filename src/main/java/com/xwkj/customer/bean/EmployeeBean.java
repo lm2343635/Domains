@@ -72,14 +72,16 @@ public class EmployeeBean {
         this.role = role;
     }
 
-    public EmployeeBean(Employee employee) {
+    public EmployeeBean(Employee employee, boolean full) {
         this.eid = employee.getEid();
         this.createAt = new Date(employee.getCreateAt());
         this.updateAt = new Date(employee.getUpdateAt());
         this.name = employee.getName();
-        this.password = employee.getPassword();
-        this.enable = employee.getEnable();
-        this.role = new RoleBean(employee.getRole());
+        if (full) {
+            this.password = employee.getPassword();
+            this.enable = employee.getEnable();
+            this.role = new RoleBean(employee.getRole());
+        }
     }
 
 }

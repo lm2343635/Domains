@@ -60,7 +60,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
         for (Employee employee : employeeDao.findAll("createAt", true)) {
-            employeeBeans.add(new EmployeeBean(employee));
+            employeeBeans.add(new EmployeeBean(employee, true));
         }
         return employeeBeans;
     }
@@ -75,7 +75,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             Debug.error("Cannot find a employee by this eid.");
             return null;
         }
-        return new EmployeeBean(employee);
+        return new EmployeeBean(employee, true);
     }
 
     @RemoteMethod
@@ -175,7 +175,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         if (employee == null) {
             return null;
         }
-        return new EmployeeBean(employee);
+        return new EmployeeBean(employee, true);
     }
 
     @RemoteMethod
@@ -186,10 +186,10 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
         for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeHold)) {
-            employeeBeans.add(new EmployeeBean(manager));
+            employeeBeans.add(new EmployeeBean(manager, true));
         }
         for (Employee manager : employeeDao.findByRolePrivilege("developedW", RoleManager.RolePrivilgeAssign)) {
-            employeeBeans.add(new EmployeeBean(manager));
+            employeeBeans.add(new EmployeeBean(manager, true));
         }
         return Result.WithData(employeeBeans);
     }
@@ -216,7 +216,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             }
         }
         for (Employee manager : managers) {
-            employeeBeans.add(new EmployeeBean(manager));
+            employeeBeans.add(new EmployeeBean(manager, true));
         }
         return Result.WithData(employeeBeans);
     }

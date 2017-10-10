@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.LogBean;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RemoteProxy(name = "LogManager")
@@ -58,6 +61,36 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
             return Result.WithData(null);
         }
         return Result.WithData(lid);
+    }
+
+    @RemoteMethod
+    public Result getByCid(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        int privilege = getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead);
+        if (privilege == RoleManager.RolePrivilgeNone) {
+            return Result.NoPrivilege();
+        } else if (privilege == RoleManager.RolePrivilgeAssign) {
+            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+            if (assign == null) {
+                return Result.NoPrivilege();
+            }
+            if (!assign.getR()) {
+                return Result.NoPrivilege();
+            }
+        }
+        List<LogBean> logBeans = new ArrayList<LogBean>();
+        for (Log log : logDao.findByCustomer(customer)) {
+            logBeans.add(new LogBean(log));
+        }
+        return Result.WithData(logBeans);
     }
 
 }

@@ -170,7 +170,7 @@ public class CustomerBean {
             this.money = customer.getMoney() == null ? 0 : customer.getMoney();
             this.document = customer.getDocument();
             this.remark = customer.getRemark();
-            this.register = new EmployeeBean(customer.getRegister());
+            this.register = new EmployeeBean(customer.getRegister(), true);
         }
     }
 }

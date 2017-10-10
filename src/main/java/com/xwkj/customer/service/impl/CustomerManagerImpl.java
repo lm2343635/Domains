@@ -195,7 +195,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         CustomerBean customerBean = new CustomerBean(customer, true);
         List<EmployeeBean> managers = new ArrayList<EmployeeBean>();
         for (Assign assign : assignDao.findByCustomer(customer)) {
-            managers.add(new EmployeeBean(assign.getEmployee()));
+            managers.add(new EmployeeBean(assign.getEmployee(), true));
         }
         customerBean.setManagers(managers);
         return Result.WithData(customerBean);

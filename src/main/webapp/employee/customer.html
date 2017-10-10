@@ -188,20 +188,30 @@
         <div class="panel-heading">
             <h1 class="panel-title">
                 <span>工作日志</span>
-                <button class="btn btn-success btn-xs pull-right" data-toggle="modal" data-target="#log-modal">新增日志</button>
+                <button class="btn btn-success btn-xs pull-right" data-toggle="modal" data-target="#log-modal">新增日志
+                </button>
             </h1>
 
         </div>
-        <table class="table">
+        <table id="log-list" class="table">
             <thead>
             <tr>
                 <th>创建时间</th>
                 <th>更新时间</th>
                 <th>创建人</th>
-                <th>查看</th>
+                <th>标题</th>
                 <th>删除</th>
             </tr>
             </thead>
+            <tbody>
+            <tr id="${lid}$" class="mengular-template log-list-template">
+                <td>${createAt}$</td>
+                <td>${updateAt}$</td>
+                <td>${employee}$</td>
+                <td class="log-list-edit"><a href="javascript:void(0)">${title}$</a></td>
+                <td><i class="fa fa-lg fa-trash text-danger"></i></td>
+            </tr>
+            </tbody>
         </table>
     </div>
 </div>

@@ -153,6 +153,9 @@ $(document).ready(function () {
                 addManager(assinableEmployees[i]);
             }
 
+            // Show all logs.
+            loadLogs();
+
         });
     });
     
@@ -164,7 +167,7 @@ $(document).ready(function () {
                     return;
                 }
                 if (!result.privilege) {
-                    $.messager.popup("改账户无权申请开发客户！");
+                    $.messager.popup("该账户无权申请开发客户！");
                     return;
                 }
                 if (!result.data) {
@@ -237,7 +240,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("改账户无权限更改该客户的详细信息！");
+                $.messager.popup("该账户无权限更改该客户的详细信息！");
                 return;
             }
             $("#customer-edit").text("保存客户信息").removeAttr("disabled");
@@ -260,7 +263,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("改账户无权限完成开发客户！");
+                $.messager.popup("该账户无权限完成开发客户！");
                 return;
             }
             if (!result.data) {
@@ -292,7 +295,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("改账户无权限添加新的负责人！");
+                $.messager.popup("该账户无权限添加新的负责人！");
                 return;
             }
             if (!result.data) {
@@ -329,7 +332,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("改账户无权限添加工作日志！");
+                $.messager.popup("该账户无权限添加工作日志！");
                 return;
             }
             if (result.data == null) {
@@ -362,7 +365,7 @@ function addManager(employee) {
                     return;
                 }
                 if (!result.privilege) {
-                    $.messager.popup("改账户无权限删除负责人！");
+                    $.messager.popup("该账户无权限删除负责人！");
                     return;
                 }
                 if (!result.data) {
@@ -377,5 +380,29 @@ function addManager(employee) {
 }
 
 function loadLogs() {
+
+    LogManager.getByCid(cid, function (result) {
+        console.log(result);
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $("#log-list").html("<h3 class='text-center'>该账户无权限查看工作日志！</h3>");
+            return;
+        }
+
+        $("#log-list tbody").mengularClear();
+        for (var i in result.data) {
+            var log = result.data[i];
+            $("#log-list tbody").mengular(".log-list-template", {
+                lid: log.lid,
+                createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                employee: log.employee.name,
+                title: log.title
+            });
+        }
+    });
 
 }
