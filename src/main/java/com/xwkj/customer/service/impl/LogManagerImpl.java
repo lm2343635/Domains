@@ -88,9 +88,35 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         }
         List<LogBean> logBeans = new ArrayList<LogBean>();
         for (Log log : logDao.findByCustomer(customer)) {
-            logBeans.add(new LogBean(log));
+            logBeans.add(new LogBean(log, false));
         }
         return Result.WithData(logBeans);
+    }
+
+    @RemoteMethod
+    public Result get(String lid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Log log = logDao.get(lid);
+        if (log == null) {
+            Debug.error("Cannot find a log by this lid.");
+            return Result.WithData(null);
+        }
+        int privilege = getPrivilegeForEmployee(employee, log.getCustomer().getState(), RoleManager.PrivilegeRead);
+        if (privilege == RoleManager.RolePrivilgeNone) {
+            return Result.NoPrivilege();
+        } else if (privilege == RoleManager.RolePrivilgeAssign) {
+            Assign assign = assignDao.getByCustomerForEmployee(log.getCustomer(), employee);
+            if (assign == null) {
+                return Result.NoPrivilege();
+            }
+            if (!assign.getR()) {
+                return Result.NoPrivilege();
+            }
+        }
+        return Result.WithData(new LogBean(log, true));
     }
 
 }

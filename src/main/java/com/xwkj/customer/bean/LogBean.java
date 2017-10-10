@@ -72,14 +72,16 @@ public class LogBean {
         this.employee = employee;
     }
 
-    public LogBean(Log log) {
+    public LogBean(Log log, boolean full) {
         this.lid = log.getLid();
         this.createAt = new Date(log.getCreateAt());
         this.updateAt = new Date(log.getUpdateAt());
         this.title = log.getTitle();
-        this.content = log.getContent();
         this.customer = new CustomerBean(log.getCustomer(), false);
         this.employee = new EmployeeBean(log.getEmployee(), false);
+        if (full) {
+            this.content = log.getContent();
+        }
     }
 
 }

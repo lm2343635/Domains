@@ -326,23 +326,29 @@ $(document).ready(function () {
             $.messager.popup("标题不能为空！");
             return;
         }
-        LogManager.add(cid, title, content, function (result) {
-            if (!result.session) {
-                sessionError();
-                return;
-            }
-            if (!result.privilege) {
-                $.messager.popup("该账户无权限添加工作日志！");
-                return;
-            }
-            if (result.data == null) {
-                $.messager.popup("新建日志错误，请重试！");
-                return;
-            }
+        if (editingLid == null) {
+            // Create a new log.
+            LogManager.add(cid, title, content, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("该账户无权限添加工作日志！");
+                    return;
+                }
+                if (result.data == null) {
+                    $.messager.popup("新建日志错误，请重试！");
+                    return;
+                }
 
-            $("#log-modal").modal("hide");
-            loadLogs();
-        });
+                $("#log-modal").modal("hide");
+                loadLogs();
+            });
+        } else {
+            // TODO: update an existing log.
+
+        }
     });
 
     $("#log-modal").on("hidden.bs.modal", function () {
@@ -401,6 +407,26 @@ function loadLogs() {
                 updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 employee: log.employee.name,
                 title: log.title
+            });
+
+            $("#" + log.lid + " .log-list-edit a").click(function () {
+                editingLid = $(this).mengularId();
+                LogManager.get(editingLid, function (result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        $.messager.popup("该账户无权限查看工作日志！");
+                        return;
+                    }
+                    fillValue({
+                        "log-title": result.data.title,
+                        "log-content": result.data.content
+                    });
+                    $("#log-modal").modal("show");
+                });
+
             });
         }
     });
