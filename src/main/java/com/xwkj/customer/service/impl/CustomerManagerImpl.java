@@ -511,49 +511,4 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         return true;
     }
 
-    private int getPrivilegeForEmployee(Employee employee, int state, int type) {
-        int privilege = RoleManager.RolePrivilgeNone;
-        switch (state) {
-            case CustomerStateUndeveloped:
-                if (type == RoleManager.PrivilegeRead) {
-                    privilege = employee.getRole().getUndevelopedR();
-                } else if (type == RoleManager.PrivilegeWrite) {
-                    privilege = employee.getRole().getUndevelopedW();
-                } else if (type == RoleManager.PrivilegeDelete) {
-                    privilege = employee.getRole().getUndevelopedD();
-                }
-                break;
-            case CustomerStateDeveloping:
-                if (type == RoleManager.PrivilegeRead) {
-                    privilege = employee.getRole().getDevelopingR();
-                } else if (type == RoleManager.PrivilegeWrite) {
-                    privilege = employee.getRole().getDevelopingW();
-                } else if (type == RoleManager.PrivilegeDelete) {
-                    privilege = employee.getRole().getDevelopingD();
-                }
-                break;
-            case CustomerStateDeveloped:
-                if (type == RoleManager.PrivilegeRead) {
-                    privilege = employee.getRole().getDevelopedR();
-                } else if (type == RoleManager.PrivilegeWrite) {
-                    privilege = employee.getRole().getDevelopedW();
-                } else if (type == RoleManager.PrivilegeDelete) {
-                    privilege = employee.getRole().getDevelopedD();
-                }
-                break;
-            case CustomerStateLost:
-                if (type == RoleManager.PrivilegeRead) {
-                    privilege = employee.getRole().getLostR();
-                } else if (type == RoleManager.PrivilegeWrite) {
-                    privilege = employee.getRole().getLostW();
-                } else if (type == RoleManager.PrivilegeDelete) {
-                    privilege = employee.getRole().getLostD();
-                }
-                break;
-            default:
-                break;
-        }
-        return privilege;
-    }
-
 }
