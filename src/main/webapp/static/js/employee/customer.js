@@ -2,6 +2,7 @@ var cid = request("cid");
 var state;
 
 var assinableEmployees;
+var editingLid = null;
 
 $(document).ready(function () {
 
@@ -315,6 +316,37 @@ $(document).ready(function () {
         });
     });
 
+    $("#save-log-submit").click(function () {
+        var title = $("#log-title").val();
+        var content = $("#log-content").val();
+        if (title == null || title == "") {
+            $.messager.popup("标题不能为空！");
+            return;
+        }
+        LogManager.add(cid, title, content, function (result) {
+            if (!result.session) {
+                sessionError();
+                return;
+            }
+            if (!result.privilege) {
+                $.messager.popup("改账户无权限添加工作日志！");
+                return;
+            }
+            if (result.data == null) {
+                $.messager.popup("新建日志错误，请重试！");
+                return;
+            }
+
+            $("#log-modal").modal("hide");
+            loadLogs();
+        });
+    });
+
+    $("#log-modal").on("hidden.bs.modal", function () {
+        $("#log-modal input").val("");
+        editingLid = null;
+    });
+
 });
 
 function addManager(employee) {
@@ -342,4 +374,8 @@ function addManager(employee) {
             });
         });
     });
+}
+
+function loadLogs() {
+
 }

@@ -20,6 +20,9 @@ public class Log implements Serializable {
     @Column(nullable = false)
     private Long updateAt;
 
+    @Column(nullable = false)
+    private String title;
+
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
@@ -53,6 +56,14 @@ public class Log implements Serializable {
 
     public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {

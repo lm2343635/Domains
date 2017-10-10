@@ -22,7 +22,7 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
 
     @RemoteMethod
     @Transactional
-    public Result add(String cid, String content, HttpSession session) {
+    public Result add(String cid, String title, String content, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -35,17 +35,20 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         int privilege = getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite);
         if (privilege == RoleManager.RolePrivilgeNone) {
             return Result.NoPrivilege();
+        } else if (privilege == RoleManager.RolePrivilgeAssign) {
+            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+            if (assign == null) {
+                return Result.NoPrivilege();
+            }
+            if (!assign.getW()) {
+                return Result.NoPrivilege();
+            }
         }
-        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-        if (assign == null) {
-            return Result.NoPrivilege();
-        }
-        if (!assign.getW()) {
-            return Result.NoPrivilege();
-        }
+        // Create a new log.
         Log log = new Log();
         log.setCreateAt(System.currentTimeMillis());
         log.setUpdateAt(log.getCreateAt());
+        log.setTitle(title);
         log.setContent(content);
         log.setCustomer(customer);
         log.setEmployee(employee);
