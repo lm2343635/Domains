@@ -130,7 +130,6 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
                 break;
             case RoleManager.RolePrivilgeAssign:
                 for (Assign assign : assignDao.findByEmployee(employee, state, name, area, industry, lower, higher, offset, pageSize)) {
-                    System.out.println(assign.getCustomer().getName());
                     customerBeans.add(new CustomerBean(assign.getCustomer(), false));
                 }
                 break;
