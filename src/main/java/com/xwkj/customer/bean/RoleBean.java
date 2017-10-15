@@ -27,6 +27,8 @@ public class RoleBean {
     private int assign;
     private int server;
     private int domain;
+    private int employee;
+    private int employees;
 
     public String getRid() {
         return rid;
@@ -196,6 +198,22 @@ public class RoleBean {
         this.domain = domain;
     }
 
+    public int getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(int employee) {
+        this.employee = employee;
+    }
+
+    public int getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(int employees) {
+        this.employees = employees;
+    }
+
     public RoleBean(Role role) {
         this.rid = role.getRid();
         this.name = role.getName();
@@ -218,6 +236,8 @@ public class RoleBean {
         this.assign = role.getAssign();
         this.server = role.getServer();
         this.domain = role.getDomain();
+        this.employee = role.getEmployee();
+        this.employees = role.getEmployees();
     }
 
 }

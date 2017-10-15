@@ -17,7 +17,8 @@ var previlegNames = {
     recover: "已流失->开发中",
     assign: "指派负责人权限",
     server: "服务器管理权限",
-    domain: "域名管理权限"
+    domain: "域名管理权限",
+    employee: "员工管理权限"
 }
 
 var symbols = ["<i class='fa fa-times text-muted'></i>", "<i class='fa fa-circle-o text-warning'></i>", "<i class='fa fa-check text-success'></i>"];
@@ -91,7 +92,9 @@ function loadRoles() {
                 recover: symbols[role.recover],
                 assign: symbols[role.assign],
                 server: symbols[role.server],
-                domain: symbols[role.domain]
+                domain: symbols[role.domain],
+                employee: symbols[role.employee],
+                employees: role.employees
             });
 
             $("#" + role.rid + " .role-list-remove").click(function () {

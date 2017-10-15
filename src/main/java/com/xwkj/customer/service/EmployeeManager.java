@@ -24,14 +24,6 @@ public interface EmployeeManager {
     String add(String name, String password, String rid, HttpSession session);
 
     /**
-     * Get all employees for admin.
-     *
-     * @param session
-     * @return
-     */
-    List<EmployeeBean> getAll(HttpSession session);
-
-    /**
      * Get employee by eid for admin.
      *
      * @param eid
@@ -69,6 +61,16 @@ public interface EmployeeManager {
      * @return
      */
     boolean resetPassword(String eid, String password, HttpSession session);
+
+    // ************* For admin & employee ****************
+
+    /**
+     * Get all employees for admin.
+     *
+     * @param session
+     * @return
+     */
+    Result getAll(HttpSession session);
 
     // ************* For employee ****************
 
@@ -114,5 +116,6 @@ public interface EmployeeManager {
      * @return
      */
     Result assignForCustomer(String cid, HttpSession session);
+
 
 }

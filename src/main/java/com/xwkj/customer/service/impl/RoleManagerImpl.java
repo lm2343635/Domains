@@ -45,6 +45,7 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
         role.setAssign(privelges[16]);
         role.setServer(privelges[17]);
         role.setDomain(privelges[18]);
+        role.setEmployee(privelges[19]);
         role.setEmployees(0);
         return roleDao.save(role);
     }

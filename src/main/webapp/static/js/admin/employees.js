@@ -102,16 +102,16 @@ $(document).ready(function () {
 });
 
 function loadEmployees() {
-    EmployeeManager.getAll(function (employees) {
-        if (employees == null) {
+    EmployeeManager.getAll(function (result) {
+        if (!result.session) {
             sessionError();
             return;
         }
 
         $("#employee-list tbody").mengularClear();
 
-        for (var i in employees) {
-            var employee = employees[i];
+        for (var i in result.data) {
+            var employee = result.data[i];
             $("#employee-list tbody").mengular(".employee-list-template", {
                 eid: employee.eid,
                 createAt: employee.createAt.format(DATE_HOUR_MINUTE_FORMAT),

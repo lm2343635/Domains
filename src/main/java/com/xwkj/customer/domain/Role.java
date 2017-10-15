@@ -94,6 +94,11 @@ public class Role implements Serializable {
     @Column(nullable = false)
     private Integer domain;
 
+    // Privilege to manage employee.
+    @Column(nullable = false)
+    private Integer employee;
+
+    // Numbers of employees of this role.
     @Column(nullable = false)
     private Integer employees;
 
@@ -263,6 +268,14 @@ public class Role implements Serializable {
 
     public void setRecover(Integer recover) {
         this.recover = recover;
+    }
+
+    public Integer getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Integer employee) {
+        this.employee = employee;
     }
 
     public Integer getEmployees() {

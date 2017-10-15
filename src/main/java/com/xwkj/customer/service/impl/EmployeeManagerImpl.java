@@ -54,18 +54,6 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     }
 
     @RemoteMethod
-    public List<EmployeeBean> getAll(HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
-        }
-        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
-        for (Employee employee : employeeDao.findAll("createAt", true)) {
-            employeeBeans.add(new EmployeeBean(employee, true));
-        }
-        return employeeBeans;
-    }
-
-    @RemoteMethod
     public EmployeeBean get(String eid, HttpSession session) {
         if (!checkAdminSession(session)) {
             return null;
@@ -134,6 +122,29 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         employee.setPassword(password);
         employeeDao.update(employee);
         return true;
+    }
+
+    // ************* For admin & employee *************
+
+    @RemoteMethod
+    public Result getAll(HttpSession session) {
+        boolean admin = checkAdminSession(session);
+        Employee employee = getEmployeeFromSession(session);
+        if (!admin && employee == null) {
+            return Result.NoSession();
+        }
+        List<Employee> employees = null;
+        if (admin || employee.getRole().getEmployee() == RoleManager.RolePrivilgeHold) {
+            employees = employeeDao.findAll("createAt", true);
+        } else {
+            employees = new ArrayList<Employee>();
+            employees.add(employee);
+        }
+        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
+        for (Employee e : employees) {
+            employeeBeans.add(new EmployeeBean(e, true));
+        }
+        return Result.WithData(employeeBeans);
     }
 
     // ************* For employee ****************
