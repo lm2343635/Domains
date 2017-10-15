@@ -289,7 +289,7 @@ $(document).ready(function () {
         var w = $("#add-manager-w").val();
         var d = $("#add-manager-d").val();
         var assign = $("#add-manager-assign").val();
-        CustomerManager.assign(cid, eid, r, w, d, assign, function (result) {
+        AssignManager.assign(cid, eid, r, w, d, assign, function (result) {
             if (!result.session) {
                 sessionError();
                 return;
@@ -379,7 +379,7 @@ function addManager(employee) {
         var eid = $(this).mengularId();
         var name = $("#" + eid + " span").text();
         $.messager.confirm("移除负责人", "确认要移除负责人" + name + "吗？", function () {
-            CustomerManager.revokeAssign(cid, eid, function (result) {
+            AssignManager.revokeAssign(cid, eid, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
