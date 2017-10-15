@@ -36,7 +36,7 @@ public interface LogManager {
     Result get(String lid, HttpSession session);
 
     /**
-     * Edit a log.
+     * Edit a log by log creator.
      *
      * @param lid
      * @param title
@@ -45,5 +45,14 @@ public interface LogManager {
      * @return
      */
     Result edit(String lid, String title, String content, HttpSession session);
+
+    /**
+     * Remove a log by log creator.
+     *
+     * @param lid
+     * @param session
+     * @return
+     */
+    Result remove(String lid, HttpSession session);
 
 }

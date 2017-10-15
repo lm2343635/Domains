@@ -442,6 +442,25 @@ function loadLogs() {
                 });
 
             });
+
+            $("#" + log.lid + " .log-list-remove").click(function () {
+                var lid = $(this).mengularId();
+                var title = $("#" + lid + " .log-list-edit a").text();
+                $.messager.confirm("删除工作日志", "确认删除工作日志" + title + "吗？", function () {
+                    LogManager.remove(lid, function (result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("工作日志创建者以外的员工无删除改该日志！");
+                            return;
+                        }
+                        $("#" + lid).remove();
+                    })
+                });
+            });
+
         }
     });
 

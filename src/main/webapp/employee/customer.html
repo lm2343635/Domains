@@ -44,6 +44,11 @@
         #log-modal .modal-body {
             overflow: auto;
         }
+
+        #log-list .log-list-template i {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -209,7 +214,7 @@
                 <td>${updateAt}$</td>
                 <td>${employee}$</td>
                 <td class="log-list-edit"><a href="javascript:void(0)">${title}$</a></td>
-                <td><i class="fa fa-lg fa-trash text-danger"></i></td>
+                <td class="log-list-remove"><i class="fa fa-lg fa-trash text-danger"></i></td>
             </tr>
             </tbody>
         </table>
