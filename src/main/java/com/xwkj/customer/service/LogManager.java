@@ -35,4 +35,15 @@ public interface LogManager {
      */
     Result get(String lid, HttpSession session);
 
+    /**
+     * Edit a log.
+     *
+     * @param lid
+     * @param title
+     * @param content
+     * @param session
+     * @return
+     */
+    Result edit(String lid, String title, String content, HttpSession session);
+
 }

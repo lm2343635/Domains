@@ -119,4 +119,27 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         return Result.WithData(new LogBean(log, true));
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result edit(String lid, String title, String content, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Log log = logDao.get(lid);
+        if (log == null) {
+            Debug.error("Cannot find a log by this lid.");
+            return Result.WithData(false);
+        }
+        // Only the log creator can edit the log.
+        if (!log.getEmployee().equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        log.setTitle(title);
+        log.setContent(content);
+        log.setUpdateAt(System.currentTimeMillis());
+        logDao.update(log);
+        return Result.WithData(true);
+    }
+
 }

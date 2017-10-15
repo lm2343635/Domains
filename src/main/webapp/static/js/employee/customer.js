@@ -334,6 +334,7 @@ $(document).ready(function () {
                     return;
                 }
                 if (!result.privilege) {
+                    $("#log-modal").modal("hide");
                     $.messager.popup("该账户无权限添加工作日志！");
                     return;
                 }
@@ -346,8 +347,21 @@ $(document).ready(function () {
                 loadLogs();
             });
         } else {
-            // TODO: update an existing log.
+            // Update an existing log.
+            LogManager.edit(editingLid, title, content, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $("#log-modal").modal("hide");
+                    $.messager.popup("工作日志创建者以外的员工无权修改该日志！");
+                    return;
+                }
 
+                $("#log-modal").modal("hide");
+                loadLogs();
+            });
         }
     });
 
