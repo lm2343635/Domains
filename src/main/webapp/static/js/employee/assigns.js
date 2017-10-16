@@ -15,6 +15,22 @@ $(document).ready(function () {
     })
     $("#customer-panel .panel-heading .nav li").eq(state - 1).addClass("active");
 
+    AreaManager.getAll(function (areas) {
+        for (var i in areas) {
+            var area = areas[i];
+            var option = $("<option>").val(area.aid).text(area.name);
+            $("#add-undeveloped-area, #search-customer-area").append(option);
+        }
+    });
+
+    IndustryManager.getAll(function (industries) {
+        for (var i in industries) {
+            var industry = industries[i];
+            var option = $("<option>").val(industry.iid).text(industry.name);
+            $("#add-undeveloped-industry, #search-customer-industry").append(option);
+        }
+    });
+
     checkEmployeeSession(function () {
 
         EmployeeManager.get(eid, function (result) {
@@ -38,6 +54,40 @@ $(document).ready(function () {
             loadAssigns();
         });
 
+    });
+
+    $("#search-submit").click(function () {
+        var name = $("#search-customer-name").val();
+        var aid = $("#search-customer-area").val();
+        var iid = $("#search-customer-industry").val();
+        var lower = $("#search-customer-capital-lower").val();
+        var higher = $("#search-customer-capital-higher").val();
+        var validate = true;
+        if (lower != null && lower != "") {
+            if (!isInteger(lower) || lower < 0) {
+                $("#search-customer-capital-lower").parent().addClass("has-error");
+                validate = false;
+            } else {
+                $("#search-customer-capital-lower").parent().removeClass("has-error");
+            }
+        }
+        if (higher != null && higher != "") {
+            if (!isInteger(higher) || higher < 0) {
+                $("#search-customer-capital-higher").parent().addClass("has-error");
+                validate = false;
+            } else {
+                $("#search-customer-capital-higher").parent().removeClass("has-error");
+            }
+        }
+        if (!validate) {
+            $.messager.popup("注册资金必须为正整数！");
+            return;
+        }
+        searchAssigns(name, aid, iid, lower, higher, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
     });
 
 });
