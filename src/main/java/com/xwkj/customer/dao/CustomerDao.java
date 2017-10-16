@@ -10,6 +10,7 @@ import java.util.List;
 public interface CustomerDao extends BaseDao<Customer> {
 
     /**
+     * Get count for page finding.
      *
      * @param state
      * @param name
@@ -22,6 +23,7 @@ public interface CustomerDao extends BaseDao<Customer> {
     int getCount(int state, String name, Area area, Industry industry, int lower, int higher);
 
     /**
+     * Find customer by pgae.
      *
      * @param state
      * @param name

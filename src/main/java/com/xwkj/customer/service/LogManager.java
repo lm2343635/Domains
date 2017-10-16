@@ -55,4 +55,32 @@ public interface LogManager {
      */
     Result remove(String lid, HttpSession session);
 
+    /**
+     * Get search count.
+     *
+     * @param eid
+     * @param customer
+     * @param title
+     * @param start
+     * @param end
+     * @param session
+     * @return
+     */
+    Result getSearchCount(String eid, String customer, String title, String start, String end, HttpSession session);
+
+    /**
+     * Search Log.
+     *
+     * @param eid
+     * @param customer
+     * @param title
+     * @param start
+     * @param end
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result search(String eid, String customer, String title, String start, String end, int page, int pageSize, HttpSession session);
+
 }

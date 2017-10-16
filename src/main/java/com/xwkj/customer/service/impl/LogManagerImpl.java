@@ -1,5 +1,6 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.LogBean;
 import com.xwkj.customer.bean.Result;
@@ -160,6 +161,59 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         }
         logDao.delete(log);
         return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    public Result getSearchCount(String eid, String customer, String title, String start, String end, HttpSession session) {
+        Employee viewer = getEmployeeFromSession(session);
+        if (viewer == null) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Canot find an employee by this eid.");
+            return Result.WithData(null);
+        }
+        if (viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viewer.equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        return Result.WithData(logDao.getCount(employee, customer, title, startStamp, endStamp));
+    }
+
+    @RemoteMethod
+    public Result search(String eid, String customer, String title, String start, String end, int page, int pageSize, HttpSession session) {
+        Employee viewer = getEmployeeFromSession(session);
+        if (viewer == null) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Canot find an employee by this eid.");
+            return Result.WithData(null);
+        }
+        if (viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viewer.equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        int offset = (page - 1) * pageSize;
+        List<LogBean> logBeans = new ArrayList<LogBean>();
+        for (Log log : logDao.find(employee, customer, title, startStamp, endStamp, offset, pageSize)) {
+            logBeans.add(new LogBean(log, false));
+        }
+        return Result.WithData(logBeans);
     }
 
 }

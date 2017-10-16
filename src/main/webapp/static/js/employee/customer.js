@@ -366,7 +366,7 @@ $(document).ready(function () {
     });
 
     $("#log-modal").on("hidden.bs.modal", function () {
-        $("#log-modal input").val("");
+        $("#log-modal input, #log-modal textarea").val("");
         editingLid = null;
     });
 
