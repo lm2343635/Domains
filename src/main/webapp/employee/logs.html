@@ -65,6 +65,18 @@
             </tr>
             </tbody>
         </table>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10">
+                    <nav id="page-nav">
+                        <ul class="pagination" style="margin:0"></ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <p id="page-info" class="pull-right">每页<span id="page-size"></span>条，共<span id="page-count"></span>条</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="log-modal" class="modal fade">
@@ -77,17 +89,13 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label class="control-label">标题</label>
-                    <input id="log-title" type="text" class="form-control">
+                    <div id="log-title"></div>
                 </div>
                 <div class="form-group">
                     <label class="control-label">内容</label>
-                    <textarea id="log-content" type="text" class="form-control" rows="8"></textarea>
+                    <div id="log-content"></div>
                 </div>
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
-                <button id="save-log-submit" type="button" class="btn btn-success">保存</button>
             </div>
         </div>
     </div>

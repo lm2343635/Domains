@@ -105,6 +105,9 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
             Debug.error("Cannot find a log by this lid.");
             return Result.WithData(null);
         }
+        if (log.getEmployee().equals(employee) || employee.getRole().getEmployee() == RoleManager.RolePrivilgeHold) {
+            return Result.WithData(new LogBean(log, true));
+        }
         int privilege = getPrivilegeForEmployee(employee, log.getCustomer().getState(), RoleManager.PrivilegeRead);
         if (privilege == RoleManager.RolePrivilgeNone) {
             return Result.NoPrivilege();
