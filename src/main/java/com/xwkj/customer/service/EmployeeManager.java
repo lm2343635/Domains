@@ -24,15 +24,6 @@ public interface EmployeeManager {
     String add(String name, String password, String rid, HttpSession session);
 
     /**
-     * Get employee by eid for admin.
-     *
-     * @param eid
-     * @param session
-     * @return
-     */
-    EmployeeBean get(String eid, HttpSession session);
-
-    /**
      * Admin edit a employee.
      *
      * @param eid
@@ -71,6 +62,15 @@ public interface EmployeeManager {
      * @return
      */
     Result getAll(HttpSession session);
+
+    /**
+     * Get employee by eid for admin.
+     *
+     * @param eid
+     * @param session
+     * @return
+     */
+    Result get(String eid, HttpSession session);
 
     // ************* For employee ****************
 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>客户管理</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/AssignManager.js"></script>
+    <script src="/static/js/employee/assigns.js"></script>
+    <style>
+        #customer-panel .panel-heading {
+            overflow: auto;
+        }
+
+        #customer-panel .panel-heading .panel-title {
+            line-height: 28px;
+        }
+
+        #customer-panel .panel-heading .nav a {
+            padding: 4px 10px;
+            color: #888;
+        }
+
+        #customer-panel .panel-heading .nav .active a {
+            color: #fff;
+            background: #888;
+        }
+
+        #customer-list .customer-list-template i {
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="customer-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title pull-left">@{name}（@{role}）负责的@{state}客户</h1>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation"><a href="assigns.html?eid=@{eid}&state=1">待开发</a></li>
+                <li role="presentation"><a href="assigns.html?eid=@{eid}&state=2">已开发</a></li>
+            </ul>
+        </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-customer-name" type="text" class="form-control" placeholder="客户名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-location-arrow"></i></span>
+                        <select id="search-customer-area" class="form-control">
+                            <option value="">请选择区域</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-flag"></i></span>
+                        <select id="search-customer-industry" class="form-control">
+                            <option value="">请选择行业</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-cny"></i></span>
+                        <input id="search-customer-capital-lower" type="number" class="form-control" placeholder="资金下限">
+                        <span class="input-group-addon">万~</span>
+                        <input id="search-customer-capital-higher" type="number" class="form-control" placeholder="资金上限">
+                        <span class="input-group-addon">万</span>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-reset" class="btn btn-block btn-info">重置</button>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-submit" class="btn btn-block btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
+        <table id="customer-list" class="table">
+            <thead>
+            <tr>
+                <th>创建时间</th>
+                <th>更新时间</th>
+                <th>客户名称</th>
+                <th>注册资金</th>
+                <th>区域</th>
+                <th>行业</th>
+                <th>查看</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="${cid}$" class="mengular-template customer-list-template">
+                <td>${createAt}$</td>
+                <td>${updateAt}$</td>
+                <td class="customer-list-name">${name}$</td>
+                <td>${capital}$万元</td>
+                <td>${area}$</td>
+                <td>${industry}$</td>
+                <td><a href="customer.html?cid=${cid}$" target="_blank"><i class="fa fa-lg fa-tag text-primary"></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10">
+                    <nav id="page-nav">
+                        <ul class="pagination" style="margin:0"></ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <p id="page-info" class="pull-right">每页<span id="page-size"></span>条，共<span id="page-count"></span>条</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

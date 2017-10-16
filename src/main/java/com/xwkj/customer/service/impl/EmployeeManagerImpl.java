@@ -54,19 +54,6 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     }
 
     @RemoteMethod
-    public EmployeeBean get(String eid, HttpSession session) {
-        if (!checkAdminSession(session)) {
-            return null;
-        }
-        Employee employee = employeeDao.get(eid);
-        if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
-            return null;
-        }
-        return new EmployeeBean(employee, true);
-    }
-
-    @RemoteMethod
     @Transactional
     public boolean edit(String eid, String name, String rid, HttpSession session) {
         if (!checkAdminSession(session)) {
@@ -145,6 +132,24 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             employeeBeans.add(new EmployeeBean(e, true));
         }
         return Result.WithData(employeeBeans);
+    }
+
+    @RemoteMethod
+    public Result get(String eid, HttpSession session) {
+        boolean admin = checkAdminSession(session);
+        Employee viewer = getEmployeeFromSession(session);
+        if (!admin && viewer == null) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Cannot find a employee by this eid.");
+            return Result.WithData(null);
+        }
+        if (!admin && viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viewer.equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        return Result.WithData(new EmployeeBean(employee, true));
     }
 
     // ************* For employee ****************

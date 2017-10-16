@@ -129,11 +129,12 @@ function loadEmployees() {
 
             $("#" + employee.eid + " .employee-list-edit").click(function () {
                 editingEid = $(this).mengularId();
-                EmployeeManager.get(editingEid, function (employee) {
-                    if (employee == null) {
+                EmployeeManager.get(editingEid, function (result) {
+                    if (!result.session) {
                         sessionError();
                         return;
                     }
+                    var employee = result.data;
                     fillValue({
                         "edit-employee-name": employee.name,
                         "edit-employee-role": employee.role.rid

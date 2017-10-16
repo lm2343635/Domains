@@ -31,7 +31,7 @@ var CustomerStateDeveloping = 1;
 var CustomerStateDeveloped = 2;
 var CustomerStateLost = 3;
 
-var CustomerStateNames = ["未开发", "开发中", "已开发", "已流失"];
+var CustomerStateNames = ["未开发", "待开发", "已开发", "已流失"];
 
 if ($.messager != undefined) {
     $.messager.model = {

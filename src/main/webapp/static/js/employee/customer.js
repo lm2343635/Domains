@@ -402,7 +402,6 @@ function addManager(employee) {
 function loadLogs() {
 
     LogManager.getByCid(cid, function (result) {
-        console.log(result);
         if (!result.session) {
             sessionError();
             return;

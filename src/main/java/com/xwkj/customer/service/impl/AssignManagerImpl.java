@@ -109,7 +109,8 @@ public class AssignManagerImpl extends ManagerTemplate implements AssignManager 
         return Result.WithData(true);
     }
 
-    public Result getSearchCount(String eid, int state, String name, Area area, Industry industry, int lower, int higher, HttpSession session) {
+    @RemoteMethod
+    public Result getSearchCount(String eid, int state, String name, String aid, String iid, int lower, int higher, HttpSession session) {
         Employee viwer = getEmployeeFromSession(session);
         if (viwer == null) {
             return Result.NoSession();
@@ -121,11 +122,26 @@ public class AssignManagerImpl extends ManagerTemplate implements AssignManager 
         }
         if (viwer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viwer.equals(employee)) {
             return Result.NoPrivilege();
+        }
+        Area area = null;
+        if (aid != null && !aid.equals("")) {
+            area = areaDao.get(aid);
+            if (area == null) {
+                Debug.error("Cannot find an area by this aid");
+            }
+        }
+        Industry industry = null;
+        if (iid != null && !iid.equals("")) {
+            industry = industryDao.get(iid);
+            if (industry == null) {
+                Debug.error("Cannot find an industry by this iid.");
+            }
         }
         return Result.WithData(assignDao.getCountForEmployee(employee, state, name, area, industry, lower, higher));
     }
 
-    public Result search(String eid, int state, String name, Area area, Industry industry, int lower, int higher, int page, int pageSize, HttpSession session) {
+    @RemoteMethod
+    public Result search(String eid, int state, String name, String aid, String iid, int lower, int higher, int page, int pageSize, HttpSession session) {
         Employee viwer = getEmployeeFromSession(session);
         if (viwer == null) {
             return Result.NoSession();
@@ -137,6 +153,20 @@ public class AssignManagerImpl extends ManagerTemplate implements AssignManager 
         }
         if (viwer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viwer.equals(employee)) {
             return Result.NoPrivilege();
+        }
+        Area area = null;
+        if (aid != null && !aid.equals("")) {
+            area = areaDao.get(aid);
+            if (area == null) {
+                Debug.error("Cannot find an area by this aid");
+            }
+        }
+        Industry industry = null;
+        if (iid != null && !iid.equals("")) {
+            industry = industryDao.get(iid);
+            if (industry == null) {
+                Debug.error("Cannot find an industry by this iid.");
+            }
         }
         int offset = (page - 1) * pageSize;
         List<AssignBean> assignBeans = new ArrayList<AssignBean>();

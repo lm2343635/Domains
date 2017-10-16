@@ -8,6 +8,8 @@ if (state != CustomerStateDeveloping
     state = CustomerStateUndeveloped;
 }
 
+document.title = CustomerStateNames[state] + "的客户";
+
 $(document).ready(function () {
 
     if (state != CustomerStateUndeveloped) {

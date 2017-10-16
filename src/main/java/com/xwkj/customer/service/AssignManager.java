@@ -1,8 +1,6 @@
 package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.domain.Area;
-import com.xwkj.customer.domain.Industry;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,14 +32,14 @@ public interface AssignManager {
      * @param eid
      * @param state
      * @param name
-     * @param area
-     * @param industry
+     * @param aid
+     * @param iid
      * @param lower
      * @param higher
      * @param session
      * @return
      */
-    Result getSearchCount(String eid, int state, String name, Area area, Industry industry, int lower, int higher, HttpSession session);
+    Result getSearchCount(String eid, int state, String name, String aid, String iid, int lower, int higher, HttpSession session);
 
     /**
      * Search assigned customers for a employee.
@@ -49,8 +47,8 @@ public interface AssignManager {
      * @param eid
      * @param state
      * @param name
-     * @param area
-     * @param industry
+     * @param aid
+     * @param iid
      * @param lower
      * @param higher
      * @param page
@@ -58,6 +56,6 @@ public interface AssignManager {
      * @param session
      * @return
      */
-    Result search(String eid, int state, String name, Area area, Industry industry, int lower, int higher, int page, int pageSize, HttpSession session);
+    Result search(String eid, int state, String name, String aid, String iid, int lower, int higher, int page, int pageSize, HttpSession session);
 
 }
