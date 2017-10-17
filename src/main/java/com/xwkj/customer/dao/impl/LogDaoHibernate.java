@@ -47,6 +47,7 @@ public class LogDaoHibernate extends BaseHibernateDaoSupport<Log> implements Log
                 }
                 if (end != null) {
                     hql += " and createAt <= ? ";
+                    values.add(end);
                 }
                 Query query = session.createQuery(hql);
                 for (int i = 0; i < values.size(); i++) {
@@ -75,6 +76,7 @@ public class LogDaoHibernate extends BaseHibernateDaoSupport<Log> implements Log
         }
         if (end != null) {
             hql += " and createAt <= ? ";
+            values.add(end);
         }
         hql += " order by createAt desc";
         return findByPage(hql, values, offset, pageSize);

@@ -45,12 +45,42 @@
                 <a href="javascript:history.back(-1)" class="btn btn-default btn-xs pull-right">返回</a>
             </h1>
         </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-log-customer" type="text" class="form-control" placeholder="客户名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-file-text"></i></span>
+                        <input id="search-log-title" type="text" class="form-control" placeholder="日志名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">创建日期</span>
+                        <input id="search-log-start" type="text" class="form-control" placeholder="起始日期">
+                        <span class="input-group-addon">~</span>
+                        <input id="search-log-end" type="text" class="form-control" placeholder="结束日期">
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-reset" class="btn btn-block btn-info">重置</button>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-submit" class="btn btn-block btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
         <table id="log-list" class="table">
             <thead>
             <tr>
                 <th>创建时间</th>
                 <th>更新时间</th>
-                <th>创建人</th>
+                <th>客户</th>
                 <th>标题</th>
                 <th>查看</th>
             </tr>
@@ -59,7 +89,7 @@
             <tr id="${lid}$" class="mengular-template log-list-template">
                 <td>${createAt}$</td>
                 <td>${updateAt}$</td>
-                <td>${employee}$</td>
+                <td>${customer}$</td>
                 <td>${title}$</td>
                 <td class="log-list-show"><i class="fa fa-lg fa-eye text-danger"></i></td>
             </tr>

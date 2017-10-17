@@ -29,7 +29,7 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
     }
 
     public String save(T entity) {
-        String id = (String)getHibernateTemplate().save(entity);
+        String id = (String) getHibernateTemplate().save(entity);
         getHibernateTemplate().flush();
         return id;
     }
@@ -54,7 +54,7 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
 
     public List<T> findAll(String orderby, boolean desc) {
         String hql = "from " + clazz.getName() + " order by " + orderby;
-        if(desc) {
+        if (desc) {
             hql += " desc";
         }
         return (List<T>) getHibernateTemplate().find(hql);
@@ -62,6 +62,7 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
 
     /**
      * Find by page using hql
+     *
      * @param hql
      * @param offset
      * @param pageSize
@@ -70,11 +71,11 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
     public List findByPage(final String hql, final int offset, final int pageSize) {
         List list = getHibernateTemplate().execute(new HibernateCallback<List>() {
             public List doInHibernate(Session session) throws HibernateException {
-            List result=session.createQuery(hql)
-                .setFirstResult(offset)
-                .setMaxResults(pageSize)
-                .list();
-            return result;
+                List result = session.createQuery(hql)
+                        .setFirstResult(offset)
+                        .setMaxResults(pageSize)
+                        .list();
+                return result;
             }
         });
         return list;
@@ -82,21 +83,22 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
 
     /**
      * Find by page using hql with a signle parameter.
+     *
      * @param hql
      * @param value
      * @param offset
      * @param pageSize
      * @return
      */
-    public List findByPage(final String hql , final Object value ,final int offset, final int pageSize) {
+    public List findByPage(final String hql, final Object value, final int offset, final int pageSize) {
         List list = getHibernateTemplate().execute(new HibernateCallback<List>() {
             public List doInHibernate(Session session) throws HibernateException {
-            List result = session.createQuery(hql)
-                .setParameter(0, value)
-                .setFirstResult(offset)
-                .setMaxResults(pageSize)
-                .list();
-            return result;
+                List result = session.createQuery(hql)
+                        .setParameter(0, value)
+                        .setFirstResult(offset)
+                        .setMaxResults(pageSize)
+                        .list();
+                return result;
             }
         });
         return list;
@@ -104,21 +106,22 @@ public abstract class BaseHibernateDaoSupport<T extends Serializable> extends Hi
 
     /**
      * Find by page using hql with multiple parameters.
+     *
      * @param hql
      * @param values
      * @param offset
      * @param pageSize
      * @return
      */
-    public List findByPage(final String hql, final List<Object> values,final int offset, final int pageSize) {
+    public List findByPage(final String hql, final List<Object> values, final int offset, final int pageSize) {
         List list = getHibernateTemplate().execute(new HibernateCallback<List>() {
             public List doInHibernate(Session session) throws HibernateException {
-            Query query = session.createQuery(hql);
-            for(int i=0; i<values.size(); i++) {
-                query.setParameter(i, values.get(i));
-            }
-            List result = query.setFirstResult(offset).setMaxResults(pageSize).list();
-            return result;
+                Query query = session.createQuery(hql);
+                for (int i = 0; i < values.size(); i++) {
+                    query.setParameter(i, values.get(i));
+                }
+                List result = query.setFirstResult(offset).setMaxResults(pageSize).list();
+                return result;
             }
         });
         return list;

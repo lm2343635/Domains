@@ -4,6 +4,15 @@ var eid = request("eid");
 
 $(document).ready(function () {
 
+    $("#search-log-start, #search-log-end").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayBtn: true,
+        startView: 2,
+        minView: 2,
+        language: "zh-CN"
+    })
+
     checkEmployeeSession(function () {
 
         EmployeeManager.get(eid, function (result) {
@@ -26,6 +35,18 @@ $(document).ready(function () {
             loadLogs();
         });
 
+    });
+
+    $("#search-submit").click(function () {
+        var customer = $("#search-log-customer").val();
+        var title = $("#search-log-title").val();
+        var start = $("#search-log-start").val();
+        var end = $("#search-log-end").val();
+        searchLogs(customer, title, start, end, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
     });
 
 });
@@ -85,7 +106,7 @@ function searchLogs(customer, title, start, end, page) {
                 lid: log.lid,
                 createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
-                employee: log.employee.name,
+                customer: log.customer.name,
                 title: log.title
             });
 
