@@ -4,6 +4,7 @@ import com.xwkj.common.hibernate.BaseHibernateDaoSupport;
 import com.xwkj.customer.dao.CustomerDao;
 import com.xwkj.customer.domain.Area;
 import com.xwkj.customer.domain.Customer;
+import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Industry;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -91,5 +92,13 @@ public class CustomerDaoHibernate extends BaseHibernateDaoSupport<Customer> impl
         return findByPage(hql, values, offset, pageSize);
     }
 
+    public int getCreatesCount(Employee employee) {
+        return 0;
+    }
+
+    public List<Customer> findByRegister(Employee employee, int offset, int pageSize) {
+        return null;
+    }
+    
 }
 

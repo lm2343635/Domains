@@ -104,6 +104,24 @@ public interface CustomerManager {
      */
     Result finish(String cid, String eid, HttpSession session);
 
+    /**
+     * Get number of customers created by an employee.
+     *
+     * @param eid
+     * @param session
+     * @return
+     */
+    Result getCreatesCount(String eid, HttpSession session);
 
+    /**
+     * Get all customers created by an employee.
+     *
+     * @param eid
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result getCreates(String eid, int page, int pageSize, HttpSession session);
 
 }

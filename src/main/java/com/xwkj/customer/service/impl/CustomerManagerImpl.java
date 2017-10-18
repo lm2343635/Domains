@@ -424,4 +424,12 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         return true;
     }
 
+    public Result getCreatesCount(String eid, HttpSession session) {
+        return null;
+    }
+
+    public Result getCreates(String eid, int page, int pageSize, HttpSession session) {
+        return null;
+    }
+
 }
