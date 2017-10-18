@@ -92,12 +92,20 @@ public class CustomerDaoHibernate extends BaseHibernateDaoSupport<Customer> impl
         return findByPage(hql, values, offset, pageSize);
     }
 
-    public int getCreatesCount(Employee employee) {
-        return 0;
+    public int getCreatesCount(final Employee employee) {
+        final String hql = "select count(*) from Customer where register = ?";
+        return getHibernateTemplate().execute(new HibernateCallback<Long>() {
+            public Long doInHibernate(Session session) throws HibernateException {
+                Query query = session.createQuery(hql);
+                query.setParameter(0, employee);
+                return (Long) query.uniqueResult();
+            }
+        }).intValue();
     }
 
     public List<Customer> findByRegister(Employee employee, int offset, int pageSize) {
-        return null;
+        String hql = "from Customer where register = ? order by createAt desc";
+        return findByPage(hql, employee, offset, pageSize);
     }
     
 }

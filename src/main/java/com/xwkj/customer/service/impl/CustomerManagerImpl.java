@@ -389,7 +389,44 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    public Result getCreatesCount(String eid, HttpSession session) {
+        Employee viwer = getEmployeeFromSession(session);
+        if (viwer == null) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Cannot find an employee by this eid.");
+            return Result.WithData(null);
+        }
+        if (viwer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viwer.equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        return Result.WithData(customerDao.getCreatesCount(employee));
+    }
 
+    @RemoteMethod
+    public Result getCreates(String eid, int page, int pageSize, HttpSession session) {
+        Employee viwer = getEmployeeFromSession(session);
+        if (viwer == null) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Cannot find an employee by this eid.");
+            return Result.WithData(null);
+        }
+        if (viwer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viwer.equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        int offset = (page - 1) * pageSize;
+        List<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
+        for (Customer customer : customerDao.findByRegister(employee, offset, pageSize)) {
+            customerBeans.add(new CustomerBean(customer, false));
+        }
+        return Result.WithData(customerBeans);
+    }
 
     private boolean assignReadPrivilege(Customer customer, Employee employee) {
         Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
@@ -422,14 +459,6 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             return false;
         }
         return true;
-    }
-
-    public Result getCreatesCount(String eid, HttpSession session) {
-        return null;
-    }
-
-    public Result getCreates(String eid, int page, int pageSize, HttpSession session) {
-        return null;
     }
 
 }

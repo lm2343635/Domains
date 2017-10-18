@@ -1,4 +1,4 @@
-var pageSize = 50;
+var pageSize = 20;
 
 var eid = request("eid");
 var state = request("state");
@@ -50,6 +50,7 @@ $(document).ready(function () {
                 role: employee.role.name,
                 state: CustomerStateNames[state]
             })
+            document.title = employee.name + document.title;
 
             loadAssigns();
         });

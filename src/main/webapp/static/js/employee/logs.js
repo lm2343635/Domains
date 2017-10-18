@@ -31,6 +31,7 @@ $(document).ready(function () {
                 name: employee.name,
                 role: employee.role.name
             })
+            document.title = employee.name + document.title;
 
             loadLogs();
         });
