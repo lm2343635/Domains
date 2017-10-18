@@ -85,7 +85,8 @@ function loadCreates(page) {
                 name: customer.name,
                 capital: customer.capital,
                 area: customer.area.name,
-                industry: customer.industry.name
+                industry: customer.industry.name,
+                state: CustomerStateNames[customer.state]
             });
         }
     });
