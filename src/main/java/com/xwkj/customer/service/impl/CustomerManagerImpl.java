@@ -152,43 +152,14 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             Debug.error("Cannot find a customer by this cid.");
             return Result.NoPrivilege();
         }
-        switch (customer.getState()) {
-            case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedR() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignReadPrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getUndevelopedR() == RoleManager.RolePrivilgeNone) {
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead)) {
+            case RoleManager.RolePrivilgeAssign:
+                if (!assignReadPrivilege(customer, employee)) {
                     return Result.NoPrivilege();
                 }
                 break;
-            case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignReadPrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
-            case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedR() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignReadPrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getDevelopedR() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
-            case CustomerStateLost:
-                if (employee.getRole().getLostR() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignReadPrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getLostR() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
             default:
                 break;
         }
@@ -212,48 +183,21 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         Customer customer = customerDao.get(cid);
         if (customer == null) {
             Debug.error("Cannot find a customer by this cid.");
-            return Result.NoPrivilege();
+            return Result.WithData(false);
         }
-        switch (customer.getState()) {
-            case CustomerStateUndeveloped:
-                if (employee.getRole().getUndevelopedW() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignWritePrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getUndevelopedW() == RoleManager.RolePrivilgeNone) {
+
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite)) {
+            case RoleManager.RolePrivilgeAssign:
+                if (!assignWritePrivilege(customer, employee)) {
                     return Result.NoPrivilege();
                 }
                 break;
-            case CustomerStateDeveloping:
-                if (employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignWritePrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
-            case CustomerStateDeveloped:
-                if (employee.getRole().getDevelopedW() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignWritePrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getDevelopedW() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
-            case CustomerStateLost:
-                if (employee.getRole().getLostW() == RoleManager.RolePrivilgeAssign) {
-                    if (!assignWritePrivilege(customer, employee)) {
-                        return Result.NoPrivilege();
-                    }
-                } else if (employee.getRole().getLostW() == RoleManager.RolePrivilgeNone) {
-                    return Result.NoPrivilege();
-                }
-                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
             default:
                 break;
         }
+
         customer.setUpdateAt(System.currentTimeMillis());
         customer.setName(name);
         customer.setCapital(capital);
@@ -292,6 +236,38 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             customer.setDocument(document);
         }
         customerDao.update(customer);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result remove(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeDelete)) {
+            case RoleManager.RolePrivilgeAssign:
+                if (!assignDeletePrivilege(customer, employee)) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
+            default:
+                break;
+        }
+        // Remove all assigns of a customer.
+        assignDao.deleteByCustomer(customer);
+        // Remove all logs of a customer.
+        logDao.deleteByCustomer(customer);
+        // Remove the customer.
+        customerDao.delete(customer);
         return Result.WithData(true);
     }
 

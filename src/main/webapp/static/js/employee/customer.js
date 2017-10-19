@@ -304,6 +304,29 @@ $(document).ready(function () {
         });
     });
 
+    $("#customer-remove").click(function () {
+        $.messager.confirm("删除客户", "确认要删除该客户吗？<br><span class='text-danger'>删除客户后所有相关日志和负责人都将被删除，谨慎操作！</span>", function () {
+            CustomerManager.remove(cid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("该账户无权限删除该客户！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("删除失败，请重试！");
+                    return;
+                }
+                $.messager.popup("删除客户成功！");
+                setTimeout(function () {
+                    window.close();
+                }, 1000);
+            });
+        });
+    });
+
     $("#add-manager-submit").click(function () {
         var eid = $("#add-manager-eid").val();
         if (eid == null || eid == "") {

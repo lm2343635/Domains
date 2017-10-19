@@ -84,6 +84,15 @@ public interface CustomerManager {
                 String items, int money, String expireAt, String remark, String document, HttpSession session);
 
     /**
+     * Remove a customer.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result remove(String cid, HttpSession session);
+
+    /**
      * Develop a customer.
      * The state of this customer will transfer from undeveloped to developing.
      *
