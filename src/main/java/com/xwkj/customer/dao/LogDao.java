@@ -43,4 +43,12 @@ public interface LogDao extends BaseDao<Log> {
      */
     List<Log> find(Employee employee, String customer, String title, Long start, Long end, int offset, int pageSize);
 
+    /**
+     * Delete all logs of a customer.
+     *
+     * @param customer
+     * @return
+     */
+    int deleteByCustomer(Customer customer);
+
 }

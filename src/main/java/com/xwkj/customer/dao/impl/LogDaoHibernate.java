@@ -82,4 +82,15 @@ public class LogDaoHibernate extends BaseHibernateDaoSupport<Log> implements Log
         return findByPage(hql, values, offset, pageSize);
     }
 
+    public int deleteByCustomer(final Customer customer) {
+        final String hql = "delete from Log where customer = ?";
+        return getHibernateTemplate().execute(new HibernateCallback<Integer>() {
+            public Integer doInHibernate(Session session) throws HibernateException {
+                Query query = session.createQuery(hql);
+                query.setParameter(0, customer);
+                return query.executeUpdate();
+            }
+        });
+    }
+
 }

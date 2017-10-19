@@ -104,4 +104,15 @@ public class AssignDaoHibernate extends BaseHibernateDaoSupport<Assign> implemen
         return findByPage(hql, values, offset, pageSize);
     }
 
+    public int deleteByCustomer(final Customer customer) {
+        final String hql = "delete from Assign where customer = ?";
+        return getHibernateTemplate().execute(new HibernateCallback<Integer>() {
+            public Integer doInHibernate(Session session) throws HibernateException {
+                Query query = session.createQuery(hql);
+                query.setParameter(0, customer);
+                return query.executeUpdate();
+            }
+        });
+    }
+
 }

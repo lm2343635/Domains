@@ -124,11 +124,15 @@ $(document).ready(function () {
                 $("#customer-panel .customer-developed").remove();
             }
 
-            if (state != CustomerStateUndeveloped || employee.role.develop == RolePrevilgeNone) {
+            if (state != CustomerStateUndeveloped || employee.role.develop != RolePrevilgeHold) {
                 $("#customer-develop").remove();
             }
 
-            if (state != CustomerStateDeveloping || employee.role.finish == RolePrevilgeNone) {
+            if (state != CustomerStateDeveloped || employee.role.ruin != RolePrevilgeHold) {
+                $("#customer-ruin").remove();
+            }
+
+            if (state != CustomerStateDeveloping || employee.role.finish != RolePrevilgeHold) {
                 $("#customer-finish").remove();
             } else {
                 EmployeeManager.getDevelopingAssignableEmployees(function (result) {
@@ -274,6 +278,29 @@ $(document).ready(function () {
             setTimeout(function () {
                 location.reload();
             }, 1000);
+        });
+    });
+
+    $("#customer-ruin").click(function () {
+        $.messager.confirm("转入流失客户", "确认要将该客户转为流失客户吗？<br><span class='text-danger'>转入流失客户后将移除所有负责人并清空服务金额，到期时间，服务项目和权限文档！</span>", function () {
+            CustomerManager.ruin(cid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("该账户无权限转入流失客户！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("只有已开发的客户才能转入流失客户！");
+                    return;
+                }
+                $.messager.popup("转入流失客户成功！");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
         });
     });
 

@@ -45,4 +45,11 @@ public interface AssignDao extends BaseDao<Assign> {
      */
     List<Assign> findByEmployee(Employee employee, int state, final String name, final Area area, final Industry industry, final int lower, final int higher, int offset, int pageSize);
 
+    /**
+     * Delete all assigns of a customer.
+     *
+     * @param customer
+     */
+    int deleteByCustomer(Customer customer);
+
 }

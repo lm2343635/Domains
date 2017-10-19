@@ -105,6 +105,16 @@ public interface CustomerManager {
     Result finish(String cid, String eid, HttpSession session);
 
     /**
+     * Ruin a customer.
+     * The state of this customer will transfer from developed to lost.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result ruin(String cid, HttpSession session);
+
+    /**
      * Get number of customers created by an employee.
      *
      * @param eid

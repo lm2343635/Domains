@@ -390,6 +390,36 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
     }
 
     @RemoteMethod
+    @Transactional
+    public Result ruin(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getRuin() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        if (customer.getState() != CustomerStateDeveloped) {
+            return Result.WithData(false);
+        }
+        // Delete all assigns of this customer.
+        assignDao.deleteByCustomer(customer);
+        // Delete unuseful attributes.
+        customer.setItems(null);
+        customer.setMoney(null);
+        customer.setExpireAt(null);
+        customer.setDocument(null);
+        customer.setState(CustomerStateLost);
+        customerDao.update(customer);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
     public Result getCreatesCount(String eid, HttpSession session) {
         Employee viwer = getEmployeeFromSession(session);
         if (viwer == null) {
