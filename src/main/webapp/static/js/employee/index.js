@@ -24,7 +24,7 @@ $(document).ready(function () {
                     return;
                 }
 
-                location.href = "bulletin.html";
+                location.href = "bulletins.html";
             });
         }
     });
