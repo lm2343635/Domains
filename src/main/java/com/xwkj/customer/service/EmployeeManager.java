@@ -82,7 +82,7 @@ public interface EmployeeManager {
      * @param session
      * @return first page.
      */
-    String login(String username, String password, HttpSession session);
+    boolean login(String username, String password, HttpSession session);
 
     /**
      * Check employee session.

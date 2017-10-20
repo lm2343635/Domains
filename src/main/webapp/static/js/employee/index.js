@@ -16,15 +16,15 @@ $(document).ready(function () {
             $("#admin-password-input").parent().removeClass("has-error");
         }
         if (validate) {
-            EmployeeManager.login(name, md5(password), function (firstPage) {
-                if (firstPage == null) {
+            EmployeeManager.login(name, md5(password), function (success) {
+                if (!success) {
                     $("#admin-number-input").parent().addClass("has-error");
                     $("#admin-password-input").parent().addClass("has-error");
                     $.messager.popup("用户名或密码错误");
                     return;
                 }
 
-                location.href = "customers.html";
+                location.href = "bulletin.html";
             });
         }
     });
@@ -34,4 +34,5 @@ $(document).ready(function () {
             $("#admin-submit-button").click();
         }
     });
+
 });

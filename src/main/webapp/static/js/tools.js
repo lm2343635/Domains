@@ -359,7 +359,7 @@ String.prototype.getBytesLength = function () {
     return this.replace(/[^\x00-\xff]/gi, "--").length;
 }
 
-String.prototype.getBytesLengthString = function() {
+String.prototype.getBytesLengthString = function () {
     var length = this.replace(/[^\x00-\xff]/gi, "--").length;
     return formatByte(length);
 }
