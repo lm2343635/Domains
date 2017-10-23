@@ -8,6 +8,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="menu-bar" class="nav navbar-nav logined-btn">
                 <li><a href="bulletins.html">公告板</a></li>
+                <li><a href="reports.html">工作报告</a></li>
                 <li><a href="customers.html">客户管理</a></li>
                 <li><a href="employees.html">员工管理</a></li>
                 <li><a href="servers.html">域名管理</a></li>
@@ -21,13 +22,15 @@
 <script type="text/javascript">
     var map = {
         bulletins: 0,
-        customers: 1,
-        employees: 2,
-        assigns: 2,
-        creates: 2,
-        logs: 2,
-        servers: 3,
-        domains: 3
+        reports: 1,
+        report: 1,
+        customers: 2,
+        employees: 3,
+        assigns: 3,
+        creates: 3,
+        logs: 3,
+        servers: 4,
+        domains: 4
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>
