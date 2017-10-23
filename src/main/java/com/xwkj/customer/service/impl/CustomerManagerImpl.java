@@ -434,37 +434,4 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         return Result.WithData(customerBeans);
     }
 
-    private boolean assignReadPrivilege(Customer customer, Employee employee) {
-        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-        if (assign == null) {
-            return false;
-        }
-        if (assign.getR() == null) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean assignWritePrivilege(Customer customer, Employee employee) {
-        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-        if (assign == null) {
-            return false;
-        }
-        if (assign.getW() == null) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean assignDeletePrivilege(Customer customer, Employee employee) {
-        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-        if (assign == null) {
-            return false;
-        }
-        if (assign.getD() == null) {
-            return false;
-        }
-        return true;
-    }
-
 }

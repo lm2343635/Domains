@@ -3,6 +3,8 @@ package com.xwkj.customer.controller.common;
 import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.component.ConfigComponent;
 import com.xwkj.customer.service.AdminManager;
+import com.xwkj.customer.service.DocumentManager;
+import com.xwkj.customer.service.EmployeeManager;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -28,6 +30,21 @@ public class ControllerTemplate {
     @Autowired
     protected ConfigComponent configComponent;
 
+    @Autowired
+    protected DocumentManager documentManager;
+
+    protected ResponseEntity generateOK(Map<String, Object> result) {
+        return generateResponseEntity(result, HttpStatus.OK, null, null);
+    }
+
+    protected ResponseEntity generateBadRequest(int errorCode, String errorMessage) {
+        return generateResponseEntity(null, HttpStatus.BAD_REQUEST, errorCode, errorMessage);
+    }
+
+    protected ResponseEntity generateBadRequest(ErrorCode errorCode) {
+        return generateBadRequest(errorCode.code, errorCode.message);
+    }
+
     protected ResponseEntity generateResponseEntity(Map<String, Object> result, HttpStatus status, Integer errCode, String errMsg) {
         Map<String, Object> data = new HashMap<String, Object>();
         if (result != null) {
@@ -45,6 +62,10 @@ public class ControllerTemplate {
 
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
+    }
+
+    public boolean checkEmployeeSession(HttpSession session) {
+        return session.getAttribute(EmployeeManager.EmployeeFlag) != null;
     }
 
     /**

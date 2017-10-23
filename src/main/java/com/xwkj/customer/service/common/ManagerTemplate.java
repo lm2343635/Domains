@@ -1,7 +1,10 @@
 package com.xwkj.customer.service.common;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.component.ConfigComponent;
 import com.xwkj.customer.dao.*;
+import com.xwkj.customer.domain.Assign;
+import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.service.AdminManager;
 import com.xwkj.customer.service.CustomerManager;
@@ -12,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpSession;
 
 public class ManagerTemplate {
+
+    @Autowired
+    protected ConfigComponent configComponent;
 
     @Autowired
     protected RoleDao roleDao;
@@ -118,6 +124,39 @@ public class ManagerTemplate {
                 break;
         }
         return privilege;
+    }
+
+    public boolean assignReadPrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getR() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean assignWritePrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getW() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean assignDeletePrivilege(Customer customer, Employee employee) {
+        Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+        if (assign == null) {
+            return false;
+        }
+        if (assign.getD() == null) {
+            return false;
+        }
+        return true;
     }
 
 }
