@@ -46,6 +46,9 @@ public class ManagerTemplate {
     @Autowired
     protected DocumentDao documentDao;
 
+    @Autowired
+    protected ReportDao reportDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }
