@@ -461,10 +461,10 @@ function loadLogs() {
             return;
         }
 
-        $("#log-list tbody").mengularClear();
+        $("#log-list").mengularClear();
         for (var i in result.data) {
             var log = result.data[i];
-            $("#log-list tbody").mengular(".log-list-template", {
+            $("#log-list").mengular(".log-list-template", {
                 lid: log.lid,
                 createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
@@ -472,7 +472,7 @@ function loadLogs() {
                 title: log.title
             });
 
-            $("#" + log.lid + " .log-list-edit a").click(function () {
+            $("#" + log.lid + " .log-list-edit").click(function () {
                 editingLid = $(this).mengularId();
                 LogManager.get(editingLid, function (result) {
                     if (!result.session) {
