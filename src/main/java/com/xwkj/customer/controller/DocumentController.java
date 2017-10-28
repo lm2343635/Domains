@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 @Controller
@@ -37,6 +40,34 @@ public class DocumentController extends ControllerTemplate {
             put("filename", documentBean.getFilename());
             put("size", documentBean.getSize());
         }});
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void downloadDocument(@RequestParam String did, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!checkEmployeeSession(request.getSession())) {
+            sessionError(response);
+            return;
+        }
+        Result result = documentManager.get(did, request.getSession());
+        if (!result.isSession()) {
+            sessionError(response);
+            return;
+        }
+        if (!result.isPrivilege()) {
+            response.getWriter().println("No privilege to download this file.");
+            return;
+        }
+        DocumentBean documentBean = (DocumentBean) result.getData();
+        download(createUploadDirectory(documentBean.getCid()) + File.separator + documentBean.getStore(),
+                documentBean.getFilename(), response);
+    }
+
+    private void sessionError(HttpServletResponse response) {
+        try {
+            response.sendRedirect("/employee/session.html");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

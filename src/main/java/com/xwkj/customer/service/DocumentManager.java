@@ -25,4 +25,13 @@ public interface DocumentManager {
      */
     Result getByCid(String cid, HttpSession session);
 
+    /**
+     * Get a document by did.
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    Result get(String did, HttpSession session);
+
 }
