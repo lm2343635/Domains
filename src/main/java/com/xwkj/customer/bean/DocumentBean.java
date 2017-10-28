@@ -13,6 +13,7 @@ public class DocumentBean {
     private String store;
     private String size;
     private Date uploadAt;
+    private String employee;
     private String cid;
 
     public String getDid() {
@@ -63,11 +64,20 @@ public class DocumentBean {
         this.cid = cid;
     }
 
+    public String getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(String employee) {
+        this.employee = employee;
+    }
+
     public DocumentBean(Document document, boolean full) {
         this.did = document.getDid();
         this.filename = document.getFilename();
         this.size = document.getSizeString();
         this.uploadAt = new Date(document.getUploadAt());
+        this.employee = document.getEmployee().getName();
         this.cid = document.getCustomer() == null ? null : document.getCustomer().getCid();
         if (full) {
             this.store = document.getStore();

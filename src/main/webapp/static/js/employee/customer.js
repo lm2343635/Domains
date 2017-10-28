@@ -157,9 +157,9 @@ $(document).ready(function () {
                 addManager(assinableEmployees[i]);
             }
 
-            // Show all logs.
+            // Show all logs and documents.
             loadLogs();
-
+            loadDocuments();
         });
     });
     
@@ -547,5 +547,24 @@ function loadLogs() {
 }
 
 function loadDocuments() {
-    
+    DocumentManager.getByCid(cid, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            return;
+        }
+        $("#document-list").mengularClear();
+        for (var i in result.data) {
+            var document = result.data[i];
+            $("#document-list").mengular(".document-list-template", {
+                did: document.did,
+                employee: document.employee,
+                uploadAt: document.uploadAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                filename: document.filename,
+                size: document.size
+            });
+        }
+    });
 }

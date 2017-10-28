@@ -32,6 +32,10 @@ public class Document implements Serializable {
     @JoinColumn(name = "bid")
     private Customer customer;
 
+    @ManyToOne
+    @JoinColumn(name = "eid")
+    private Employee employee;
+
     public static String[] getUnits() {
         return units;
     }
@@ -82,6 +86,14 @@ public class Document implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public String getSizeString() {

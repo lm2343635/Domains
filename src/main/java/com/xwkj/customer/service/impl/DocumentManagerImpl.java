@@ -10,12 +10,15 @@ import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.service.DocumentManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
+import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -64,6 +67,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         document.setStore(UUID.randomUUID().toString());
         document.setSize(file.length());
         document.setCustomer(customer);
+        document.setEmployee(employee);
         // Save to persistent store.
         if (documentDao.save(document) == null) {
             if (file.exists()) {
@@ -74,6 +78,35 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         // Modify file name.
         FileTool.modifyFileName(path, fileName, document.getStore());
         return Result.WithData(new DocumentBean(document, false));
+    }
+
+    @RemoteMethod
+    public Result getByCid(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(null);
+        }
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead)) {
+            case RoleManager.RolePrivilgeAssign:
+                if (!assignWritePrivilege(customer, employee)) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
+            default:
+                break;
+        }
+        List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
+        for (Document document : documentDao.findByCustomer(customer)) {
+            documentBeans.add(new DocumentBean(document, false));
+        }
+        return Result.WithData(documentBeans);
     }
 
 }
