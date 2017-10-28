@@ -12,6 +12,7 @@ import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RemoteProxy(name = "DocumentManager")
 public class DocumentManagerImpl extends ManagerTemplate implements DocumentManager {
 
+    @Transactional
     public Result handleCustomerDocument(String cid, String fileName, HttpSession session) {
         String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + cid;
         File file = new File(path + File.separator + fileName);

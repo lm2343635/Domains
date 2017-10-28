@@ -420,6 +420,37 @@ $(document).ready(function () {
         editingLid = null;
     });
 
+    $("#upload-document").fileupload({
+        autoUpload: true,
+        url: "/document/upload?cid=" + cid,
+        dataType: "json",
+        done: function (e, data) {
+            if (data.result.status == 801) {
+                sessionError();
+                return;
+            }
+            if (data.result.status == 802) {
+                $.messager.popup("当前用户无权上传附件文档到该客户名下！");
+                return;
+            }
+            if (data.result.status == 803) {
+                $.messager.popup("刷新页面重试！");
+                return;
+            }
+            loadDocuments();
+            // setTimeout(function () {
+            //     $("#attachment-upload-progress").hide(1500);
+            // }, 2000);
+        },
+        progressall: function (e, data) {
+            // $("#attachment-upload-progress").show();
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            console.log(progress);
+            // $("#attachment-upload-progress .progress-bar").css("width", progress + "%");
+            // $("#attachment-upload-progress .progress-bar").text(progress + "%");
+        }
+    });
+
 });
 
 function addManager(employee) {
@@ -513,4 +544,8 @@ function loadLogs() {
         }
     });
 
+}
+
+function loadDocuments() {
+    
 }

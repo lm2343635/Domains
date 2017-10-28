@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "customer_file")
+@Table(name = "customer_document")
 public class Document implements Serializable {
 
     public static final String[] units = {"B", "KB", "MB", "GB", "TB"};
