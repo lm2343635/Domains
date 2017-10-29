@@ -139,4 +139,41 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         return Result.WithData(new DocumentBean(document, true));
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result remove(String did, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Document document = documentDao.get(did);
+        if (document == null) {
+            Debug.error("Cannot find a document by this did.");
+            return Result.WithData(false);
+        }
+        if (document.getCustomer() != null) {
+            Customer customer = document.getCustomer();
+            if (!document.getEmployee().equals(employee)) {
+                switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeDelete)) {
+                    case RoleManager.RolePrivilgeAssign:
+                        if (!assignWritePrivilege(customer, employee)) {
+                            return Result.NoPrivilege();
+                        }
+                        break;
+                    case RoleManager.RolePrivilgeNone:
+                        return Result.NoPrivilege();
+                    default:
+                        break;
+                }
+            }
+        }
+        String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + document.getCustomer().getCid();
+        File file = new File(path + File.separator + document.getStore());
+        if (file.exists()) {
+            file.delete();
+        }
+        documentDao.delete(document);
+        return Result.WithData(true);
+    }
+
 }

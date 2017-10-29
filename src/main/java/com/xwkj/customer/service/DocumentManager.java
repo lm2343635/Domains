@@ -34,4 +34,13 @@ public interface DocumentManager {
      */
     Result get(String did, HttpSession session);
 
+    /**
+     * Remove a document and delete the file.
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    Result remove(String did, HttpSession session);
+
 }

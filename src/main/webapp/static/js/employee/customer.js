@@ -536,6 +536,7 @@ function loadLogs() {
                             $.messager.popup("工作日志创建者以外的员工无删除改该日志！");
                             return;
                         }
+                        $.messager.popup("删除成功！");
                         $("#" + lid).remove();
                     })
                 });
@@ -564,6 +565,25 @@ function loadDocuments() {
                 uploadAt: document.uploadAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 filename: document.filename,
                 size: document.size
+            });
+
+            $("#" + document.did + " .document-list-remove").click(function () {
+                var did = $(this).mengularId();
+                var filename = $("#" + did + " .document-list-filename").text();
+                $.messager.confirm("删除附件文件", "确定要删除" + filename + "吗？", function () {
+                    DocumentManager.remove(did, function (result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权删除改附件！");
+                            return;
+                        }
+                        $.messager.popup("删除成功！");
+                        $("#" + did).remove();
+                    });
+                });
             });
         }
     });
