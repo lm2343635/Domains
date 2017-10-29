@@ -424,6 +424,9 @@ $(document).ready(function () {
         autoUpload: true,
         url: "/document/upload?cid=" + cid,
         dataType: "json",
+        start: function (e) {
+            $("#document-upload-modal").modal("show");
+        },
         done: function (e, data) {
             if (data.result.status == 801) {
                 sessionError();
@@ -438,16 +441,14 @@ $(document).ready(function () {
                 return;
             }
             loadDocuments();
-            // setTimeout(function () {
-            //     $("#attachment-upload-progress").hide(1500);
-            // }, 2000);
+            setTimeout(function () {
+                $("#document-upload-modal").modal("hide");
+            }, 1000);
         },
         progressall: function (e, data) {
-            // $("#attachment-upload-progress").show();
             var progress = parseInt(data.loaded / data.total * 100, 10);
-            console.log(progress);
-            // $("#attachment-upload-progress .progress-bar").css("width", progress + "%");
-            // $("#attachment-upload-progress .progress-bar").text(progress + "%");
+            $("#document-upload-progress .progress-bar").css("width", progress + "%");
+            $("#document-upload-progress .progress-bar").text(progress + "%");
         }
     });
 
