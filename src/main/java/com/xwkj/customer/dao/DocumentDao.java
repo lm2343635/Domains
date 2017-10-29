@@ -16,4 +16,12 @@ public interface DocumentDao extends BaseDao<Document> {
      */
     List<Document> findByCustomer(Customer customer);
 
+    /**
+     * Delete all documents of a customer.
+     *
+     * @param customer
+     * @return
+     */
+    int deleteByCustomer(Customer customer);
+
 }

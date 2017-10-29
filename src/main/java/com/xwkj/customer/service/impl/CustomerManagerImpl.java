@@ -2,6 +2,7 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
+import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.bean.CustomerBean;
 import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.bean.Result;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -266,6 +268,9 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         assignDao.deleteByCustomer(customer);
         // Remove all logs of a customer.
         logDao.deleteByCustomer(customer);
+        // Remove all documents and folder of a customer.
+        documentDao.deleteByCustomer(customer);
+        FileTool.delFolder(configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + customer.getCid());
         // Remove the customer.
         customerDao.delete(customer);
         return Result.WithData(true);

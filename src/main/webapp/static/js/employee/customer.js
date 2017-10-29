@@ -305,7 +305,7 @@ $(document).ready(function () {
     });
 
     $("#customer-remove").click(function () {
-        $.messager.confirm("删除客户", "确认要删除该客户吗？<br><span class='text-danger'>删除客户后所有相关日志和负责人都将被删除，谨慎操作！</span>", function () {
+        $.messager.confirm("删除客户", "确认要删除该客户吗？<br><span class='text-danger'>删除客户后所有相关日志，负责人和附件文件都将被删除，谨慎操作！</span>", function () {
             CustomerManager.remove(cid, function (result) {
                 if (!result.session) {
                     sessionError();
