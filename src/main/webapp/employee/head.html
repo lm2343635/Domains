@@ -9,10 +9,10 @@
             <ul id="menu-bar" class="nav navbar-nav logined-btn">
                 <li><a href="bulletins.html">公告板</a></li>
                 <li><a href="reports.html">工作报告</a></li>
+                <li><a href="documents.html">公共文档</a></li>
                 <li><a href="customers.html">客户管理</a></li>
                 <li><a href="employees.html">员工管理</a></li>
                 <li><a href="servers.html">域名管理</a></li>
-                <li><a href="documents.html">公共文档</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout/employee">退出</a></li>
@@ -25,14 +25,14 @@
         bulletins: 0,
         reports: 1,
         report: 1,
-        customers: 2,
-        employees: 3,
-        assigns: 3,
-        creates: 3,
-        logs: 3,
-        servers: 4,
-        domains: 4,
-        documents: 5
+        documents: 2,
+        customers: 3,
+        employees: 4,
+        assigns: 4,
+        creates: 4,
+        logs: 4,
+        servers: 5,
+        domains: 5
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>

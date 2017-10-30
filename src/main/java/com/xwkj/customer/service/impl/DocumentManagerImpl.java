@@ -209,7 +209,9 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 }
             }
         }
-        String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + document.getCustomer().getCid();
+        String path = configComponent.rootPath;
+        path += document.getCustomer() == null ? configComponent.PublicDocumentFolder :
+                (configComponent.UploadFolder + File.separator + document.getCustomer().getCid());
         File file = new File(path + File.separator + document.getStore());
         if (file.exists()) {
             file.delete();
