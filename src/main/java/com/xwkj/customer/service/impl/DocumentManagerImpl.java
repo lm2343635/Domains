@@ -139,6 +139,19 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
     }
 
     @RemoteMethod
+    public Result getPublic(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
+        for (Document document : documentDao.findPublicCustomer()) {
+            documentBeans.add(new DocumentBean(document, false));
+        }
+        return Result.WithData(documentBeans);
+    }
+
+    @RemoteMethod
     public Result get(String did, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {

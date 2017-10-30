@@ -76,8 +76,9 @@ public class DocumentController extends ControllerTemplate {
             return;
         }
         DocumentBean documentBean = (DocumentBean) result.getData();
-        download(createUploadDirectory(documentBean.getCid()) + File.separator + documentBean.getStore(),
-                documentBean.getFilename(), response);
+        String path = documentBean.getCid() == null ?
+                configComponent.rootPath + configComponent.PublicDocumentFolder : createUploadDirectory(documentBean.getCid());
+        download( path + File.separator + documentBean.getStore(), documentBean.getFilename(), response);
     }
 
     private void sessionError(HttpServletResponse response) {

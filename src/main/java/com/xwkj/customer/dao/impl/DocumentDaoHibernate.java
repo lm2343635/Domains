@@ -25,6 +25,11 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
         return (List<Document>) getHibernateTemplate().find(hql, customer);
     }
 
+    public List<Document> findPublicCustomer() {
+        String hql = "from Document where customer = null order by uploadAt desc";
+        return (List<Document>) getHibernateTemplate().find(hql);
+    }
+
     public int deleteByCustomer(final Customer customer) {
         final String hql = "delete from Document where customer = ?";
         return getHibernateTemplate().execute(new HibernateCallback<Integer>() {

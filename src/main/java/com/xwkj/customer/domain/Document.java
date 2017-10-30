@@ -29,7 +29,7 @@ public class Document implements Serializable {
     private Long uploadAt;
 
     @ManyToOne
-    @JoinColumn(name = "bid")
+    @JoinColumn(name = "cid")
     private Customer customer;
 
     @ManyToOne

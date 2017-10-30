@@ -35,6 +35,14 @@ public interface DocumentManager {
     Result getByCid(String cid, HttpSession session);
 
     /**
+     * Get all public documents.
+     *
+     * @param session
+     * @return
+     */
+    Result getPublic(HttpSession session);
+
+    /**
      * Get a document by did.
      *
      * @param did
