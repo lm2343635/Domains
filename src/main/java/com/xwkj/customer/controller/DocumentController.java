@@ -20,19 +20,37 @@ import java.util.HashMap;
 @RequestMapping("/document")
 public class DocumentController extends ControllerTemplate {
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload/customer", method = RequestMethod.POST)
     public ResponseEntity uploadCustomerDocument(@RequestParam String cid, HttpServletRequest request) {
         if (!checkEmployeeSession(request.getSession())) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
         }
         String filepath = createUploadDirectory(cid);
-        String fileName = upload(request, filepath);
-        Result result = documentManager.handleCustomerDocument(cid, fileName, request.getSession());
+        String filename = upload(request, filepath);
+        Result result = documentManager.handleCustomerDocument(cid, filename, request.getSession());
         if (!result.isSession()) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
         }
         if (!result.isPrivilege()) {
             return generateBadRequest(ErrorCode.ErrorNoPrivilge);
+        }
+        final DocumentBean documentBean = (DocumentBean) result.getData();
+        return generateOK(new HashMap() {{
+            put("did", documentBean.getDid());
+            put("filename", documentBean.getFilename());
+            put("size", documentBean.getSize());
+        }});
+    }
+
+    @RequestMapping(value = "/upload/public", method = RequestMethod.POST)
+    public ResponseEntity uploadPublicDocument(HttpServletRequest request) {
+        if (!checkEmployeeSession(request.getSession())) {
+            return generateBadRequest(ErrorCode.ErrorNoSession);
+        }
+        String filename = upload(request, configComponent.rootPath + configComponent.PublicDocumentFolder);
+        Result result = documentManager.handlePublicDocument(filename, request.getSession());
+        if (!result.isSession()) {
+            return generateBadRequest(ErrorCode.ErrorNoSession);
         }
         final DocumentBean documentBean = (DocumentBean) result.getData();
         return generateOK(new HashMap() {{

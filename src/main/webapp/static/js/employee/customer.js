@@ -422,7 +422,7 @@ $(document).ready(function () {
 
     $("#upload-document").fileupload({
         autoUpload: true,
-        url: "/document/upload?cid=" + cid,
+        url: "/document/upload/customer?cid=" + cid,
         dataType: "json",
         start: function (e) {
             $("#document-upload-modal").modal("show");

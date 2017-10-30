@@ -7,14 +7,23 @@ import javax.servlet.http.HttpSession;
 public interface DocumentManager {
 
     /**
-     * Save document info to database.
+     * Save document info of a customer into database.
      *
      * @param cid
-     * @param fileName
+     * @param filename
      * @param session
      * @return
      */
-    Result handleCustomerDocument(String cid, String fileName, HttpSession session);
+    Result handleCustomerDocument(String cid, String filename, HttpSession session);
+
+    /**
+     * Save public document info into database.
+     *
+     * @param filename
+     * @param session
+     * @return
+     */
+    Result handlePublicDocument(String filename, HttpSession session);
 
     /**
      * Get all documents of a customer.

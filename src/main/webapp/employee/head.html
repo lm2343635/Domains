@@ -12,6 +12,7 @@
                 <li><a href="customers.html">客户管理</a></li>
                 <li><a href="employees.html">员工管理</a></li>
                 <li><a href="servers.html">域名管理</a></li>
+                <li><a href="documents.html">公共文档</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout/employee">退出</a></li>
@@ -30,7 +31,8 @@
         creates: 3,
         logs: 3,
         servers: 4,
-        domains: 4
+        domains: 4,
+        documents: 5
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>

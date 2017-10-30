@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>公共文档</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/jquery.fileupload-ui.css" rel="stylesheet">
+    <link href="/static/css/jquery.fileupload.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.ui.widget.js"></script>
+    <script src="/static/js/jquery.iframe-transport.js"></script>
+    <script src="/static/js/jquery.fileupload.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/static/js/employee/documents.js"></script>
+    <style>
+        #documents-list .documents-list-template i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="role-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>公共文档列表</span>
+                <button class="btn btn-info btn-xs pull-right fileinput-button">
+                    <span>上传公共文档</span>
+                    <input id="upload-document" type="file" name="files[]">
+                </button>
+            </h1>
+        </div>
+        <div id="document-list" class="list-group">
+            <div id="${did}$" class="list-group-item  document-list-template">
+                <p>${employee}$更新于${uploadAt}$，文件大小：${size}$</p>
+                <h4 class="list-group-item-heading">
+                    <a class="document-list-filename" href="/document/download?did=${did}$">${filename}$</a>
+                    <i class="fa fa-lg fa-trash text-danger document-list-remove pull-right"></i>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="document-upload-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">文件上传中</h4>
+            </div>
+            <div class="modal-body">
+                <div id="document-upload-progress" class="progress">
+                    <div class="progress-bar progress-bar-striped active"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

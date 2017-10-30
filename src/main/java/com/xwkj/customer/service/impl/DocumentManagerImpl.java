@@ -26,9 +26,9 @@ import java.util.UUID;
 public class DocumentManagerImpl extends ManagerTemplate implements DocumentManager {
 
     @Transactional
-    public Result handleCustomerDocument(String cid, String fileName, HttpSession session) {
+    public Result handleCustomerDocument(String cid, String filename, HttpSession session) {
         String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + cid;
-        File file = new File(path + File.separator + fileName);
+        File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             if (file.exists()) {
@@ -62,7 +62,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 break;
         }
         Document document = new Document();
-        document.setFilename(fileName);
+        document.setFilename(filename);
         document.setUploadAt(System.currentTimeMillis());
         document.setStore(UUID.randomUUID().toString());
         document.setSize(file.length());
@@ -76,7 +76,36 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             return Result.WithData(null);
         }
         // Modify file name.
-        FileTool.modifyFileName(path, fileName, document.getStore());
+        FileTool.modifyFileName(path, filename, document.getStore());
+        return Result.WithData(new DocumentBean(document, false));
+    }
+
+    @Transactional
+    public Result handlePublicDocument(String filename, HttpSession session) {
+        String path = configComponent.rootPath + File.separator + configComponent.PublicDocumentFolder;
+        File file = new File(path + File.separator + filename);
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            if (file.exists()) {
+                file.delete();
+            }
+            return Result.NoSession();
+        }
+        Document document = new Document();
+        document.setFilename(filename);
+        document.setUploadAt(System.currentTimeMillis());
+        document.setStore(UUID.randomUUID().toString());
+        document.setSize(file.length());
+        document.setEmployee(employee);
+        // Save to persistent store.
+        if (documentDao.save(document) == null) {
+            if (file.exists()) {
+                file.delete();
+            }
+            return Result.WithData(null);
+        }
+        // Modify file name.
+        FileTool.modifyFileName(path, filename, document.getStore());
         return Result.WithData(new DocumentBean(document, false));
     }
 

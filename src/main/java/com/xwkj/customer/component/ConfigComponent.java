@@ -9,6 +9,9 @@ public class ConfigComponent {
     // Default file upload folder.
     public String UploadFolder = "/files";
 
+    // Public document folder.
+    public String PublicDocumentFolder = "/files/public";
+
     // Picture format.
     public String ImageFormat = ".jpg";
 
