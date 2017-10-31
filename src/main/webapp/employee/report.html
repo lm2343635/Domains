@@ -8,20 +8,29 @@
     <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/summernote.min.css" rel="stylesheet">
     <link href="/static/css/mengular.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/summernote.min.js"></script>
+    <script src="/static/js/summernote-zh-CN.js"></script>
     <script src="/static/js/mengular.js"></script>
     <script src="/static/js/tools.js"></script>
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/ReportManager.js"></script>
-    <script src="/static/js/employee/reports.js"></script>
+    <script src="/static/js/employee/report.js"></script>
     <style>
-        #report-list .report-list-template i {
-            cursor: pointer;
+        #report-title {
+            border: none;
+            width: 100%;
+            text-align: center;
+            font-size: 23px;
+            color: #777;
+            outline: none;
         }
+
     </style>
 </head>
 <body>
@@ -29,32 +38,12 @@
     <div id="head">
         <script>$("#head").load("head.html");</script>
     </div>
-    <div id="report-panel" class="panel panel-default">
-        <div class="panel-heading">
-            <h1 class="panel-title">
-                <span>工作报告</span>
-                <a href="report.html" class="pull-right"><i id="add-undeveloped" class="fa fa-plus fa-lg"></i></a>
-            </h1>
-        </div>
-        <table id="report-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>更新时间</th>
-                <th>创建人</th>
-                <th>标题</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${rid}$" class="mengular-template report-list-template">
-                <td>${createAt}$</td>
-                <td>${updateAt}$</td>
-                <td class="report-list-name">${employee}$</td>
-                <td>${title}$</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <input id="report-title" type="text" placeholder="在此输入报告标题">
+    <hr>
+    <div id="report-content"></div>
+    <button id="report-save" class="btn btn-success">保存报告</button>
+    <button id="report-remove" class="btn btn-danger">删除报告</button>
+    <a href="reports.html" class="btn btn-default pull-right">返回</a>
 </div>
 </body>
 </html>
