@@ -36,6 +36,30 @@
                 <a href="report.html" class="pull-right"><i id="add-undeveloped" class="fa fa-plus fa-lg"></i></a>
             </h1>
         </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-file-text"></i></span>
+                        <input id="search-report-title" type="text" class="form-control" placeholder="日志名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">创建日期</span>
+                        <input id="search-report-start" type="text" class="form-control" placeholder="起始日期">
+                        <span class="input-group-addon">~</span>
+                        <input id="search-report-end" type="text" class="form-control" placeholder="结束日期">
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-1 col-md-offset-2">
+                    <button id="search-reset" class="btn btn-block btn-info">重置</button>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-submit" class="btn btn-block btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
         <table id="report-list" class="table">
             <thead>
             <tr>
