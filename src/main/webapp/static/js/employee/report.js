@@ -4,7 +4,20 @@ $(document).ready(function () {
     checkEmployeeSession(function () {
         // Load the report if rid is not empty.
         if (rid != null && rid != "") {
-
+            ReportManager.get(rid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                var report = result.data;
+                $("#report-info").show().fillText({
+                    createAt: report.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                    updateAt: report.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                    employee: report.employee
+                });
+                $("#report-title").val(report.title);
+                $("#report-content").summernote("code", report.content);
+            });
         }
     });
 

@@ -31,6 +31,9 @@
             outline: none;
         }
 
+        #report-info {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -40,6 +43,10 @@
     </div>
     <input id="report-title" type="text" placeholder="在此输入报告标题">
     <hr>
+    <h5 id="report-info" class="text-muted">
+        <span>创建人：@{employee}</span>
+        <span class="pull-right">创建于@{createAt}，更新于@{updateAt}</span>
+    </h5>
     <div id="report-content"></div>
     <button id="report-save" class="btn btn-success">保存报告</button>
     <button id="report-remove" class="btn btn-danger">删除报告</button>
