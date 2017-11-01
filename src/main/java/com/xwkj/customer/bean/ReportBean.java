@@ -13,7 +13,7 @@ public class ReportBean {
     private Date updateAt;
     private String title;
     private String content;
-    private EmployeeBean employee;
+    private String employee;
 
     public String getRid() {
         return rid;
@@ -55,11 +55,11 @@ public class ReportBean {
         this.content = content;
     }
 
-    public EmployeeBean getEmployee() {
+    public String getEmployee() {
         return employee;
     }
 
-    public void setEmployee(EmployeeBean employee) {
+    public void setEmployee(String employee) {
         this.employee = employee;
     }
 
@@ -68,7 +68,7 @@ public class ReportBean {
         this.createAt = new Date(report.getCreateAt());
         this.updateAt = new Date(report.getUpdateAt());
         this.title = report.getTitle();
-        this.employee = new EmployeeBean(report.getEmployee(), false);
+        this.employee = report.getEmployee().getName();
         if (full) {
             this.content = report.getContent();
         }

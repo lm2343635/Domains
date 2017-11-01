@@ -82,7 +82,7 @@ function searchLogs(customer, title, start, end, page) {
 
         $("#page-nav ul li").each(function (index) {
             $(this).click(function () {
-                searchLogs(customer, title, start, end, index + 1)
+                searchLogs(customer, title, start, end, index + 1);
                 $("html, body").animate({
                     scrollTop: 0
                 }, 300);
