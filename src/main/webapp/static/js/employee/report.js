@@ -48,7 +48,7 @@ $(document).ready(function () {
                     return;
                 }
                 if (!result.privilege) {
-                    $.messager.popup("只有创建者本人有权修改改工作报告！");
+                    $.messager.popup("只有创建者本人有权修改该工作报告！");
                     return;
                 }
                 if (result.data == null) {
@@ -75,6 +75,29 @@ $(document).ready(function () {
                 }, 1000);
             });
         }
+    });
+
+    $("#report-remove").click(function () {
+        $.messager.confirm("删除工作报告", "确认删除该工作报告吗？", function () {
+            ReportManager.remove(rid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("只有创建者本人有权删除该工作报告！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("删除失败，请刷新重试！");
+                    return;
+                }
+                $.messager.popup("删除成功！");
+                setTimeout(function () {
+                    window.close();
+                }, 1000);
+            });
+        });
     });
 
 });
