@@ -11,7 +11,7 @@ $(document).ready(function () {
         startView: 2,
         minView: 2,
         language: "zh-CN"
-    })
+    });
 
     checkEmployeeSession(function () {
 

@@ -1,9 +1,31 @@
 var pageSize = 20;
 
 $(document).ready(function () {
+
     checkEmployeeSession(function () {
         searchReports(null, null, null, 1);
     });
+
+    $("#search-report-start, #search-report-end").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayBtn: true,
+        startView: 2,
+        minView: 2,
+        language: "zh-CN"
+    });
+
+    $("#search-submit").click(function () {
+        var title = $("#search-report-title").val();
+        var start = $("#search-report-start").val();
+        var end = $("#search-report-end").val();
+        searchReports(title, start, end, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
+    });
+
 });
 
 function searchReports(title, start, end, page) {
