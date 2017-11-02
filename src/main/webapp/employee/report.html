@@ -31,9 +31,17 @@
             outline: none;
         }
 
-        #report-info {
+        #report-info,
+        #report-save,
+        #report-edit,
+        #report-remove {
             display: none;
         }
+
+        #report-foot {
+            margin-bottom: 50px;
+        }
+
     </style>
 </head>
 <body>
@@ -41,16 +49,20 @@
     <div id="head">
         <script>$("#head").load("head.html");</script>
     </div>
-    <input id="report-title" type="text" placeholder="在此输入报告标题">
+    <input id="report-title" type="text" placeholder="在此输入报告标题" disabled>
     <hr>
     <h5 id="report-info" class="text-muted">
         <span>创建人：@{employee}</span>
         <span class="pull-right">创建于@{createAt}，更新于@{updateAt}</span>
     </h5>
     <div id="report-content"></div>
-    <button id="report-save" class="btn btn-success">保存报告</button>
-    <button id="report-remove" class="btn btn-danger">删除报告</button>
-    <a href="reports.html" class="btn btn-default pull-right">返回</a>
+    <hr>
+
+    <div id="report-foot">
+        <button id="report-save" class="btn btn-success">保存报告</button>
+        <button id="report-remove" class="btn btn-danger pull-right">删除报告</button>
+        <button id="report-edit" class="btn btn-info">编辑报告</button>
+    </div>
 </div>
 </body>
 </html>

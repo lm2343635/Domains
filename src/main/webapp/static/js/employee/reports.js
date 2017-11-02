@@ -48,7 +48,7 @@ function searchReports(title, start, end, page) {
                 rid: report.rid,
                 createAt: report.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: report.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
-                employee: report.employee,
+                employee: report.employee.name,
                 title: report.title
             });
         }
