@@ -41,11 +41,10 @@ function searchReports(title, start, end, page) {
             sessionError();
             return;
         }
-
-        $("#report-list tbody").mengularClear();
+        $("#report-list").mengularClear();
         for (var i in result.data) {
             var report = result.data[i];
-            $("#report-list tbody").mengular(".report-list-template", {
+            $("#report-list").mengular(".report-list-template", {
                 rid: report.rid,
                 createAt: report.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: report.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),

@@ -61,5 +61,5 @@ public class SalaryBean {
         this.money = salary.getMoney();
         this.eid = salary.getEmployee().getEid();
     }
-    
+
 }

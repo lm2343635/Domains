@@ -60,26 +60,15 @@
                 </div>
             </div>
         </div>
-        <table id="report-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>更新时间</th>
-                <th>创建人</th>
-                <th>标题</th>
-                <th>查看</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${rid}$" class="mengular-template report-list-template">
-                <td>${createAt}$</td>
-                <td>${updateAt}$</td>
-                <td class="report-list-name">${employee}$</td>
-                <td>${title}$</td>
-                <td><a href="report.html?rid=${rid}$"><i class="fa fa-lg fa-eye text-info"></i></a></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="report-list" class="list-group">
+            <div id="${rid}$" class="list-group-item mengular-template report-list-template">
+                <p>${employee}$创建于${createAt}$，最后更新于${updateAt}$</p>
+                <h4 class="list-group-item-heading">
+                    <a class="report-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
+                    <i class="fa fa-lg fa-trash text-danger report-list-remove pull-right"></i>
+                </h4>
+            </div>
+        </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-10">
