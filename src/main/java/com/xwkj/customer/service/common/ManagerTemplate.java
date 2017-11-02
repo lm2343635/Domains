@@ -55,6 +55,9 @@ public class ManagerTemplate {
     @Autowired
     protected ReportDao reportDao;
 
+    @Autowired
+    protected SalaryDao salaryDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }
