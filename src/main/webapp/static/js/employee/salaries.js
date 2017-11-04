@@ -85,7 +85,9 @@ function loadSalaries() {
             $.messager.popup("当前用户无权查看该员工的工资记录！");
             return;
         }
+
         $("#salary-list").mengularClear();
+
         for (var i in result.data) {
             var salary = result.data[i];
             $("#salary-list").mengular(".salary-list-template", {
@@ -93,6 +95,25 @@ function loadSalaries() {
                 createAt: salary.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 remark: salary.remark,
                 money: salary.money
+            });
+
+            $("#" + salary.sid + " .salary-list-remove").click(function () {
+                var sid = $(this).mengularId();
+                var remark = $("#" + sid + " .salary-list-remark").text();
+                $.messager.confirm("删除工作记录", "确认删除工资记录" + remark + "吗？", function () {
+                    SalaryManager.remove(sid, function (result) {
+
+                    });if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        $.messager.popup("当前用户无权删除该员工的工资记录！");
+                        return;
+                    }
+                    $.messager.popup("删除成功！");
+                    $("#" + sid).remove();
+                });
             });
         }
     });
