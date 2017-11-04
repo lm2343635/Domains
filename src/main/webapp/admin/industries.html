@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>行业管理</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/AdminManager.js"></script>
+    <script src="/dwr/interface/IndustryManager.js"></script>
+    <script src="/static/js/admin/industries.js"></script>
+    <style>
+        #add-industry {
+            cursor: pointer
+        }
+
+        #industry-list .industry-list-template i {
+            cursor: pointer;
+        }
+
+        #add-industry-modal .input-group {
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="industry-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>区域列表</span>
+                <a id="add-industry"><i class="fa fa-plus pull-right" data-toggle="modal" data-target="#add-industry-modal"></i></a>
+            </h1>
+        </div>
+        <table id="industry-list" class="table">
+            <thead>
+            <tr>
+                <th>创建时间</th>
+                <th>行业名称</th>
+                <th>客户数量</th>
+                <th>编辑</th>
+                <th>删除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="${iid}$" class="mengular-template industry-list-template">
+                <td>${createAt}$</td>
+                <td class="industry-list-name">${name}$</td>
+                <td>${customers}$</td>
+                <td class="industry-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
+                <td class="industry-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="add-industry-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">新建行业</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">新建名称</span>
+                    <input id="add-industry-name" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="add-industry-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
