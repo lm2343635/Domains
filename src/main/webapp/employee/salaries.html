@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>的工资记录</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/SalaryManager.js"></script>
+    <script src="/static/js/employee/salaries.js"></script>
+    <style>
+        #salary-list .salary-list-template i {
+            cursor: pointer;
+        }
+
+        #add-salary {
+            cursor: pointer;
+        }
+
+        #add-salary-modal .input-group {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="salary-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>@{name}（@{role}）的工资记录</span>
+                <i id="add-salary" class="fa fa-plus fa-lg pull-right" data-toggle="modal" data-target="#add-salary-modal"></i>
+            </h1>
+        </div>
+        <div id="salary-list" class="list-group">
+            <div id="${rid}$" class="list-group-item mengular-template salary-list-template">
+                <p>创建于${createAt}$</p>
+                <h4 class="list-group-item-heading">
+                    <span>${remark}$</span>
+                    <span class="pull-right">${money}$</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="add-salary-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">新增工资记录</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">备注</span>
+                    <input id="add-salary-remark" type="text" class="form-control" placeholder="工资备注信息">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">工资</span>
+                    <input id="add-salary-money" type="number" class="form-control" placeholder="请填写整数">
+                    <span class="input-group-addon">元</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="add-salary-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
