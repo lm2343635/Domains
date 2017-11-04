@@ -4,6 +4,7 @@ $(document).ready(function () {
     checkEmployeeSession(function (viewer) {
         if (viewer.role.employee != RolePrevilgeHold) {
             $("#add-salary, #add-salary-modal").remove();
+            $("#salary-list .salary-list-remove").remove();
         }
 
         EmployeeManager.get(eid, function (result) {
@@ -54,7 +55,7 @@ $(document).ready(function () {
                 return;
             }
             if (!result.privilege) {
-                $.messager.popup("当前用户无权限添加工资记录");
+                $.messager.popup("当前用户无权限添加工资记录！");
                 return;
             }
             if (result.data == null) {
@@ -75,5 +76,24 @@ $(document).ready(function () {
 });
 
 function loadSalaries() {
-
+    SalaryManager.getByEid(eid, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $.messager.popup("当前用户无权查看该员工的工资记录！");
+            return;
+        }
+        $("#salary-list").mengularClear();
+        for (var i in result.data) {
+            var salary = result.data[i];
+            $("#salary-list").mengular(".salary-list-template", {
+                sid: salary.sid,
+                createAt: salary.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                remark: salary.remark,
+                money: salary.money
+            });
+        }
+    });
 }

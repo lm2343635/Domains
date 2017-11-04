@@ -46,10 +46,11 @@
         </div>
         <div id="salary-list" class="list-group">
             <div id="${rid}$" class="list-group-item mengular-template salary-list-template">
-                <p>创建于${createAt}$</p>
+                <span class="text-muted">创建于${createAt}$</span>
+                <i class="fa fa-lg fa-trash text-danger pull-right salary-list-remove"></i>
                 <h4 class="list-group-item-heading">
-                    <span>${remark}$</span>
-                    <span class="pull-right">${money}$</span>
+                    <span class="text-primary">${remark}$</span>
+                    <span class="pull-right text-success">${money}$元</span>
                 </h4>
             </div>
         </div>
