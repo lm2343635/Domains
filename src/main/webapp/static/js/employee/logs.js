@@ -107,6 +107,7 @@ function searchLogs(customer, title, start, end, page) {
                 lid: log.lid,
                 createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                cid: log.customer.cid,
                 customer: log.customer.name,
                 title: log.title
             });
