@@ -1,3 +1,5 @@
+var editingRid = null;
+
 var previlegNames = {
     undevelopedR: "待开发客户读权限",
     undevelopedW: "待开发客户写权限",
@@ -21,29 +23,29 @@ var previlegNames = {
     employee: "员工管理权限"
 }
 
-var symbols = ["<i class='fa fa-times text-muted'></i>", "<i class='fa fa-circle-o text-warning'></i>", "<i class='fa fa-check text-success'></i>"];
+var symbols = ["<i class='fa fa-times text-muted'></i>",
+    "<i class='fa fa-circle-o text-warning'></i>",
+    "<i class='fa fa-check text-success'></i>"];
 
 $(document).ready(function () {
 
     checkAdminSession(function () {
         loadRoles();
-
-        for (var identifier in previlegNames) {
-            $("#add-role-previleges").mengular(".previlege-template", {
-                identifier: identifier,
-                name: previlegNames[identifier]
-            });
-        }
-        $("#add-role-previleges").mengularClearTemplate();
     });
 
-    $("#add-role-submit").click(function () {
-        var name = $("#add-role-name").val();
+    $("#add-role").click(function () {
+        refreshPrivilgeRadio();
+        editingRid = null;
+        $("#role-modal").modal("show");
+    });
+
+    $("#role-submit").click(function () {
+        var name = $("#role-name").val();
         if (name == null || name == "") {
-            $("#add-role-name").parent().addClass("has-error");
+            $("#role-name").parent().addClass("has-error");
             return;
         } else {
-            $("#add-role-name").parent().addClass("has-error");
+            $("#role-name").parent().addClass("has-error");
         }
         var previleges = [];
         var index = 0;
@@ -51,19 +53,25 @@ $(document).ready(function () {
             previleges[index] = $("input[name='" + identifier + "']:checked").val();
             index++;
         }
-        RoleManager.add(name, previleges, function (rid) {
-            if (rid == null) {
-                sessionError();
-                return;
-            }
-            $("#add-role-modal").modal("hide");
-            loadRoles();
-        });
+        if (editingRid == null) {
+            RoleManager.add(name, previleges, function (rid) {
+                if (rid == null) {
+                    sessionError();
+                    return;
+                }
+                $("#role-modal").modal("hide");
+                loadRoles();
+            });
+        } else {
+
+        }
+
     });
 
-    $("#add-role-modal").on("hidden.bs.modal", function () {
-        $("#add-role-modal .input-group").removeClass("has-error");
-        $("#add-role-modal input").val("");
+    $("#role-modal").on("hidden.bs.modal", function () {
+        $("#role-modal .input-group").removeClass("has-error");
+        $("#role-name").val("");
+        editingRid = null;
     });
 
 });
@@ -111,8 +119,36 @@ function loadRoles() {
                     });
                 });
             });
+
+            $("#" + role.rid + " .role-list-edit").click(function () {
+                editingRid = $(this).mengularId();
+                refreshPrivilgeRadio();
+                RoleManager.get(editingRid, function (role) {
+                    for (var attribute in role) {
+                        if (attribute == "name" || attribute == "rid") {
+                            continue;
+                        }
+                        $("input[name='" + attribute + "']").each(function () {
+                            if ($(this).val() == role[attribute]) {
+                                $(this).attr("checked", true);
+                            }
+                        });
+                    }
+                    $("#role-name").val(role.name);
+                    $("#role-modal").modal("show");
+                });
+            });
         }
 
-
     });
+}
+
+function refreshPrivilgeRadio() {
+    $("#role-previleges").mengularClear();
+    for (var identifier in previlegNames) {
+        $("#role-previleges").mengular(".previlege-template", {
+            identifier: identifier,
+            name: previlegNames[identifier]
+        });
+    }
 }

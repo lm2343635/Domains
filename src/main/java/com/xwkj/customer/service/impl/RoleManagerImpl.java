@@ -51,6 +51,19 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
     }
 
     @RemoteMethod
+    public RoleBean get(String rid, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return null;
+        }
+        Role role = roleDao.get(rid);
+        if (role == null) {
+            Debug.error("Cannot find a role by this rid.");
+            return null;
+        }
+        return new RoleBean(role);
+    }
+
+    @RemoteMethod
     public List<RoleBean> getAll(HttpSession session) {
         if (!checkAdminSession(session)) {
             return null;

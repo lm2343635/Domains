@@ -16,7 +16,7 @@ public interface RoleManager {
     public final static int PrivilegeDelete = 2;
 
     /**
-     * Add a new role
+     * Add a new role by admin.
      *
      * @param name
      * @param privelges
@@ -24,6 +24,15 @@ public interface RoleManager {
      * @return
      */
     String add(String name, int [] privelges, HttpSession session);
+
+    /**
+     * Get a role get rid for admin.
+     *
+     * @param rid
+     * @param session
+     * @return
+     */
+    RoleBean get(String rid, HttpSession session);
 
     /**
      * Get all roles for admin.

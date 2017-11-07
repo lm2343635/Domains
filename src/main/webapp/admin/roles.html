@@ -27,11 +27,11 @@
             cursor: pointer;
         }
 
-        #add-role-modal .input-group {
+        #role-modal .input-group {
             margin-bottom: 5px;
         }
 
-        #add-role-modal .input-group .radio-inline {
+        #role-modal .input-group .radio-inline {
             margin: 7px;
         }
 
@@ -46,7 +46,7 @@
         <div class="panel-heading">
             <h1 class="panel-title">
                 <span>角色列表</span>
-                <a id="add-role"><i class="fa fa-plus pull-right" data-toggle="modal" data-target="#add-role-modal"></i></a>
+                <a id="add-role"><i class="fa fa-plus pull-right"></i></a>
             </h1>
         </div>
         <table id="role-list" class="table">
@@ -93,7 +93,7 @@
         </table>
     </div>
 </div>
-<div id="add-role-modal" class="modal fade">
+<div id="role-modal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,9 +103,9 @@
             <div class="modal-body">
                 <div class="input-group">
                     <span class="input-group-addon">角色名称</span>
-                    <input id="add-role-name" type="text" class="form-control" placeholder="">
+                    <input id="role-name" type="text" class="form-control" placeholder="">
                 </div>
-                <div id="add-role-previleges">
+                <div id="role-previleges">
                     <div class="input-group mengular-template previlege-template">
                         <span class="input-group-addon">${name}$</span>
                         <label class="radio-inline">
@@ -119,12 +119,10 @@
                         </label>
                     </div>
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
-                <button id="add-role-submit" type="button" class="btn btn-success">确认</button>
+                <button id="role-submit" type="button" class="btn btn-success">确认</button>
             </div>
         </div>
     </div>
