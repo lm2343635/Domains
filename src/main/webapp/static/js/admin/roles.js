@@ -47,14 +47,14 @@ $(document).ready(function () {
         } else {
             $("#role-name").parent().addClass("has-error");
         }
-        var previleges = [];
+        var privileges = [];
         var index = 0;
         for (var identifier in previlegNames) {
-            previleges[index] = $("input[name='" + identifier + "']:checked").val();
+            privileges[index] = $("input[name='" + identifier + "']:checked").val();
             index++;
         }
         if (editingRid == null) {
-            RoleManager.add(name, previleges, function (rid) {
+            RoleManager.add(name, privileges, function (rid) {
                 if (rid == null) {
                     sessionError();
                     return;
@@ -63,7 +63,15 @@ $(document).ready(function () {
                 loadRoles();
             });
         } else {
-
+            RoleManager.edit(editingRid, name, privileges, function (success) {
+               if (!success) {
+                   sessionError();
+                   return;
+               }
+               $.messager.popup("更改权限成功！");
+                $("#role-modal").modal("hide");
+                loadRoles();
+            });
         }
 
     });
@@ -129,9 +137,7 @@ function loadRoles() {
                             continue;
                         }
                         $("input[name='" + attribute + "']").each(function () {
-                            if ($(this).val() == role[attribute]) {
-                                $(this).attr("checked", true);
-                            }
+                            $(this).attr("checked", $(this).val() == role[attribute]);
                         });
                     }
                     $("#role-name").val(role.name);
@@ -144,9 +150,9 @@ function loadRoles() {
 }
 
 function refreshPrivilgeRadio() {
-    $("#role-previleges").mengularClear();
+    $("#role-privileges").mengularClear();
     for (var identifier in previlegNames) {
-        $("#role-previleges").mengular(".previlege-template", {
+        $("#role-privileges").mengular(".privilege-template", {
             identifier: identifier,
             name: previlegNames[identifier]
         });

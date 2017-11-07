@@ -20,34 +20,32 @@ public class RoleManagerImpl extends ManagerTemplate implements RoleManager {
 
     @RemoteMethod
     @Transactional
-    public String add(String name, int[] privelges, HttpSession session) {
+    public String add(String name, int[] privileges, HttpSession session) {
         if (!checkAdminSession(session)) {
             return null;
         }
         Role role = new Role();
         role.setName(name);
-        role.setUndevelopedR(privelges[0]);
-        role.setUndevelopedW(privelges[1]);
-        role.setUndevelopedD(privelges[2]);
-        role.setDevelopingR(privelges[3]);
-        role.setDevelopingW(privelges[4]);
-        role.setDevelopingD(privelges[5]);
-        role.setDevelopedR(privelges[6]);
-        role.setDevelopedW(privelges[7]);
-        role.setDevelopedD(privelges[8]);
-        role.setLostR(privelges[9]);
-        role.setLostW(privelges[10]);
-        role.setLostD(privelges[11]);
-        role.setDevelop(privelges[12]);
-        role.setFinish(privelges[13]);
-        role.setRuin(privelges[14]);
-        role.setRecover(privelges[15]);
-        role.setAssign(privelges[16]);
-        role.setServer(privelges[17]);
-        role.setDomain(privelges[18]);
-        role.setEmployee(privelges[19]);
+        role.setPrivileges(privileges);
         role.setEmployees(0);
         return roleDao.save(role);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public boolean edit(String rid, String name, int[] privileges, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return false;
+        }
+        Role role = roleDao.get(rid);
+        if (role == null) {
+            Debug.error("Cannot find a role by this rid.");
+            return false;
+        }
+        role.setName(name);
+        role.setPrivileges(privileges);
+        roleDao.update(role);
+        return true;
     }
 
     @RemoteMethod

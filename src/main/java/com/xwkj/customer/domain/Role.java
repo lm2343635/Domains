@@ -286,4 +286,27 @@ public class Role implements Serializable {
         this.employees = employees;
     }
 
+    public void setPrivileges(int [] privileges) {
+        this.setUndevelopedR(privileges[0]);
+        this.setUndevelopedW(privileges[1]);
+        this.setUndevelopedD(privileges[2]);
+        this.setDevelopingR(privileges[3]);
+        this.setDevelopingW(privileges[4]);
+        this.setDevelopingD(privileges[5]);
+        this.setDevelopedR(privileges[6]);
+        this.setDevelopedW(privileges[7]);
+        this.setDevelopedD(privileges[8]);
+        this.setLostR(privileges[9]);
+        this.setLostW(privileges[10]);
+        this.setLostD(privileges[11]);
+        this.setDevelop(privileges[12]);
+        this.setFinish(privileges[13]);
+        this.setRuin(privileges[14]);
+        this.setRecover(privileges[15]);
+        this.setAssign(privileges[16]);
+        this.setServer(privileges[17]);
+        this.setDomain(privileges[18]);
+        this.setEmployee(privileges[19]);
+    }
+
 }

@@ -19,11 +19,22 @@ public interface RoleManager {
      * Add a new role by admin.
      *
      * @param name
-     * @param privelges
+     * @param privileges
      * @param session
      * @return
      */
-    String add(String name, int [] privelges, HttpSession session);
+    String add(String name, int [] privileges, HttpSession session);
+
+    /**
+     * Edit a role by admin.
+     *
+     * @param rid
+     * @param name
+     * @param privileges
+     * @param session
+     * @return
+     */
+    boolean edit(String rid, String name, int [] privileges, HttpSession session);
 
     /**
      * Get a role get rid for admin.
