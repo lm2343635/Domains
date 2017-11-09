@@ -34,6 +34,26 @@ $(document).ready(function () {
         }
     });
 
+    $("#search-document-start, #search-document-end").datetimepicker({
+        format: "yyyy-mm-dd",
+        autoclose: true,
+        todayBtn: true,
+        startView: 2,
+        minView: 2,
+        language: "zh-CN"
+    });
+
+    $("#search-submit").click(function () {
+        var filename = $("#search-document-filename").val();
+        var start = $("#search-document-start").val();
+        var end = $("#search-document-end").val();
+        searchPublicDocuments(filename, start, end, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
+    });
+
 });
 
 function searchPublicDocuments(filename, start, end, page) {
