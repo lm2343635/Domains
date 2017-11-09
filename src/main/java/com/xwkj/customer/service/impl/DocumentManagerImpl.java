@@ -1,5 +1,6 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
 import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.bean.DocumentBean;
@@ -133,6 +134,39 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
         for (Document document : documentDao.findByCustomer(customer)) {
+            documentBeans.add(new DocumentBean(document, false));
+        }
+        return Result.WithData(documentBeans);
+    }
+
+    public Result getSearchPublicCount(String filename, String start, String end, HttpSession session) {
+        if (!checkEmployeeSession(session)) {
+            return Result.NoSession();
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        return Result.WithData(documentDao.getPublicCount(filename, startStamp, endStamp));
+    }
+
+    public Result searchPublic(String filename, String start, String end, int page, int pageSize, HttpSession session) {
+        if (!checkEmployeeSession(session)) {
+            return Result.NoSession();
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        int offset = (page - 1) * pageSize;
+        List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
+        for (Document document : documentDao.findPublic(filename, startStamp, endStamp, offset, pageSize)) {
             documentBeans.add(new DocumentBean(document, false));
         }
         return Result.WithData(documentBeans);

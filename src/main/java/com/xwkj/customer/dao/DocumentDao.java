@@ -17,6 +17,27 @@ public interface DocumentDao extends BaseDao<Document> {
     List<Document> findByCustomer(Customer customer);
 
     /**
+     * Get number of public documents.
+     *
+     * @param filename
+     * @param start
+     * @param end
+     * @return
+     */
+    int getPublicCount(String filename, Long start, Long end);
+
+    /**
+     * Find all public documents by file name and update date.
+     * @param filename
+     * @param start
+     * @param end
+     * @param offset
+     * @param pageSize
+     * @return
+     */
+    List<Document> findPublic(String filename, Long start, Long end, int offset, int pageSize);
+
+    /**
      * Find all public documents.
      *
      * @return

@@ -35,6 +35,30 @@ public interface DocumentManager {
     Result getByCid(String cid, HttpSession session);
 
     /**
+     * Get numbers of public documents searched by file name and update date.
+     *
+     * @param filename
+     * @param start
+     * @param end
+     * @param session
+     * @return
+     */
+    Result getSearchPublicCount(String filename, String start, String end, HttpSession session);
+
+    /**
+     * Search public documents.
+     *
+     * @param filename
+     * @param start
+     * @param end
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result searchPublic(String filename, String start, String end, int page, int pageSize, HttpSession session);
+
+    /**
      * Get all public documents.
      *
      * @param session

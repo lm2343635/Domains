@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,6 +24,51 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
     public List<Document> findByCustomer(Customer customer) {
         String hql = "from Document where customer = ? order by uploadAt desc";
         return (List<Document>) getHibernateTemplate().find(hql, customer);
+    }
+
+    public int getPublicCount(final String filename, final Long start, final Long end) {
+        return getHibernateTemplate().execute(new HibernateCallback<Long>() {
+            public Long doInHibernate(Session session) throws HibernateException {
+                String hql = "select count(*) from Document where customer = null ";
+                List<Object> values = new ArrayList<Object>();
+                if (filename != null && !filename.equals("")) {
+                    hql += " and filename like ?";
+                    values.add("%" + filename + "%");
+                }
+                if (start != null) {
+                    hql += " and uploadAt >= ?";
+                    values.add(start);
+                }
+                if (end != null) {
+                    hql += " and uploadAt <= ?";
+                    values.add(end);
+                }
+                Query query = session.createQuery(hql);
+                for (int i = 0; i < values.size(); i++) {
+                    query.setParameter(i, values.get(i));
+                }
+                return (Long) query.uniqueResult();
+            }
+        }).intValue();
+    }
+
+    public List<Document> findPublic(String filename, Long start, Long end, int offset, int pageSize) {
+        String hql = "from Document where customer = null ";
+        List<Object> values = new ArrayList<Object>();
+        if (filename != null && !filename.equals("")) {
+            hql += " and filename like ?";
+            values.add("%" + filename + "%");
+        }
+        if (start != null) {
+            hql += " and uploadAt >= ?";
+            values.add(start);
+        }
+        if (end != null) {
+            hql += " and uploadAt <= ?";
+            values.add(end);
+        }
+        hql += " order by uploadAt desc";
+        return findByPage(hql, values, offset, pageSize);
     }
 
     public List<Document> findPublicCustomer() {
