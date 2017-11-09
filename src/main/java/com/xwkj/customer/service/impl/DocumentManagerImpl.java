@@ -139,6 +139,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         return Result.WithData(documentBeans);
     }
 
+    @RemoteMethod
     public Result getSearchPublicCount(String filename, String start, String end, HttpSession session) {
         if (!checkEmployeeSession(session)) {
             return Result.NoSession();
@@ -153,6 +154,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         return Result.WithData(documentDao.getPublicCount(filename, startStamp, endStamp));
     }
 
+    @RemoteMethod
     public Result searchPublic(String filename, String start, String end, int page, int pageSize, HttpSession session) {
         if (!checkEmployeeSession(session)) {
             return Result.NoSession();

@@ -44,6 +44,30 @@
                 </button>
             </h1>
         </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-file-text"></i></span>
+                        <input id="search-document-filename" type="text" class="form-control" placeholder="文件名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-addon">创建日期</span>
+                        <input id="search-document-start" type="text" class="form-control" placeholder="起始日期">
+                        <span class="input-group-addon">~</span>
+                        <input id="search-document-end" type="text" class="form-control" placeholder="结束日期">
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-1 col-md-offset-2">
+                    <button id="search-reset" class="btn btn-block btn-info">重置</button>
+                </div>
+                <div class="col-xs-6 col-md-1">
+                    <button id="search-submit" class="btn btn-block btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
         <div id="document-list" class="list-group">
             <div id="${did}$" class="list-group-item mengular-template document-list-template">
                 <p>${employee}$上传于${uploadAt}$，文件大小：${size}$</p>
@@ -51,6 +75,18 @@
                     <a class="document-list-filename" href="/document/download?did=${did}$">${filename}$</a>
                     <i class="fa fa-lg fa-trash text-danger document-list-remove pull-right"></i>
                 </h4>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10">
+                    <nav id="page-nav">
+                        <ul class="pagination" style="margin:0"></ul>
+                    </nav>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <p id="page-info" class="pull-right">每页<span id="page-size"></span>条，共<span id="page-count"></span>条</p>
+                </div>
             </div>
         </div>
     </div>
