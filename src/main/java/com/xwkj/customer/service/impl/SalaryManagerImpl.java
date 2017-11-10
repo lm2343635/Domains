@@ -51,13 +51,13 @@ public class SalaryManagerImpl extends ManagerTemplate implements SalaryManager 
         if (viewer == null) {
             return Result.NoSession();
         }
-        if (viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold) {
-            return Result.NoPrivilege();
-        }
         Salary salary = salaryDao.get(sid);
         if (salary == null) {
             Debug.error("Cannot find a salary by this sid.");
             return Result.WithData(null);
+        }
+        if (viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold && !viewer.equals(salary.getEmployee())) {
+            return Result.NoPrivilege();
         }
         return Result.WithData(new SalaryBean(salary, true));
     }
