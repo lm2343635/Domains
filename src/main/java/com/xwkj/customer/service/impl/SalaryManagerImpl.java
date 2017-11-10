@@ -23,7 +23,7 @@ public class SalaryManagerImpl extends ManagerTemplate implements SalaryManager 
 
     @RemoteMethod
     @Transactional
-    public Result add(String eid, String remark, int money, HttpSession session) {
+    public Result add(String eid, String remark, int money, String detail, HttpSession session) {
         Employee creator = getEmployeeFromSession(session);
         if (creator == null) {
             return Result.NoSession();
@@ -40,8 +40,26 @@ public class SalaryManagerImpl extends ManagerTemplate implements SalaryManager 
         salary.setCreateAt(System.currentTimeMillis());
         salary.setRemark(remark);
         salary.setMoney(money);
+        salary.setDetail(detail);
         salary.setEmployee(employee);
         return Result.WithData(salaryDao.save(salary));
+    }
+
+    @RemoteMethod
+    public Result get(String sid, HttpSession session) {
+        Employee viewer = getEmployeeFromSession(session);
+        if (viewer == null) {
+            return Result.NoSession();
+        }
+        if (viewer.getRole().getEmployee() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Salary salary = salaryDao.get(sid);
+        if (salary == null) {
+            Debug.error("Cannot find a salary by this sid.");
+            return Result.WithData(null);
+        }
+        return Result.WithData(new SalaryBean(salary, true));
     }
 
     @RemoteMethod
@@ -79,7 +97,7 @@ public class SalaryManagerImpl extends ManagerTemplate implements SalaryManager 
         }
         List<SalaryBean> salaryBeans = new ArrayList<SalaryBean>();
         for (Salary salary : salaryDao.findByEmployee(employee)) {
-            salaryBeans.add(new SalaryBean(salary));
+            salaryBeans.add(new SalaryBean(salary, false));
         }
         return Result.WithData(salaryBeans);
     }

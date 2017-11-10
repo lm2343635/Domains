@@ -12,10 +12,20 @@ public interface SalaryManager {
      * @param eid
      * @param remark
      * @param money
+     * @param detail
      * @param session
      * @return
      */
-    Result add(String eid, String remark, int money, HttpSession session);
+    Result add(String eid, String remark, int money, String detail, HttpSession session);
+
+    /**
+     * Get a salary record by eid.
+     *
+     * @param sid
+     * @param session
+     * @return
+     */
+    Result get(String sid, HttpSession session);
 
     /**
      * Remove an existing salary record.

@@ -33,6 +33,7 @@ $(document).ready(function () {
     $("#add-salary-submit").click(function () {
         var remark = $("#add-salary-remark").val();
         var money = $("#add-salary-money").val();
+        var detail = $("#add-salary-detail").val();
         var validate = true;
         if (remark == null || remark == "") {
             $("#add-salary-remark").parent().addClass("has-error");
@@ -49,7 +50,7 @@ $(document).ready(function () {
         if (!validate) {
             return;
         }
-        SalaryManager.add(eid, remark, money, function (result) {
+        SalaryManager.add(eid, remark, money, detail, function (result) {
             if (!result.session) {
                 sessionError();
                 return;
@@ -97,22 +98,39 @@ function loadSalaries() {
                 money: salary.money
             });
 
+            $("#" + salary.sid + " .salary-list-remark").click(function () {
+                var sid = $(this).mengularId();
+                SalaryManager.get(sid, function (result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.privilege) {
+                        $.messager.popup("当前用户无权查看该员工的工资记录！");
+                        return;
+                    }
+                    $("#detail-modal-remark").text(result.data.remark);
+                    $("#detail-modal-detail").text(result.data.detail);
+                    $("#detail-modal").modal("show");
+                });
+            });
+
             $("#" + salary.sid + " .salary-list-remove").click(function () {
                 var sid = $(this).mengularId();
                 var remark = $("#" + sid + " .salary-list-remark").text();
                 $.messager.confirm("删除工作记录", "确认删除工资记录" + remark + "吗？", function () {
                     SalaryManager.remove(sid, function (result) {
-
-                    });if (!result.session) {
-                        sessionError();
-                        return;
-                    }
-                    if (!result.privilege) {
-                        $.messager.popup("当前用户无权删除该员工的工资记录！");
-                        return;
-                    }
-                    $.messager.popup("删除成功！");
-                    $("#" + sid).remove();
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权删除该员工的工资记录！");
+                            return;
+                        }
+                        $.messager.popup("删除成功！");
+                        $("#" + sid).remove()
+                    });;
                 });
             });
         }

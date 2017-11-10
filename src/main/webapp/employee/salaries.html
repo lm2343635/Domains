@@ -23,6 +23,7 @@
             margin: 4px 0;
         }
 
+        #salary-list .salary-list-template .salary-list-remark,
         #salary-list .salary-list-template i {
             cursor: pointer;
         }
@@ -33,6 +34,17 @@
 
         #add-salary-modal .input-group {
             margin-bottom: 5px;
+        }
+
+        #detail-modal-detail {
+            border: none;
+            background: none;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+            color: #444;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
     </style>
 </head>
@@ -79,10 +91,28 @@
                     <input id="add-salary-money" type="number" class="form-control" placeholder="请填写整数">
                     <span class="input-group-addon">元</span>
                 </div>
+                <div class="form-group">
+                    <textarea id="add-salary-detail" class="form-control" rows="15" placeholder="工资详细清单"></textarea>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="add-salary-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="detail-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">
+                    <span id="detail-modal-remark"></span>的详细清单
+                </h4>
+            </div>
+            <div class="modal-body">
+                <pre id="detail-modal-detail"></pre>
             </div>
         </div>
     </div>

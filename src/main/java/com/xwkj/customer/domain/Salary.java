@@ -23,6 +23,9 @@ public class Salary implements Serializable {
     @Column(nullable = false)
     private Integer money;
 
+    @Column(nullable = false)
+    private String detail;
+
     @ManyToOne
     @JoinColumn(name = "eid", nullable = false)
     private Employee employee;
@@ -65,6 +68,14 @@ public class Salary implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
 }

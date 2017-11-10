@@ -12,6 +12,7 @@ public class SalaryBean {
     private Date createAt;
     private String remark;
     private int money;
+    private String detail;
     private String eid;
 
     public String getSid() {
@@ -46,6 +47,14 @@ public class SalaryBean {
         this.money = money;
     }
 
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
     public String getEid() {
         return eid;
     }
@@ -54,12 +63,15 @@ public class SalaryBean {
         this.eid = eid;
     }
 
-    public SalaryBean(Salary salary) {
+    public SalaryBean(Salary salary, boolean full) {
         this.sid = salary.getSid();
         this.createAt = new Date(salary.getCreateAt());
         this.remark = salary.getRemark();
         this.money = salary.getMoney();
         this.eid = salary.getEmployee().getEid();
+        if (full) {
+            this.detail = salary.getDetail();
+        }
     }
 
 }
