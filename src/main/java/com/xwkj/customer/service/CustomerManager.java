@@ -95,6 +95,7 @@ public interface CustomerManager {
     /**
      * Develop a customer.
      * The state of this customer will transfer from undeveloped to developing.
+     * The employee to develop this customer will be the manager of this customer.
      *
      * @param cid
      * @param session
@@ -122,6 +123,17 @@ public interface CustomerManager {
      * @return
      */
     Result ruin(String cid, HttpSession session);
+
+    /**
+     * Recover a customer.
+     * The state of this customer will transfer from lost to developing.
+     * The employee to recover this customer will be the manager of this customer.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result recover(String cid, HttpSession session);
 
     /**
      * Get number of customers created by an employee.

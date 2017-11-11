@@ -128,10 +128,6 @@ $(document).ready(function () {
                 $("#customer-develop").remove();
             }
 
-            if (state != CustomerStateDeveloped || employee.role.ruin != RolePrevilgeHold) {
-                $("#customer-ruin").remove();
-            }
-
             if (state != CustomerStateDeveloping || employee.role.finish != RolePrevilgeHold) {
                 $("#customer-finish").remove();
             } else {
@@ -149,6 +145,14 @@ $(document).ready(function () {
                             .appendTo("#customer-finish-manager");
                     }
                 });
+            }
+
+            if (state != CustomerStateDeveloped || employee.role.ruin != RolePrevilgeHold) {
+                $("#customer-ruin").remove();
+            }
+
+            if (state != CustomerStateLost || employee.role.recover != RolePrevilgeHold) {
+                $("#customer-reocver").remove();
             }
 
             // Show all managers.
@@ -297,6 +301,29 @@ $(document).ready(function () {
                     return;
                 }
                 $.messager.popup("转入流失客户成功！");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
+        });
+    });
+
+    $("#customer-reocver").click(function () {
+        $.messager.confirm("恢复开发客户", "恢复开发客户后将转入待开发，当前用户将成为负责人。确认恢复开发客户吗？", function () {
+            CustomerManager.recover(cid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("该账户无权限恢复开发客户！");
+                    return;
+                }
+                if (!result.data) {
+                    $.messager.popup("只有已流失的客户才能被恢复开发！");
+                    return;
+                }
+                $.messager.popup("恢复开发客户成功！");
                 setTimeout(function () {
                     location.reload();
                 }, 1000);

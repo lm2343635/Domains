@@ -294,21 +294,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (customer.getState() != CustomerStateUndeveloped) {
             return Result.WithData(false);
         }
-        Assign assign = new Assign();
-        assign.setCreateAt(System.currentTimeMillis());
-        assign.setR(employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeHold);
-        assign.setW(employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeHold);
-        assign.setD(employee.getRole().getDevelopingD() == RoleManager.RolePrivilgeHold);
-        assign.setAssign(true);
-        assign.setCustomer(customer);
-        assign.setEmployee(employee);
-        if (assignDao.save(assign) == null) {
-            return Result.WithData(false);
-        }
-        customer.setState(CustomerStateDeveloping);
-        customer.setUpdateAt(System.currentTimeMillis());
-        customerDao.update(customer);
-        return Result.WithData(true);
+        return Result.WithData(setDevelopingByEmployee(customer, employee));
     }
 
     @RemoteMethod
@@ -401,6 +387,27 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
     }
 
     @RemoteMethod
+    @Transactional
+    public Result recover(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getRecover() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid.");
+            return Result.WithData(false);
+        }
+        if (customer.getState() != CustomerStateLost) {
+            return Result.WithData(false);
+        }
+        return Result.WithData(setDevelopingByEmployee(customer, employee));
+    }
+
+    @RemoteMethod
     public Result getCreatesCount(String eid, HttpSession session) {
         Employee viwer = getEmployeeFromSession(session);
         if (viwer == null) {
@@ -437,6 +444,24 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             customerBeans.add(new CustomerBean(customer, false));
         }
         return Result.WithData(customerBeans);
+    }
+
+    private boolean setDevelopingByEmployee(Customer customer, Employee employee) {
+        Assign assign = new Assign();
+        assign.setCreateAt(System.currentTimeMillis());
+        assign.setR(employee.getRole().getDevelopingR() == RoleManager.RolePrivilgeHold);
+        assign.setW(employee.getRole().getDevelopingW() == RoleManager.RolePrivilgeHold);
+        assign.setD(employee.getRole().getDevelopingD() == RoleManager.RolePrivilgeHold);
+        assign.setAssign(true);
+        assign.setCustomer(customer);
+        assign.setEmployee(employee);
+        if (assignDao.save(assign) == null) {
+            return false;
+        }
+        customer.setState(CustomerStateDeveloping);
+        customer.setUpdateAt(System.currentTimeMillis());
+        customerDao.update(customer);
+        return true;
     }
 
 }
