@@ -1,9 +1,12 @@
 var editingSid = null;
+var names = [];
 
 $(document).ready(function () {
 
     checkEmployeeSession(function () {
-        loadServers();
+        loadServers(function () {
+            loadHighlightDomains();
+        });
     });
     
     $("#add-server-submit").click(function () {
@@ -65,19 +68,22 @@ $(document).ready(function () {
     
 });
 
-function loadServers() {
+function loadServers(done) {
     ServerManager.getAll(function (result) {
         if (!result.session) {
             sessionError();
             return;
         }
+
         if (!result.privilege) {
-            $.messager.popup("当前账户无权限查看服务器！");
+            $.messager.popup("当前账户无权限管理域名！");
             return;
         }
+
         $("#server-list tbody").mengularClear();
         for (var i in result.data) {
             var server = result.data[i];
+            names[server.sid] = server.name;
 
             $("#server-list tbody").mengular(".server-list-template", {
                 sid: server.sid,
@@ -138,6 +144,68 @@ function loadServers() {
             });
         }
 
+        done();
     });
 
+}
+
+function loadHighlightDomains() {
+    DomainManager.getHightlightDomains(function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            return;
+        }
+
+        $("#domain-list tbody").mengularClear();
+
+        $("#domain-panel .panel-title").fillText({
+            domains: result.data.length
+        });
+
+        for (var i in result.data) {
+            var domain = result.data[i];
+            var sites = domain.domains.split(",");
+            var links = ""
+            for (var j in sites) {
+                links += "<a href='http://" + sites[j] + "' target='_blank'>" + sites[j] + "</a>";
+                if (j != sites.length - 1) {
+                    links += "<br>";
+                }
+            }
+
+            $("#domain-list tbody").mengular(".domain-list-template", {
+                did: domain.did,
+                createAt: domain.createAt.format(DATE_HOUR_MINUTE_FORMAT),
+                updateAt: domain.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
+                name: domain.name,
+                domains: links,
+                language: domain.language,
+                resolution: domain.resolution,
+                path: domain.path,
+                remark: domain.remark,
+                sid: domain.sid,
+                server: names[domain.sid]
+            });
+
+            $("#" + domain.did + " .domain-list-remove").click(function () {
+                var did = $(this).mengularId();
+                $.messager.confirm("移除待处理域名", "确认从待处理域名列表中移除该域名吗？<br>从待处理域名列表中移除不会删除该域名。", function () {
+                    DomainManager.setHighlight(did, false, function(result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权从待处理列表中移除该域名！");
+                            return;
+                        }
+                        $("#" + did).remove();
+                    });
+                });
+            });
+        }
+    });
 }

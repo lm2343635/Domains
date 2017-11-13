@@ -17,13 +17,15 @@
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/ServerManager.js"></script>
+    <script src="/dwr/interface/DomainManager.js"></script>
     <script src="/static/js/employee/servers.js"></script>
     <style>
         #add-server {
             cursor: pointer
         }
 
-        #server-list .server-list-template i {
+        #server-list .server-list-template i,
+        #domain-list .domain-list-template i {
             cursor: pointer;
         }
 
@@ -70,6 +72,41 @@
                 <td><a href="domains.html?sid=${sid}$"><i class="fa fa-lg fa-font text-primary"></i></a></td>
                 <td class="server-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
                 <td class="server-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="domain-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span>待处理的域名列表，共@{domains}个域名</span>
+            </h1>
+        </div>
+        <table id="domain-list" class="table">
+            <thead>
+            <tr>
+                <th>更新时间</th>
+                <th>网站名称</th>
+                <th>域名</th>
+                <th>语言</th>
+                <th>解析</th>
+                <th>路径</th>
+                <th>备注</th>
+                <th>服务器</th>
+                <th>移除</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="${did}$" class="mengular-template domain-list-template ${highlight}$">
+                <td>${updateAt}$</td>
+                <td class="domain-list-name">${name}$</td>
+                <td>${domains}$</td>
+                <td>${language}$</td>
+                <td>${resolution}$</td>
+                <td>${path}$</td>
+                <td>${remark}$</td>
+                <td><a href="domains.html?sid=${sid}$">${server}$</a></td>
+                <td class="domain-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
             </tr>
             </tbody>
         </table>
