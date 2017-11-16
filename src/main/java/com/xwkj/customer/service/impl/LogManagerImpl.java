@@ -234,5 +234,5 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         }
         return Result.WithData(logBeans);
     }
-    
+
 }
