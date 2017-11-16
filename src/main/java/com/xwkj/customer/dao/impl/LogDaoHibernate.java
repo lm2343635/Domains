@@ -93,4 +93,15 @@ public class LogDaoHibernate extends BaseHibernateDaoSupport<Log> implements Log
         });
     }
 
+    public List<Log> findWithLimit(final int limit) {
+        final String hql = "from Log order by createAt desc";
+        return getHibernateTemplate().execute(new HibernateCallback<List<Log>>() {
+            public List<Log> doInHibernate(Session session) throws HibernateException {
+                Query query = session.createQuery(hql);
+                query.setFirstResult(0);
+                query.setMaxResults(limit);
+                return query.list();
+            }
+        });
+    }
 }

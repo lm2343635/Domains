@@ -51,4 +51,12 @@ public interface LogDao extends BaseDao<Log> {
      */
     int deleteByCustomer(Customer customer);
 
+    /**
+     * Find logs with limitation.
+     *
+     * @param limit
+     * @return
+     */
+    List<Log> findWithLimit(int limit);
+
 }

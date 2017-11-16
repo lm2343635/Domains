@@ -83,4 +83,13 @@ public interface LogManager {
      */
     Result search(String eid, String customer, String title, String start, String end, int page, int pageSize, HttpSession session);
 
+    /**
+     * Get the latest logs.
+     *
+     * @param limit
+     * @param session
+     * @return
+     */
+    Result getByLimit(int limit, HttpSession session);
+
 }

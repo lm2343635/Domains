@@ -219,4 +219,20 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
         return Result.WithData(logBeans);
     }
 
+    @RemoteMethod
+    public Result getByLimit(int limit, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getEmployee() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        List<LogBean> logBeans = new ArrayList<LogBean>();
+        for (Log log : logDao.findWithLimit(limit)) {
+            logBeans.add(new LogBean(log, false));
+        }
+        return Result.WithData(logBeans);
+    }
+    
 }
