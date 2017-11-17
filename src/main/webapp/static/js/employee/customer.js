@@ -561,6 +561,10 @@ function loadLogs() {
         }
 
         $("#log-list").mengularClear();
+        if (result.data.length > 0) {
+            $("#log-panel .panel-body").hide();
+        }
+
         for (var i in result.data) {
             var log = result.data[i];
             $("#log-list").mengular(".log-list-template", {
@@ -624,6 +628,10 @@ function loadExpirations() {
             return;
         }
         $("#expiration-list").mengularClear();
+        if (result.data.length > 0) {
+            $("#expiration-panel .panel-body").hide();
+        }
+
         for (var i in result.data) {
             var expiration = result.data[i];
             $("#expiration-list").mengular(".expiration-list-template", {
@@ -647,6 +655,10 @@ function loadDocuments() {
             return;
         }
         $("#document-list").mengularClear();
+        if (result.data.length > 0) {
+            $("#document-panel .panel-body").hide();
+        }
+
         for (var i in result.data) {
             var document = result.data[i];
             $("#document-list").mengular(".document-list-template", {
