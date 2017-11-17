@@ -183,7 +183,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
     @RemoteMethod
     @Transactional
     public Result edit(String cid, String name, int capital, String contact, String aid, String iid,
-                       String items, int money, String expireAt, String remark, String document, HttpSession session) {
+                       String items, int money, String remark, String document, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -244,7 +244,6 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         if (customer.getState() == CustomerStateDeveloped) {
             customer.setItems(items);
             customer.setMoney(money);
-            customer.setExpireAt((expireAt.equals("") || expireAt == null) ? null : DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
             customer.setDocument(document);
         }
         customerDao.update(customer);
@@ -389,7 +388,6 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         // Delete unuseful attributes.
         customer.setItems(null);
         customer.setMoney(null);
-        customer.setExpireAt(null);
         customer.setDocument(null);
         customer.setState(CustomerStateLost);
         customerDao.update(customer);

@@ -20,7 +20,6 @@ public class CustomerBean {
     private int money;
     private String remark;
     private String document;
-    private Date expireAt;
     private AreaBean area;
     private IndustryBean industry;
     private EmployeeBean register;
@@ -48,14 +47,6 @@ public class CustomerBean {
 
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
-    }
-
-    public Date getExpireAt() {
-        return expireAt;
-    }
-
-    public void setExpireAt(Date expireAt) {
-        this.expireAt = expireAt;
     }
 
     public int getState() {
@@ -158,7 +149,6 @@ public class CustomerBean {
         this.cid = customer.getCid();
         this.createAt = new Date(customer.getCreateAt());
         this.updateAt = new Date(customer.getUpdateAt());
-        this.expireAt = customer.getExpireAt() == null ? null : new Date(customer.getExpireAt());
         this.state = customer.getState();
         this.name = customer.getName();
         this.capital = customer.getCapital();

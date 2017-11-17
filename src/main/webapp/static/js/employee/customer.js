@@ -229,12 +229,10 @@ $(document).ready(function () {
         }
         var items = null;
         var money = 0;
-        var expireAt = null;
         var document = null;
         if (state == CustomerStateDeveloped) {
             items = $("#customer-items").val();
             money = $("#customer-money").val();
-            expireAt = $("#customer-expireAt").val();
             document = $("#customer-document").summernote("code");
             if (money != "" && !isInteger(money)) {
                 $("#customer-money").parent().addClass("has-error");
@@ -253,7 +251,7 @@ $(document).ready(function () {
         }
 
         $(this).text("提交中...").attr("disabled", "disabled");
-        CustomerManager.edit(cid, name, capital, contact, aid, iid, items, money, expireAt, remark, document, function (result) {
+        CustomerManager.edit(cid, name, capital, contact, aid, iid, items, money, remark, document, function (result) {
             if (!result.session) {
                 sessionError();
                 return;

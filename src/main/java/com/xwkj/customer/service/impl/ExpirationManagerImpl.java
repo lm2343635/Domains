@@ -95,23 +95,4 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         return Result.WithData(expirationBeans);
     }
 
-    @RemoteMethod
-    @Transactional
-    public void migrate(String tid) {
-        Type type = typeDao.get(tid);
-        for (Customer customer : customerDao.findAll()) {
-            if (customer.getExpireAt() == null) {
-                continue;
-            }
-            Expiration expiration = new Expiration();
-            expiration.setCreateAt(System.currentTimeMillis());
-            expiration.setUpdateAt(expiration.getCreateAt());
-            expiration.setType(type);
-            expiration.setCustomer(customer);
-            expiration.setExpireAt(customer.getExpireAt());
-            expirationDao.save(expiration);
-            System.out.println("New expiration has been created for " + customer.getName() + " with expireAt = " + customer.getExpireAt());
-        }
-    }
-
 }

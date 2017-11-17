@@ -81,7 +81,7 @@ public interface CustomerManager {
      * @return
      */
     Result edit(String cid, String name, int capital, String contact, String aid, String iid,
-                String items, int money, String expireAt, String remark, String document, HttpSession session);
+                String items, int money, String remark, String document, HttpSession session);
 
     /**
      * Remove a customer.
