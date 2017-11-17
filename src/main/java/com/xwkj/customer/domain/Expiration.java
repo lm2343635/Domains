@@ -15,10 +15,10 @@ public class Expiration implements Serializable {
     private String eid;
 
     @Column(nullable = false)
-    private String name;
+    private Long createAt;
 
     @Column(nullable = false)
-    private Long createAt;
+    private Long updateAt;
 
     @Column(nullable = false)
     private Long expireAt;
@@ -39,20 +39,20 @@ public class Expiration implements Serializable {
         this.eid = eid;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getCreateAt() {
         return createAt;
     }
 
     public void setCreateAt(Long createAt) {
         this.createAt = createAt;
+    }
+
+    public Long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Long updateAt) {
+        this.updateAt = updateAt;
     }
 
     public Long getExpireAt() {

@@ -154,9 +154,14 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             Debug.error("Cannot find a customer by this cid.");
             return Result.NoPrivilege();
         }
+
         switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead)) {
             case RoleManager.RolePrivilgeAssign:
-                if (!assignReadPrivilege(customer, employee)) {
+                Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getR()) {
                     return Result.NoPrivilege();
                 }
                 break;
@@ -165,6 +170,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             default:
                 break;
         }
+
         CustomerBean customerBean = new CustomerBean(customer, true);
         List<EmployeeBean> managers = new ArrayList<EmployeeBean>();
         for (Assign assign : assignDao.findByCustomer(customer)) {
@@ -190,7 +196,11 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
 
         switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite)) {
             case RoleManager.RolePrivilgeAssign:
-                if (!assignWritePrivilege(customer, employee)) {
+                Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getW()) {
                     return Result.NoPrivilege();
                 }
                 break;

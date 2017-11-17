@@ -32,6 +32,8 @@
     <script src="/dwr/interface/AssignManager.js"></script>
     <script src="/dwr/interface/IndustryManager.js"></script>
     <script src="/dwr/interface/LogManager.js"></script>
+    <script src="/dwr/interface/TypeManager.js"></script>
+    <script src="/dwr/interface/ExpirationManager.js"></script>
     <script src="/dwr/interface/DocumentManager.js"></script>
     <script src="/static/js/employee/customer.js"></script>
     <style>
@@ -55,6 +57,22 @@
         #log-list .log-list-template i,
         #document-list .document-list-template i {
             cursor: pointer;
+        }
+
+        #log-panel {
+            height: 322px;
+        }
+
+        #log-panel .panel-body i,
+        #document-panel .panel-body i,
+        #expiration-panel .panel-body i {
+            font-size: 3em;
+            display: block;
+            text-align: center;
+        }
+
+        #log-panel .panel-body i {
+            margin-top: 80px;
         }
 
     </style>
@@ -203,8 +221,7 @@
                 <div class="panel-heading">
                     <h1 class="panel-title">
                         <span>服务记录</span>
-                        <button class="btn btn-success btn-xs pull-right" data-toggle="modal" data-target="#log-modal">新增日志
-                        </button>
+                        <button class="btn btn-success btn-xs pull-right" data-toggle="modal" data-target="#log-modal">新增日志</button>
                     </h1>
                 </div>
                 <div id="log-list" class="list-group">
@@ -215,6 +232,33 @@
                             <i class="fa fa-lg fa-trash text-danger log-list-remove pull-right"></i>
                         </h4>
                     </div>
+                </div>
+                <div class="panel-body">
+                    <i class="fa fa-list text-success"></i>
+                    <h4 class="text-center text-muted">暂无服务记录</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div id="expiration-panel" class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">
+                        <span>到期时间</span>
+                        <button class="btn btn-xs btn-warning pull-right" data-toggle="modal" data-target="#expiration-modal">新建到期时间</button>
+                    </h1>
+                </div>
+                <div id="expiration-list" class="list-group">
+                    <div id="${eid}$" class="list-group-item mengular-template expiration-list-template">
+                        <p>创建于${createAt}$，更新于${updateAt}$</p>
+                        <h4 class="list-group-item-heading">
+                            <a href="javascript:void(0)" class="log-list-edit">${type}$：${expireAt}$</a>
+                            <i class="fa fa-lg fa-trash text-danger expiration-list-remove pull-right"></i>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <i class="fa fa-file-text text-warning"></i>
+                    <h4 class="text-center text-muted">暂无到期时间</h4>
                 </div>
             </div>
         </div>
@@ -237,6 +281,10 @@
                             <i class="fa fa-lg fa-trash text-danger document-list-remove pull-right"></i>
                         </h4>
                     </div>
+                </div>
+                <div class="panel-body">
+                    <i class="fa fa-file-text text-info"></i>
+                    <h4 class="text-center text-muted">暂无附件文档</h4>
                 </div>
             </div>
         </div>
@@ -331,6 +379,30 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="save-log-submit" type="button" class="btn btn-success">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="expiration-modal" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">到期时间</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">类型</label>
+                    <select id="expiration-type" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">日期</label>
+                    <input id="expiration-expireAt" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="expiration-submit" type="button" class="btn btn-success">保存</button>
             </div>
         </div>
     </div>

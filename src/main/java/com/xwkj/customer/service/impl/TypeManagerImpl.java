@@ -2,7 +2,10 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.TypeBean;
+import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Type;
+import com.xwkj.customer.service.CustomerManager;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.TypeManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
@@ -32,7 +35,7 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
 
     @RemoteMethod
     public Result getAll(HttpSession session) {
-        if (!checkAdminSession(session)) {
+        if (!checkAdminSession(session) && !checkEmployeeSession(session)) {
             return Result.NoSession();
         }
         List<TypeBean> typeBeans = new ArrayList<TypeBean>();

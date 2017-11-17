@@ -2,7 +2,7 @@ var cid = request("cid");
 var state;
 
 var assinableEmployees;
-var editingLid = null;
+var editingLid = null, editingEid = null;
 
 $(document).ready(function () {
 
@@ -51,21 +51,31 @@ $(document).ready(function () {
                 $("#customer-industry").val(customer.industry.iid);
             });
 
+            TypeManager.getAll(function (result) {
+                if (!result.session) {
+                    return;
+                }
+                for (var i in result.data) {
+                    var type = result.data[i];
+                    $("<option>").val(type.tid).text(type.name).appendTo("#expiration-type");
+                }
+            });
+
+            $("#expiration-expireAt").datetimepicker({
+                format: "yyyy-mm-dd",
+                autoclose: true,
+                todayBtn: true,
+                startView: 2,
+                minView: 2,
+                language: "zh-CN"
+            })
+
             if (state == CustomerStateDeveloped) {
 
                 fillValue({
                     "customer-money": customer.money == 0 ? "" : customer.money,
                     "customer-items": customer.items
-                })
-
-                $("#customer-expireAt").datetimepicker({
-                    format: "yyyy-mm-dd",
-                    autoclose: true,
-                    todayBtn: true,
-                    startView: 2,
-                    minView: 2,
-                    language: "zh-CN"
-                }).val(customer.expireAt == null ? "" : customer.expireAt.format(YEAR_MONTH_DATE_FORMAT));
+                });
 
                 $("#customer-document").summernote({
                     toolbar: SUMMERNOTE_TOOLBAR_FULL,
@@ -161,8 +171,9 @@ $(document).ready(function () {
                 addManager(assinableEmployees[i]);
             }
 
-            // Show all logs and documents.
+            // Show all logs, expirations and documents.
             loadLogs();
+            loadExpirations();
             loadDocuments();
         });
     });
@@ -447,6 +458,37 @@ $(document).ready(function () {
         editingLid = null;
     });
 
+    $("#expiration-submit").click(function () {
+        var expireAt = $("#expiration-expireAt").val();
+        var tid = $("#expiration-type").val();
+        if (expireAt == null || expireAt == "") {
+            $.messager.popup("请选择一个到期时间！");
+            return;
+        }
+        if (editingEid == null) {
+            ExpirationManager.add(cid, tid, expireAt, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限创建到期时间！");
+                    return;
+                }
+                loadExpirations();
+                $.messager.popup("创建成功！");
+                $("#expiration-modal").modal("hide");
+            });
+        } else {
+
+        }
+    });
+
+    $("#expiration-modal").on("hidden.bs.modal", function () {
+        $("#expiration-modal input").val("");
+        editingLid = null;
+    });
+
     $("#upload-document").fileupload({
         autoUpload: true,
         url: "/document/upload/customer?cid=" + cid,
@@ -572,7 +614,29 @@ function loadLogs() {
 
         }
     });
+}
 
+function loadExpirations() {
+    ExpirationManager.getByCid(cid, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            return;
+        }
+        $("#expiration-list").mengularClear();
+        for (var i in result.data) {
+            var expiration = result.data[i];
+            $("#expiration-list").mengular(".expiration-list-template", {
+                eid: expiration.eid,
+                createAt: expiration.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: expiration.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                type: expiration.type.name,
+                expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT)
+            });
+        }
+    });
 }
 
 function loadDocuments() {

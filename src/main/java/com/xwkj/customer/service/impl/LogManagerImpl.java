@@ -36,18 +36,22 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
             Debug.error("Cannot find a customer by this cid.");
             return Result.WithData(false);
         }
-        int privilege = getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite);
-        if (privilege == RoleManager.RolePrivilgeNone) {
-            return Result.NoPrivilege();
-        } else if (privilege == RoleManager.RolePrivilgeAssign) {
-            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-            if (assign == null) {
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite)) {
+            case RoleManager.RolePrivilgeAssign:
+                Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getW()) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
                 return Result.NoPrivilege();
-            }
-            if (!assign.getW()) {
-                return Result.NoPrivilege();
-            }
+            default:
+                break;
         }
+
         // Create a new log.
         Log log = new Log();
         log.setCreateAt(System.currentTimeMillis());
@@ -75,18 +79,22 @@ public class LogManagerImpl extends ManagerTemplate implements LogManager {
             Debug.error("Cannot find a customer by this cid.");
             return Result.WithData(false);
         }
-        int privilege = getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead);
-        if (privilege == RoleManager.RolePrivilgeNone) {
-            return Result.NoPrivilege();
-        } else if (privilege == RoleManager.RolePrivilgeAssign) {
-            Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
-            if (assign == null) {
+        switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeRead)) {
+            case RoleManager.RolePrivilgeAssign:
+                Assign assign = assignDao.getByCustomerForEmployee(customer, employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getR()) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
                 return Result.NoPrivilege();
-            }
-            if (!assign.getR()) {
-                return Result.NoPrivilege();
-            }
+            default:
+                break;
         }
+
         List<LogBean> logBeans = new ArrayList<LogBean>();
         for (Log log : logDao.findByCustomer(customer)) {
             logBeans.add(new LogBean(log, false));
