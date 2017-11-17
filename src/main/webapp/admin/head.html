@@ -11,6 +11,7 @@
                 <li><a href="roles.html">角色管理</a></li>
                 <li><a href="areas.html">区域管理</a></li>
                 <li><a href="industries.html">行业管理</a></li>
+                <li><a href="types.html">到期类别</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/logout/admin">退出</a></li>
@@ -23,7 +24,8 @@
         employees: 0,
         roles: 1,
         areas: 2,
-        industries: 3
+        industries: 3,
+        types: 4
     }
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
 </script>

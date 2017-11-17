@@ -12,7 +12,7 @@ public class Expiration implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String tid;
+    private String eid;
 
     @Column(nullable = false)
     private String name;
@@ -31,12 +31,12 @@ public class Expiration implements Serializable {
     @JoinColumn(name = "cid", nullable = false)
     private Customer customer;
 
-    public String getTid() {
-        return tid;
+    public String getEid() {
+        return eid;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid;
+    public void setEid(String eid) {
+        this.eid = eid;
     }
 
     public String getName() {
