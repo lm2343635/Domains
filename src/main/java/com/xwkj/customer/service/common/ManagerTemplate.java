@@ -58,6 +58,12 @@ public class ManagerTemplate {
     @Autowired
     protected SalaryDao salaryDao;
 
+    @Autowired
+    protected TypeDao typeDao;
+
+    @Autowired
+    protected ExpirationDao expirationDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }
