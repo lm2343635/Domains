@@ -55,7 +55,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         }
         Expiration expiration = new Expiration();
         expiration.setCreateAt(System.currentTimeMillis());
-        expiration.setUpdateAt(System.currentTimeMillis());
+        expiration.setUpdateAt(expiration.getCreateAt());
         expiration.setExpireAt(DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
         expiration.setCustomer(customer);
         expiration.setType(type);
@@ -93,6 +93,25 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
             expirationBeans.add(new ExpirationBean(expiration, false));
         }
         return Result.WithData(expirationBeans);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public void migrate(String tid) {
+        Type type = typeDao.get(tid);
+        for (Customer customer : customerDao.findAll()) {
+            if (customer.getExpireAt() == null) {
+                continue;
+            }
+            Expiration expiration = new Expiration();
+            expiration.setCreateAt(System.currentTimeMillis());
+            expiration.setUpdateAt(expiration.getCreateAt());
+            expiration.setType(type);
+            expiration.setCustomer(customer);
+            expiration.setExpireAt(customer.getExpireAt());
+            expirationDao.save(expiration);
+            System.out.println("New expiration has been created for " + customer.getName() + " with expireAt = " + customer.getExpireAt());
+        }
     }
 
 }

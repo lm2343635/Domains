@@ -26,4 +26,11 @@ public interface ExpirationManager {
      */
     Result getByCid(String cid, HttpSession session);
 
+    /**
+     * Migrate from the version without expiration entity.
+     *
+     * @param tid
+     */
+    void migrate(String tid);
+
 }
