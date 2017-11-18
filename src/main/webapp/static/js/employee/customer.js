@@ -478,12 +478,25 @@ $(document).ready(function () {
                 $("#expiration-modal").modal("hide");
             });
         } else {
-
+            ExpirationManager.edit(editingEid, expireAt, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限修改到期时间！");
+                    return;
+                }
+                loadExpirations();
+                $.messager.popup("修改成功！");
+                $("#expiration-modal").modal("hide");
+            });
         }
     });
 
     $("#expiration-modal").on("hidden.bs.modal", function () {
         $("#expiration-modal input").val("");
+        $("#expiration-type").removeAttr("disabled");
         editingLid = null;
     });
 
@@ -638,8 +651,38 @@ function loadExpirations() {
                 eid: expiration.eid,
                 createAt: expiration.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: expiration.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                tid: expiration.type.tid,
                 type: expiration.type.name,
                 expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT)
+            });
+
+            $("#" + expiration.eid + " .expiration-list-edit").click(function () {
+                editingEid = $(this).mengularId();
+                fillValue({
+                    "expiration-type": $("#" + editingEid + " .expiration-list-type").attr("data-tid"),
+                    "expiration-expireAt": $("#" + editingEid + " .expiration-list-expireAt").text()
+                })
+                $("#expiration-type").attr("disabled", "disabled");
+                $("#expiration-modal").modal("show");
+            });
+
+            $("#" + expiration.eid + " .expiration-list-remove").click(function () {
+                var eid = $(this).mengularId();
+                var type = $("#" + eid + " .expiration-list-type").text();
+                $.messager.confirm("删除到期时间", "确认删除" + type + "吗？", function () {
+                    ExpirationManager.remove(eid, function (result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("当前账户无权限删除到期时间！");
+                            return;
+                        }
+                        $.messager.popup("删除成功！");
+                        $("#" + eid).remove();
+                    });
+                });
             });
         }
     });

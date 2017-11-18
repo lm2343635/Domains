@@ -55,6 +55,7 @@
         }
 
         #log-list .log-list-template i,
+        #expiration-list .expiration-list-template i,
         #document-list .document-list-template i {
             cursor: pointer;
         }
@@ -243,7 +244,10 @@
                     <div id="${eid}$" class="list-group-item mengular-template expiration-list-template">
                         <p>创建于${createAt}$，更新于${updateAt}$</p>
                         <h4 class="list-group-item-heading">
-                            <a href="javascript:void(0)" class="log-list-edit">${type}$：${expireAt}$</a>
+                            <a href="javascript:void(0)" class="expiration-list-edit">
+                                <span class="expiration-list-type" data-tid="${tid}$">${type}$</span>：
+                                <span class="expiration-list-expireAt">${expireAt}$</span>
+                            </a>
                             <i class="fa fa-lg fa-trash text-danger expiration-list-remove pull-right"></i>
                         </h4>
                     </div>
