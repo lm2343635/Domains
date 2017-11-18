@@ -95,4 +95,68 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         return Result.WithData(expirationBeans);
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result edit(String eid, String expireAt, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Expiration expiration = expirationDao.get(eid);
+        if (expiration == null) {
+            Debug.error("Cannot find an expiration by this eid.");
+            return Result.WithData(false);
+        }
+        switch (getPrivilegeForEmployee(employee, expiration.getCustomer().getState(), RoleManager.PrivilegeWrite)) {
+            case RoleManager.RolePrivilgeAssign:
+                Assign assign = assignDao.getByCustomerForEmployee(expiration.getCustomer(), employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getW()) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
+            default:
+                break;
+        }
+        expiration.setUpdateAt(System.currentTimeMillis());
+        expiration.setExpireAt(DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
+        expirationDao.update(expiration);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result remove(String eid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Expiration expiration = expirationDao.get(eid);
+        if (expiration == null) {
+            Debug.error("Cannot find an expiration by this eid.");
+            return Result.WithData(false);
+        }
+        switch (getPrivilegeForEmployee(employee, expiration.getCustomer().getState(), RoleManager.PrivilegeDelete)) {
+            case RoleManager.RolePrivilgeAssign:
+                Assign assign = assignDao.getByCustomerForEmployee(expiration.getCustomer(), employee);
+                if (assign == null) {
+                    return Result.NoPrivilege();
+                }
+                if (!assign.getW()) {
+                    return Result.NoPrivilege();
+                }
+                break;
+            case RoleManager.RolePrivilgeNone:
+                return Result.NoPrivilege();
+            default:
+                break;
+        }
+        expirationDao.delete(expiration);
+        return Result.WithData(true);
+    }
+
 }

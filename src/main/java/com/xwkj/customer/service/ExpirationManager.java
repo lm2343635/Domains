@@ -26,4 +26,23 @@ public interface ExpirationManager {
      */
     Result getByCid(String cid, HttpSession session);
 
+    /**
+     * Edit expireAt of an expiration.
+     *
+     * @param eid
+     * @param expireAt
+     * @param session
+     * @return
+     */
+    Result edit(String eid, String expireAt, HttpSession session);
+
+    /**
+     * Remove an existing expiration.
+     *
+     * @param eid
+     * @param session
+     * @return
+     */
+    Result remove(String eid, HttpSession session);
+
 }
