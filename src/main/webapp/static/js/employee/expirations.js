@@ -1,4 +1,4 @@
-var pageSize = 15;
+var pageSize = 20;
 
 $(document).ready(function () {
 
@@ -31,7 +31,37 @@ $(document).ready(function () {
         language: "zh-CN"
     });
 
+    $("#search-expiration-quick-buttons button").click(function () {
+        var today = new Date().format(YEAR_MONTH_DATE_FORMAT);
+        switch($(this).index()) {
+            case 0:
+                $("#search-expiration-start").val("");
+                $("#search-expiration-end").val(today);
+                break;
+            case 1:
+                $("#search-expiration-start").val(today);
+                $("#search-expiration-end").val(nextDay(7).format(YEAR_MONTH_DATE_FORMAT));
+                break;
+            case 2:
+                $("#search-expiration-start").val(today);
+                $("#search-expiration-end").val(nextDay(30).format(YEAR_MONTH_DATE_FORMAT));
+                break;
+            default:
+                break;
+        }
+        $("#search-submit").click();
+    });
 
+    $("#search-submit").click(function () {
+        var tid = $("#search-expiration-type").val();
+        var start = $("#search-expiration-start").val();
+        var end = $("#search-expiration-end").val();
+        searchExpirations(tid, null, start, end, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
+    });
 
 });
 
