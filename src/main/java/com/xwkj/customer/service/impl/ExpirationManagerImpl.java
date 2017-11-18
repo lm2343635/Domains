@@ -159,4 +159,59 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    public Result getSearchCount(String tid, String customer, String start, String end, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getExpiration() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Type type = null;
+        if (tid != null && !tid.equals("")) {
+            type = typeDao.get(tid);
+            if (type == null) {
+                Debug.error("Cannot find a type by this tid.");
+                return Result.WithData(0);
+            }
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        return Result.WithData(expirationDao.getCount(type, customer, startStamp, endStamp));
+    }
+
+    @RemoteMethod
+    public Result search(String tid, String customer, String start, String end, int page, int pageSize, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getExpiration() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Type type = null;
+        if (tid != null && !tid.equals("")) {
+            type = typeDao.get(tid);
+            if (type == null) {
+                Debug.error("Cannot find a type by this tid.");
+                return Result.WithData(0);
+            }
+        }
+        Long startStamp = null, endStamp = null;
+        if (start != null && !start.equals("")) {
+            startStamp = DateTool.transferDate(start + " 00:00:00", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        if (end != null && !end.equals("")) {
+            endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
+        }
+        int offset = (page - 1) * pageSize;
+        return Result.WithData(expirationDao.find(type, customer, startStamp, endStamp, offset, pageSize));
+    }
+
 }

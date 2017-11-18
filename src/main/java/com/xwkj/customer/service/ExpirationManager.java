@@ -45,4 +45,30 @@ public interface ExpirationManager {
      */
     Result remove(String eid, HttpSession session);
 
+    /**
+     * Get search count.
+     *
+     * @param tid
+     * @param customer
+     * @param start
+     * @param end
+     * @param session
+     * @return
+     */
+    Result getSearchCount(String tid, String customer, String start, String end, HttpSession session);
+
+    /**
+     * Search expirations and show by page.
+     *
+     * @param tid
+     * @param customer
+     * @param start
+     * @param end
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result search(String tid, String customer, String start, String end, int page, int pageSize, HttpSession session);
+
 }

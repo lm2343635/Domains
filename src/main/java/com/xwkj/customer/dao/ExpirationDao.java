@@ -3,6 +3,7 @@ package com.xwkj.customer.dao;
 import com.xwkj.common.hibernate.BaseDao;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Expiration;
+import com.xwkj.customer.domain.Type;
 
 import java.util.List;
 
@@ -23,5 +24,29 @@ public interface ExpirationDao extends BaseDao<Expiration> {
      * @return
      */
     int deleteByCustomer(Customer customer);
+
+    /**
+     * Get count for search.
+     *
+     * @param type
+     * @param customer
+     * @param start
+     * @param end
+     * @return
+     */
+    int getCount(Type type, String customer, Long start, Long end);
+
+    /**
+     * Find expiration by page.
+     *
+     * @param type
+     * @param customer
+     * @param start
+     * @param end
+     * @param offset
+     * @param pageSize
+     * @return
+     */
+    List<Expiration> find(Type type, String customer, Long start, Long end, int offset, int pageSize);
 
 }

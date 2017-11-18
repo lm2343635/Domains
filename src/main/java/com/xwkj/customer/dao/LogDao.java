@@ -18,7 +18,7 @@ public interface LogDao extends BaseDao<Log> {
     List<Log> findByCustomer(Customer customer);
 
     /**
-     * Get count for page finding.
+     * Get count for search.
      *
      * @param employee
      * @param customer
