@@ -16,4 +16,12 @@ public interface ExpirationDao extends BaseDao<Expiration> {
      */
     List<Expiration> findByCustomer(Customer customer);
 
+    /**
+     * Delete all expirations of a customer.
+     *
+     * @param customer
+     * @return
+     */
+    int deleteByCustomer(Customer customer);
+
 }

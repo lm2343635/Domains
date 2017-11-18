@@ -273,11 +273,13 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
             default:
                 break;
         }
-        // Remove all assigns of a customer.
+        // Remove all assigns of this customer.
         assignDao.deleteByCustomer(customer);
-        // Remove all logs of a customer.
+        // Remove all logs of this customer.
         logDao.deleteByCustomer(customer);
-        // Remove all documents and folder of a customer.
+        // Remove all expirations of this customer.
+        expirationDao.deleteByCustomer(customer);
+        // Remove all documents and folder of this customer.
         documentDao.deleteByCustomer(customer);
         FileTool.delFolder(configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + customer.getCid());
         // Remove the customer.
