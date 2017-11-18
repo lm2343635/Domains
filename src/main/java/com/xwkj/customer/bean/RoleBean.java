@@ -8,6 +8,7 @@ public class RoleBean {
 
     private String rid;
     private String name;
+
     private int undevelopedR;
     private int undevelopedW;
     private int undevelopedD;
@@ -28,6 +29,8 @@ public class RoleBean {
     private int server;
     private int domain;
     private int employee;
+    private int expiration;
+
     private int employees;
 
     public String getRid() {
@@ -206,6 +209,14 @@ public class RoleBean {
         this.employee = employee;
     }
 
+    public int getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(int expiration) {
+        this.expiration = expiration;
+    }
+
     public int getEmployees() {
         return employees;
     }
@@ -237,6 +248,7 @@ public class RoleBean {
         this.server = role.getServer();
         this.domain = role.getDomain();
         this.employee = role.getEmployee();
+        this.expiration = role.getExpiration();
         this.employees = role.getEmployees();
     }
 

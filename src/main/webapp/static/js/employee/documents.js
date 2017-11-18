@@ -1,4 +1,4 @@
-var pageSize = 20;
+var pageSize = 10;
 
 $(document).ready(function () {
 

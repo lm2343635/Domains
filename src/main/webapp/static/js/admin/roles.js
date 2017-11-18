@@ -20,7 +20,8 @@ var previlegNames = {
     assign: "指派负责人权限",
     server: "服务器管理权限",
     domain: "域名管理权限",
-    employee: "员工管理权限"
+    employee: "员工管理权限",
+    expiration: "到期时间查看权限"
 }
 
 var symbols = ["<i class='fa fa-times text-muted'></i>",
@@ -95,6 +96,7 @@ function loadRoles() {
 
         for (var i in roles) {
             var role = roles[i];
+
             $("#role-list tbody").mengular(".role-list-template", {
                 rid: role.rid,
                 name: role.name,
@@ -109,8 +111,9 @@ function loadRoles() {
                 assign: symbols[role.assign],
                 server: symbols[role.server],
                 domain: symbols[role.domain],
+                expiration: symbols[role.expiration],
                 employee: symbols[role.employee],
-                employees: role.employees
+                employees: role.employees,
             });
 
             $("#" + role.rid + " .role-list-remove").click(function () {

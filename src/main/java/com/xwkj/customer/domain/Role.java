@@ -102,6 +102,9 @@ public class Role implements Serializable {
     @Column(nullable = false)
     private Integer employees;
 
+    // Privilege to view expiration date.
+    private Integer expiration;
+
     public String getRid() {
         return rid;
     }
@@ -286,27 +289,35 @@ public class Role implements Serializable {
         this.employees = employees;
     }
 
+    public Integer getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Integer expiration) {
+        this.expiration = expiration;
+    }
+
     public void setPrivileges(int [] privileges) {
-        this.setUndevelopedR(privileges[0]);
-        this.setUndevelopedW(privileges[1]);
-        this.setUndevelopedD(privileges[2]);
-        this.setDevelopingR(privileges[3]);
-        this.setDevelopingW(privileges[4]);
-        this.setDevelopingD(privileges[5]);
-        this.setDevelopedR(privileges[6]);
-        this.setDevelopedW(privileges[7]);
-        this.setDevelopedD(privileges[8]);
-        this.setLostR(privileges[9]);
-        this.setLostW(privileges[10]);
-        this.setLostD(privileges[11]);
-        this.setDevelop(privileges[12]);
-        this.setFinish(privileges[13]);
-        this.setRuin(privileges[14]);
-        this.setRecover(privileges[15]);
-        this.setAssign(privileges[16]);
-        this.setServer(privileges[17]);
-        this.setDomain(privileges[18]);
-        this.setEmployee(privileges[19]);
+        undevelopedR = privileges[1];
+        undevelopedW = privileges[2];
+        undevelopedD = privileges[3];
+        developingR = privileges[4];
+        developingW = privileges[5];
+        developingD = privileges[6];
+        developedR = privileges[7];
+        developedW = privileges[8];
+        lostR = privileges[9];
+        lostW = privileges[10];
+        lostD = privileges[11];
+        develop = privileges[12];
+        finish = privileges[13];
+        ruin = privileges[14];
+        recover = privileges[15];
+        assign = privileges[16];
+        server = privileges[17];
+        domain = privileges[18];
+        employee = privileges[19];
+        expiration = privileges[20];
     }
 
 }
