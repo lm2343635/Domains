@@ -1,4 +1,7 @@
-
+body {
+    background: url(../images/index-bg.jpg) no-repeat center top;
+    background-size: 100%;
+}
 
 #main-container {
     margin-bottom: 80px;
