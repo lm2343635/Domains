@@ -23,6 +23,10 @@
     <script src="/dwr/interface/ExpirationManager.js"></script>
     <script src="/static/js/employee/expirations.js"></script>
     <style>
+        #expiration-list .expiration-list-template {
+            overflow: auto;
+        }
+
         #expiration-list .expiration-list-template i {
             cursor: pointer;
         }
@@ -59,7 +63,7 @@
                 </div>
                 <div class="col-xs-12 col-md-3">
                     <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-default">1天</button>
+                        <button type="button" class="btn btn-default">已到期</button>
                         <button type="button" class="btn btn-default">7天</button>
                         <button type="button" class="btn btn-default">30天</button>
                     </div>
@@ -73,14 +77,11 @@
             </div>
         </div>
         <div id="expiration-list" class="list-group">
-            <div id="${rid}$" class="list-group-item mengular-template expiration-list-template">
-                <p class="text-muted">${employee}$创建于${createAt}$，更新于${updateAt}$</p>
+            <div id="${eid}$" class="list-group-item mengular-template expiration-list-template">
+                <p class="text-muted">创建于${createAt}$，更新于${updateAt}$</p>
                 <h4 class="list-group-item-heading">
-                    <a href="javascript:void(0)" class="expiration-list-edit">
-                        <span class="expiration-list-type" data-tid="${tid}$">${type}$</span>：
-                        <span class="expiration-list-expireAt">${expireAt}$</span>
-                    </a>
-                    <i class="fa fa-lg fa-trash text-danger expiration-list-remove pull-right"></i>
+                    <span class="text-danger">${type}$：${expireAt}$</span>
+                    <a href="customer.html?cid=${cid}$" target="_blank" class="pull-right">${customer}$</a>
                 </h4>
             </div>
         </div>

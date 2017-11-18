@@ -1,3 +1,5 @@
+var pageSize = 15;
+
 $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
@@ -15,6 +17,9 @@ $(document).ready(function () {
                 $("<option>").val(type.tid).text(type.name).appendTo("#search-expiration-type");
             }
         });
+
+        searchExpirations(null, null, null, null, 1);
+
     });
 
     $("#search-expiration-start, #search-expiration-end").datetimepicker({
@@ -29,3 +34,61 @@ $(document).ready(function () {
 
 
 });
+
+function searchExpirations(tid, customer, start, end, page) {
+    ExpirationManager.getSearchCount(tid, customer, start, end, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            return;
+        }
+
+        $("#page-size").text(pageSize);
+
+        var count = result.data;
+        $("#page-count").text(count);
+        $("#page-nav ul").empty();
+        for (var i = 1; i < Math.ceil(count / pageSize + 1); i++) {
+            var li = $("<li>").append($("<a>").attr("href", "javascript:void(0)").text(i));
+            if (page == i) {
+                li.addClass("active");
+            }
+            $("#page-nav ul").append(li);
+        }
+
+        $("#page-nav ul li").each(function (index) {
+            $(this).click(function () {
+                searchExpirations(tid, customer, start, end, index + 1);
+                $("html, body").animate({
+                    scrollTop: 0
+                }, 300);
+            });
+        });
+    });
+
+    ExpirationManager.search(tid, customer, start, end, page, pageSize, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            return;
+        }
+        $("#expiration-list").mengularClear();
+
+        for (var i in result.data) {
+            var expiration = result.data[i];
+            $("#expiration-list").mengular(".expiration-list-template", {
+                eid: expiration.eid,
+                createAt: expiration.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: expiration.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                type: expiration.type.name,
+                expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT),
+                cid: expiration.customer.cid,
+                customer: expiration.customer.name
+            });
+        }
+    });
+}

@@ -211,7 +211,11 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
             endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
         }
         int offset = (page - 1) * pageSize;
-        return Result.WithData(expirationDao.find(type, customer, startStamp, endStamp, offset, pageSize));
+        List<ExpirationBean> expirationBeans = new ArrayList<ExpirationBean>();
+        for (Expiration expiration : expirationDao.find(type, customer, startStamp, endStamp, offset, pageSize)) {
+            expirationBeans.add(new ExpirationBean(expiration, true));
+        }
+        return Result.WithData(expirationBeans);
     }
 
 }
