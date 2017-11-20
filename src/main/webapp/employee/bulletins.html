@@ -20,38 +20,22 @@
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/static/js/employee/bulletins.js"></script>
     <style>
-        #bulletins-head {
-            overflow: auto;
-        }
-
-        #bulletins-head .nav a {
-            padding: 10px 15px;
-            color: #888;
-        }
-
-        #bulletins-head .nav .active a {
-            color: #fff;
-            background: #999;
-        }
-
         #add-bulletin {
-            margin: 13px;
+            margin: 5px;
             cursor: pointer;
         }
 
-        #bulletin-list .bulletin-list-template hr {
-            margin: 8px 0;
+        #top-list .top-list-template i,
+        #bulletin-list .bulletin-list-template i {
+            margin-left: 10px;
+            font-size: 22px;
+            cursor: pointer;
+            display: none;
         }
 
-        #bulletin-list .bulletin-list-template pre {
-            border: none;
-            background: none;
-            margin: 0;
-            padding: 0;
-            font-size: 15px;
-            color: #444;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        #top-list .top-list-template hr,
+        #bulletin-list .bulletin-list-template hr {
+            margin: 8px 0;
         }
 
     </style>
@@ -61,19 +45,30 @@
     <div id="head">
         <script>$("#head").load("head.html");</script>
     </div>
-    <div id="bulletins-head">
-        <ul class="nav nav-pills pull-left">
-            <li class="active" data-limit="20"><a href="javascript:void(0)">显示最近20条</a></li>
-            <li data-limit="50"><a href="javascript:void(0)">显示最近50条</a></li>
-            <li data-limit="100"><a href="javascript:void(0)">显示最近100条</a></li>
-            <li data-limit="2147483648"><a href="javascript:void(0)">显示所有</a></li>
-        </ul>
-        <a id="add-bulletin" href="bulletin.html" class="pull-right"><i class="fa fa-lg fa-plus" ></i></a>
+    <h3 class="page-header">
+        <span class="text-danger">置顶公告</span>
+    </h3>
+    <div id="top-list">
+        <div class="bs-callout bs-callout-danger mengular-template top-list-template">
+            <p>
+                <span class="text-danger bulletin-list-info">${employee}$创建于${createAt}$</span>
+                <i class="fa fa-arrow-circle-down text-warning pull-right bulletin-list-top"></i>
+            </p>
+            <hr>
+            <div>${content}$</div>
+        </div>
     </div>
-    <hr>
+    <h3 class="page-header">
+        <span class="text-muted">普通公告</span>
+        <a id="add-bulletin" href="bulletin.html" class="btn btn-default btn-xs pull-right">新建公告</a>
+    </h3>
     <div id="bulletin-list">
         <div id="${bid}$" class="bs-callout mengular-template bulletin-list-template">
-            <p class="text-muted">${employee}$创建于${createAt}$</p>
+            <p>
+                <span class="text-muted bulletin-list-info">${employee}$创建于${createAt}$</span>
+                <i class="fa fa-trash text-danger pull-right bulletin-list-remove"></i>
+                <i class="fa fa-arrow-circle-up text-success pull-right bulletin-list-top"></i>
+            </p>
             <hr>
             <div>${content}$</div>
         </div>

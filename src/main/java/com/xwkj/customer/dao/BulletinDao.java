@@ -15,4 +15,27 @@ public interface BulletinDao extends BaseDao<Bulletin> {
      */
     List<Bulletin> findWithLimit(int limit);
 
+    /**
+     * Find all top bulletins.
+     *
+     * @return
+     */
+    List<Bulletin> findTop();
+
+    /**
+     * Get the number of untop bulletins.
+     *
+     * @return
+     */
+    int getUntopCount();
+
+    /**
+     * Find untop bulletins by page.
+     *
+     * @param offset
+     * @param pageSize
+     * @return
+     */
+    List<Bulletin> findUntop(int offset, int pageSize);
+
 }

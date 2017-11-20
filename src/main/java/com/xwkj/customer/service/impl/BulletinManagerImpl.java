@@ -1,5 +1,6 @@
 package com.xwkj.customer.service.impl;
 
+import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.BulletinBean;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Bulletin;
@@ -35,16 +36,59 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
     }
 
     @RemoteMethod
-    public Result getByLimit(int limit, HttpSession session) {
+    public Result getTop(HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
         }
         List<BulletinBean> bulletinBeans = new ArrayList<BulletinBean>();
-        for (Bulletin bulletin : bulletinDao.findWithLimit(limit)) {
+        for (Bulletin bulletin : bulletinDao.findTop()) {
             bulletinBeans.add(new BulletinBean(bulletin));
         }
         return Result.WithData(bulletinBeans);
+    }
+
+    @RemoteMethod
+    public Result getUntopCount(HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        return Result.WithData(bulletinDao.getUntopCount());
+    }
+
+    @RemoteMethod
+    public Result getUntopByPage(int page, int pageSize, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        int offset = (page - 1) * pageSize;
+        List<BulletinBean> bulletinBeans = new ArrayList<BulletinBean>();
+        for (Bulletin bulletin : bulletinDao.findUntop(offset, pageSize)) {
+            bulletinBeans.add(new BulletinBean(bulletin));
+        }
+        return Result.WithData(bulletinBeans);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result top(String bid, boolean top, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Bulletin bulletin = bulletinDao.get(bid);
+        if (bulletin == null) {
+            Debug.error("Cannot find a bulletin by this bid.");
+            return Result.WithData(false);
+        }
+        if (!bulletin.getEmployee().equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        bulletin.setTop(top);
+        bulletinDao.update(bulletin);
+        return Result.WithData(true);
     }
 
 }

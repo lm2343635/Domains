@@ -31,4 +31,24 @@ public class BulletinDaoHibernate extends BaseHibernateDaoSupport<Bulletin> impl
         });
     }
 
+    public List<Bulletin> findTop() {
+        String hql = "from Bulletin where top = true order by createAt desc";
+        return (List<Bulletin>) getHibernateTemplate().find(hql);
+    }
+
+    public int getUntopCount() {
+        return getHibernateTemplate().execute(new HibernateCallback<Long>() {
+            public Long doInHibernate(Session session) throws HibernateException {
+                String hql = "select count(*) from Bulletin where top = false";
+                Query query = session.createQuery(hql);
+                return (Long) query.uniqueResult();
+            }
+        }).intValue();
+    }
+
+    public List<Bulletin> findUntop(int offset, int pageSize) {
+        String hql = "from Bulletin where top = false order by createAt desc";
+        return findByPage(hql, offset, pageSize);
+    }
+
 }

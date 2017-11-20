@@ -16,12 +16,39 @@ public interface BulletinManager {
     Result add(String content, HttpSession session);
 
     /**
-     * Get the latest bulletins, the number of these bulletins is the parameter limit.
+     * Get all top bulletins.
      *
-     * @param limit
      * @param session
      * @return
      */
-    Result getByLimit(int limit, HttpSession session);
+    Result getTop(HttpSession session);
+
+    /**
+     * Get the number of untop bulletins.
+     *
+     * @param session
+     * @return
+     */
+    Result getUntopCount(HttpSession session);
+
+    /**
+     * Get the untop bulletins by page.
+     *
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result getUntopByPage(int page, int pageSize, HttpSession session);
+
+    /**
+     * Set a bulletin to the top.
+     *
+     * @param bid
+     * @param top
+     * @param session
+     * @return
+     */
+    Result top(String bid, boolean top, HttpSession session);
 
 }

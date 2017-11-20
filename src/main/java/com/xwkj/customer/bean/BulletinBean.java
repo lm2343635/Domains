@@ -11,7 +11,7 @@ public class BulletinBean {
     private String bid;
     private Date createAt;
     private String content;
-    private String employee;
+    private EmployeeBean employee;
 
     public String getBid() {
         return bid;
@@ -37,11 +37,11 @@ public class BulletinBean {
         this.content = content;
     }
 
-    public String getEmployee() {
+    public EmployeeBean getEmployee() {
         return employee;
     }
 
-    public void setEmployee(String employee) {
+    public void setEmployee(EmployeeBean employee) {
         this.employee = employee;
     }
 
@@ -49,7 +49,7 @@ public class BulletinBean {
         this.bid = bulletin.getBid();
         this.createAt = new Date(bulletin.getCreateAt());
         this.content = bulletin.getContent();
-        this.employee = bulletin.getEmployee().getName();
+        this.employee = new EmployeeBean(bulletin.getEmployee(), false);
     }
 
 }
