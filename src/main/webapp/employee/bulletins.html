@@ -68,31 +68,14 @@
             <li data-limit="100"><a href="javascript:void(0)">显示最近100条</a></li>
             <li data-limit="2147483648"><a href="javascript:void(0)">显示所有</a></li>
         </ul>
-        <i id="add-bulletin" class="fa fa-lg fa-plus pull-right" data-toggle="modal" data-target="#add-bulletin-modal"></i>
+        <a id="add-bulletin" href="bulletin.html" class="pull-right"><i class="fa fa-lg fa-plus" ></i></a>
     </div>
     <hr>
     <div id="bulletin-list">
         <div id="${bid}$" class="bs-callout mengular-template bulletin-list-template">
             <p class="text-muted">${employee}$创建于${createAt}$</p>
             <hr>
-            <pre>${content}$</pre>
-        </div>
-    </div>
-</div>
-<div id="add-bulletin-modal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
-                <h4 class="modal-title">添加公告</h4>
-            </div>
-            <div class="modal-body">
-                <textarea id="add-bulletin-content" class="form-control" rows="10" placeholder="公告内容不得超过250字，超出将保存失败！"></textarea>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
-                <button id="add-bulletin-submit" type="button" class="btn btn-success">确认</button>
-            </div>
+            <div>${content}$</div>
         </div>
     </div>
 </div>

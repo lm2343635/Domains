@@ -29,6 +29,7 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
         Bulletin bulletin = new Bulletin();
         bulletin.setCreateAt(System.currentTimeMillis());
         bulletin.setContent(content);
+        bulletin.setTop(false);
         bulletin.setEmployee(employee);
         return Result.WithData(bulletinDao.save(bulletin));
     }

@@ -6,32 +6,6 @@ $(document).ready(function () {
         loadBulletins();
     });
 
-
-    $("#add-bulletin-submit").click(function () {
-        var content = $("#add-bulletin-content").val();
-        if (content == null || content == "") {
-            $.messager.popup("公告内容不能为空！");
-            return;
-        }
-        BulletinManager.add(content, function (result) {
-            if (!result.session) {
-                sessionError();
-                return;
-            }
-            if (result.data == null) {
-                $.messager.popup("创建失败，请重试！");
-                return;
-            }
-            $.messager.popup("创建成功！");
-            loadBulletins();
-            $("#add-bulletin-modal").modal("hide");
-        });
-    });
-
-    $("#add-bulletin-modal").on("hidden.bs.modal", function () {
-        $("#add-bulletin-modal textarea").val("");
-    });
-
     $("#bulletins-head .nav li").click(function () {
         $("#bulletins-head .nav li").removeClass("active");
         $(this).addClass("active");

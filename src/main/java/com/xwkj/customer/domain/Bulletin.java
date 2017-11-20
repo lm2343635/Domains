@@ -17,8 +17,11 @@ public class Bulletin implements Serializable {
     @Column(nullable = false)
     private Long createAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
+
+    @Column(nullable = false)
+    private Boolean top;
 
     @ManyToOne
     @JoinColumn(name = "eid", nullable = false)
@@ -46,6 +49,14 @@ public class Bulletin implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Boolean getTop() {
+        return top;
+    }
+
+    public void setTop(Boolean top) {
+        this.top = top;
     }
 
     public Employee getEmployee() {
