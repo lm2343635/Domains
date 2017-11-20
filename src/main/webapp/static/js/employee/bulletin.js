@@ -2,6 +2,10 @@ var bid = request("bid");
 
 $(document).ready(function () {
 
+    checkEmployeeSession(function () {
+
+    });
+
     $("#bulletin-content").summernote({
         toolbar: SUMMERNOTE_TOOLBAR_FULL,
         lang: "zh-CN",
