@@ -91,4 +91,23 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result remove(String bid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Bulletin bulletin = bulletinDao.get(bid);
+        if (bulletin == null) {
+            Debug.error("Cannot find a bulletin by this bid.");
+            return Result.WithData(false);
+        }
+        if (!bulletin.getEmployee().equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        bulletinDao.delete(bulletin);
+        return Result.WithData(true);
+    }
+
 }

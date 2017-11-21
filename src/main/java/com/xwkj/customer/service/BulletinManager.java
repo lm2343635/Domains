@@ -42,7 +42,7 @@ public interface BulletinManager {
     Result getUntopByPage(int page, int pageSize, HttpSession session);
 
     /**
-     * Set a bulletin to the top.
+     * Set a bulletin to the top by the creator..
      *
      * @param bid
      * @param top
@@ -50,5 +50,14 @@ public interface BulletinManager {
      * @return
      */
     Result top(String bid, boolean top, HttpSession session);
+
+    /**
+     * Remove an existing bulletin by the creator.
+     *
+     * @param bid
+     * @param session
+     * @return
+     */
+    Result remove(String bid, HttpSession session);
 
 }

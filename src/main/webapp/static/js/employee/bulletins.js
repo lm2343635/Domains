@@ -63,6 +63,10 @@ function loadUntopBulletins(page) {
                                 $.messager.popup("当前用户无权限置顶该公告！");
                                 return;
                             }
+                            if (!result.data) {
+                                $.messager.popup("置顶失败，请重试！");
+                                return;
+                            }
                             loadTopBulletins();
                             $("#" + bid).remove();
                             $.messager.popup("置顶成功！");
@@ -74,7 +78,22 @@ function loadUntopBulletins(page) {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
                     $.messager.confirm("删除公告", "确认要删除" + info + "的公告吗？", function () {
-
+                        BulletinManager.remove(bid, function (result) {
+                            if (!result.session) {
+                                sessionError();
+                                return;
+                            }
+                            if (!result.privilege) {
+                                $.messager.popup("当前用户无权限删除该公告！");
+                                return;
+                            }
+                            if (!result.data) {
+                                $.messager.popup("删除失败，请重试！");
+                                return;
+                            }
+                            $("#" + bid).remove();
+                            $.messager.popup("删除成功！");
+                        });
                     });
                 }).show();
             } else {
