@@ -17,6 +17,9 @@ public class Bulletin implements Serializable {
     @Column(nullable = false)
     private Long createAt;
 
+    @Column(nullable = false)
+    private Long updateAt;
+
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
@@ -41,6 +44,14 @@ public class Bulletin implements Serializable {
 
     public void setCreateAt(Long createAt) {
         this.createAt = createAt;
+    }
+
+    public Long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Long updateAt) {
+        this.updateAt = updateAt;
     }
 
     public String getContent() {

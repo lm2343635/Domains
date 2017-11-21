@@ -10,6 +10,7 @@ public class BulletinBean {
 
     private String bid;
     private Date createAt;
+    private Date updateAt;
     private String content;
     private EmployeeBean employee;
 
@@ -27,6 +28,14 @@ public class BulletinBean {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
     }
 
     public String getContent() {
@@ -48,6 +57,7 @@ public class BulletinBean {
     public BulletinBean(Bulletin bulletin) {
         this.bid = bulletin.getBid();
         this.createAt = new Date(bulletin.getCreateAt());
+        this.updateAt = new Date(bulletin.getUpdateAt());
         this.content = bulletin.getContent();
         this.employee = new EmployeeBean(bulletin.getEmployee(), false);
     }

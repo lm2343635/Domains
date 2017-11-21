@@ -16,6 +16,15 @@ public interface BulletinManager {
     Result add(String content, HttpSession session);
 
     /**
+     * Get an exsiting bulletin.
+     *
+     * @param bid
+     * @param session
+     * @return
+     */
+    Result get(String bid, HttpSession session);
+
+    /**
      * Get all top bulletins.
      *
      * @param session
@@ -59,5 +68,15 @@ public interface BulletinManager {
      * @return
      */
     Result remove(String bid, HttpSession session);
+
+    /**
+     * Edit an existing bulletin by the creator.
+     *
+     * @param bid
+     * @param content
+     * @param session
+     * @return
+     */
+    Result edit(String bid, String content, HttpSession session);
 
 }

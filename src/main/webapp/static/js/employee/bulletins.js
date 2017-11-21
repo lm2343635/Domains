@@ -45,9 +45,12 @@ function loadTopBulletins() {
                         removeBulletin(bid);
                     });
                 }).show();
+
+                $("#" + bulletin.bid + " .bulletin-list-edit").show();
             } else {
                 $("#" + bulletin.bid + " .bulletin-list-untop").remove();
                 $("#" + bulletin.bid + " .bulletin-list-remove").remove();
+                $("#" + bulletin.bid + " .bulletin-list-edit").remove();
             }
         }
     });
@@ -86,9 +89,11 @@ function loadUntopBulletins(page) {
                         removeBulletin(bid);
                     });
                 }).show();
+                $("#" + bulletin.bid + " .bulletin-list-edit").show();
             } else {
                 $("#" + bulletin.bid + " .bulletin-list-top").remove();
                 $("#" + bulletin.bid + " .bulletin-list-remove").remove();
+                $("#" + bulletin.bid + " .bulletin-list-edit").remove();
             }
 
         }

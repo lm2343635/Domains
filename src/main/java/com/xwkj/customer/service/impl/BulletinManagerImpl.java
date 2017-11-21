@@ -29,10 +29,25 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
         }
         Bulletin bulletin = new Bulletin();
         bulletin.setCreateAt(System.currentTimeMillis());
+        bulletin.setUpdateAt(bulletin.getUpdateAt());
         bulletin.setContent(content);
         bulletin.setTop(false);
         bulletin.setEmployee(employee);
         return Result.WithData(bulletinDao.save(bulletin));
+    }
+
+    @RemoteMethod
+    public Result get(String bid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Bulletin bulletin = bulletinDao.get(bid);
+        if (bulletin == null) {
+            Debug.error("Cannot find a bulletin by this bid.");
+            return Result.WithData(false);
+        }
+        return Result.WithData(new BulletinBean(bulletin));
     }
 
     @RemoteMethod
@@ -107,6 +122,27 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
             return Result.NoPrivilege();
         }
         bulletinDao.delete(bulletin);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
+    public Result edit(String bid, String content, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Bulletin bulletin = bulletinDao.get(bid);
+        if (bulletin == null) {
+            Debug.error("Cannot find a bulletin by this bid.");
+            return Result.WithData(false);
+        }
+        if (!bulletin.getEmployee().equals(employee)) {
+            return Result.NoPrivilege();
+        }
+        bulletin.setContent(content);
+        bulletin.setUpdateAt(System.currentTimeMillis());
+        bulletinDao.update(bulletin);
         return Result.WithData(true);
     }
 

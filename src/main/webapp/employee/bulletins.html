@@ -25,17 +25,28 @@
             cursor: pointer;
         }
 
+        #top-list .top-list-template a,
+        #bulletin-list .bulletin-list-template a {
+            margin-top: 3px;
+        }
+
         #top-list .top-list-template i,
         #bulletin-list .bulletin-list-template i {
             margin-left: 10px;
             font-size: 22px;
             cursor: pointer;
-            display: none;
         }
 
         #top-list .top-list-template hr,
         #bulletin-list .bulletin-list-template hr {
             margin: 8px 0;
+        }
+
+        .bulletin-list-top,
+        .bulletin-list-untop,
+        .bulletin-list-edit,
+        .bulletin-list-remove {
+            display: none;
         }
 
     </style>
@@ -54,6 +65,7 @@
                 <span class="text-danger bulletin-list-info">${employee}$创建于${createAt}$</span>
                 <i class="fa fa-trash text-danger pull-right bulletin-list-remove"></i>
                 <i class="fa fa-arrow-circle-down text-warning pull-right bulletin-list-untop"></i>
+                <a href="bulletin.html?bid=${bid}$" class="pull-right"><i class="fa fa-lg fa-edit"></i></a>
             </p>
             <hr>
             <div>${content}$</div>
@@ -69,6 +81,7 @@
                 <span class="text-muted bulletin-list-info">${employee}$创建于${createAt}$</span>
                 <i class="fa fa-trash text-danger pull-right bulletin-list-remove"></i>
                 <i class="fa fa-arrow-circle-up text-success pull-right bulletin-list-top"></i>
+                <a href="bulletin.html?bid=${bid}$" class="pull-right bulletin-list-edit"><i class="fa fa-lg fa-edit"></i></a>
             </p>
             <hr>
             <div>${content}$</div>
