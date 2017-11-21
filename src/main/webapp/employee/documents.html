@@ -27,6 +27,10 @@
     <script src="/dwr/interface/DocumentManager.js"></script>
     <script src="/static/js/employee/documents.js"></script>
     <style>
+        #search-panel .row div {
+            margin: 2px 0;
+        }
+
         #document-list .document-list-template i {
             cursor: pointer;
         }
@@ -57,10 +61,10 @@
                 </div>
                 <div class="col-xs-12 col-md-5">
                     <div class="input-group">
-                        <span class="input-group-addon">创建日期</span>
-                        <input id="search-document-start" type="text" class="form-control" placeholder="起始日期">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span>
+                        <input id="search-document-start" type="text" class="form-control" placeholder="起始创建日期">
                         <span class="input-group-addon">~</span>
-                        <input id="search-document-end" type="text" class="form-control" placeholder="结束日期">
+                        <input id="search-document-end" type="text" class="form-control" placeholder="结束创建日期">
                     </div>
                 </div>
                 <div class="col-xs-6 col-md-1 col-md-offset-2">

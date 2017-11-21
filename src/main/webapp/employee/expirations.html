@@ -23,6 +23,10 @@
     <script src="/dwr/interface/ExpirationManager.js"></script>
     <script src="/static/js/employee/expirations.js"></script>
     <style>
+        #search-panel .row div {
+            margin: 2px 0;
+        }
+
         #expiration-list .expiration-list-template {
             overflow: auto;
         }
@@ -45,33 +49,39 @@
         </div>
         <div id="search-panel" class="panel-body">
             <div class="row">
-                <div class="col-xs-12 col-md-3">
+                <div class="col-xs-12 col-sm-3 col-md-2">
                     <div class="input-group">
-                        <span class="input-group-addon">到期类型</span>
+                        <span class="input-group-addon"><i class="fa fa-lg fa-bars"></i></span>
                         <select id="search-expiration-type" class="form-control">
-                            <option value="">所有类型</option>
+                            <option value="">所有到期类型</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
+                <div class="col-xs-12 col-sm-3 col-md-2">
                     <div class="input-group">
-                        <span class="input-group-addon">到期时间</span>
-                        <input id="search-expiration-start" type="text" class="form-control" placeholder="起始日期">
-                        <span class="input-group-addon">~</span>
-                        <input id="search-expiration-end" type="text" class="form-control" placeholder="结束日期">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-customer-name" type="text" class="form-control" placeholder="客户名称">
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-3">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar fa-user"></i></span>
+                        <input id="search-expiration-start" type="text" class="form-control" placeholder="起始到期日期">
+                        <span class="input-group-addon">~</span>
+                        <input id="search-expiration-end" type="text" class="form-control" placeholder="结束到期日期">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2">
                     <div id="search-expiration-quick-buttons" class="btn-group pull-right">
-                        <button class="btn btn-default">已到期</button>
+                        <button class="btn btn-default">到期</button>
                         <button class="btn btn-default">7天</button>
                         <button class="btn btn-default">30天</button>
                     </div>
                 </div>
-                <div class="col-xs-6 col-md-1">
+                <div class="col-xs-6 col-sm-3 col-md-1">
                     <button id="search-reset" class="btn btn-block btn-info">重置</button>
                 </div>
-                <div class="col-xs-6 col-md-1">
+                <div class="col-xs-6 col-sm-3 col-md-1">
                     <button id="search-submit" class="btn btn-block btn-primary">搜索</button>
                 </div>
             </div>
