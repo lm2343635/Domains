@@ -49,10 +49,11 @@
         <span class="text-danger">置顶公告</span>
     </h3>
     <div id="top-list">
-        <div class="bs-callout bs-callout-danger mengular-template top-list-template">
+        <div id="${bid}$" class="bs-callout bs-callout-danger mengular-template top-list-template">
             <p>
                 <span class="text-danger bulletin-list-info">${employee}$创建于${createAt}$</span>
-                <i class="fa fa-arrow-circle-down text-warning pull-right bulletin-list-top"></i>
+                <i class="fa fa-trash text-danger pull-right bulletin-list-remove"></i>
+                <i class="fa fa-arrow-circle-down text-warning pull-right bulletin-list-untop"></i>
             </p>
             <hr>
             <div>${content}$</div>

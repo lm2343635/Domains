@@ -28,6 +28,27 @@ function loadTopBulletins() {
                 createAt: bulletin.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 content: bulletin.content
             });
+
+            if (bulletin.employee.eid == eid) {
+                $("#" + bulletin.bid + " .bulletin-list-untop").click(function () {
+                    var bid = $(this).mengularId();
+                    var info = $("#" + bid + " .bulletin-list-info").text();
+                    $.messager.confirm("取消置顶公告", "确认要取消置顶置顶" + info + "的公告吗？", function () {
+                        setTop(bid, false);
+                    });
+                }).show();
+
+                $("#" + bulletin.bid + " .bulletin-list-remove").click(function () {
+                    var bid = $(this).mengularId();
+                    var info = $("#" + bid + " .bulletin-list-info").text();
+                    $.messager.confirm("删除公告", "确认要删除" + info + "的公告吗？", function () {
+                        removeBulletin(bid);
+                    });
+                }).show();
+            } else {
+                $("#" + bulletin.bid + " .bulletin-list-untop").remove();
+                $("#" + bulletin.bid + " .bulletin-list-remove").remove();
+            }
         }
     });
 }
@@ -54,23 +75,7 @@ function loadUntopBulletins(page) {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
                     $.messager.confirm("置顶公告", "确认要置顶" + info + "的公告吗？", function () {
-                        BulletinManager.top(bid, true, function (result) {
-                            if (!result.session) {
-                                sessionError();
-                                return;
-                            }
-                            if (!result.privilege) {
-                                $.messager.popup("当前用户无权限置顶该公告！");
-                                return;
-                            }
-                            if (!result.data) {
-                                $.messager.popup("置顶失败，请重试！");
-                                return;
-                            }
-                            loadTopBulletins();
-                            $("#" + bid).remove();
-                            $.messager.popup("置顶成功！");
-                        });
+                        setTop(bid, true);
                     });
                 }).show();
 
@@ -78,22 +83,7 @@ function loadUntopBulletins(page) {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
                     $.messager.confirm("删除公告", "确认要删除" + info + "的公告吗？", function () {
-                        BulletinManager.remove(bid, function (result) {
-                            if (!result.session) {
-                                sessionError();
-                                return;
-                            }
-                            if (!result.privilege) {
-                                $.messager.popup("当前用户无权限删除该公告！");
-                                return;
-                            }
-                            if (!result.data) {
-                                $.messager.popup("删除失败，请重试！");
-                                return;
-                            }
-                            $("#" + bid).remove();
-                            $.messager.popup("删除成功！");
-                        });
+                        removeBulletin(bid);
                     });
                 }).show();
             } else {
@@ -102,5 +92,49 @@ function loadUntopBulletins(page) {
             }
 
         }
+    });
+}
+
+function setTop(bid, top) {
+    var action = top ? "置顶" : "取消置顶";
+    BulletinManager.top(bid, top, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $.messager.popup("当前用户无权限" + action + "该公告！");
+            return;
+        }
+        if (!result.data) {
+            $.messager.popup(action + "失败，请重试！");
+            return;
+        }
+        if (top) {
+            loadTopBulletins();
+        } else {
+            loadUntopBulletins(1);
+        }
+        $("#" + bid).remove();
+        $.messager.popup(action + "成功！");
+    });
+}
+
+function removeBulletin(bid) {
+    BulletinManager.remove(bid, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        if (!result.privilege) {
+            $.messager.popup("当前用户无权限删除该公告！");
+            return;
+        }
+        if (!result.data) {
+            $.messager.popup("删除失败，请重试！");
+            return;
+        }
+        $("#" + bid).remove();
+        $.messager.popup("删除成功！");
     });
 }
