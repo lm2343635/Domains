@@ -3,7 +3,7 @@ var bid = request("bid");
 $(document).ready(function () {
 
     checkEmployeeSession(function () {
-        if (bid != null) {
+        if (bid != null && bid != "") {
             $("#bulletin-head").text("编辑公告");
             BulletinManager.get(bid, function (result) {
                 if (!result.session) {
@@ -40,24 +40,7 @@ $(document).ready(function () {
             return;
         }
         _this.text("正在提交...").attr("disabled", "disabled");
-        if (bid == null || bid == "") {
-
-            BulletinManager.add(content, function (result) {
-                if (!result.session) {
-                    sessionError();
-                    return;
-                }
-                _this.text("保存").removeAttr("disabled");
-                if (result.data == null) {
-                    $.messager.popup("创建失败，请重试！");
-                    return;
-                }
-                $.messager.popup("创建成功！");
-                setTimeout(function () {
-                    history.back(-1);
-                }, 1000);
-            });
-        } else {
+        if (bid != null && bid != "") {
             BulletinManager.edit(bid, content, function (result) {
                 if (!result.session) {
                     sessionError();
@@ -73,6 +56,22 @@ $(document).ready(function () {
                     return;
                 }
                 $.messager.popup("保存成功！");
+                setTimeout(function () {
+                    history.back(-1);
+                }, 1000);
+            });
+        } else {
+            BulletinManager.add(content, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                _this.text("保存").removeAttr("disabled");
+                if (result.data == null) {
+                    $.messager.popup("创建失败，请重试！");
+                    return;
+                }
+                $.messager.popup("创建成功！");
                 setTimeout(function () {
                     history.back(-1);
                 }, 1000);

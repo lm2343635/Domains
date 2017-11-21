@@ -29,7 +29,7 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
         }
         Bulletin bulletin = new Bulletin();
         bulletin.setCreateAt(System.currentTimeMillis());
-        bulletin.setUpdateAt(bulletin.getUpdateAt());
+        bulletin.setUpdateAt(bulletin.getCreateAt());
         bulletin.setContent(content);
         bulletin.setTop(false);
         bulletin.setEmployee(employee);
