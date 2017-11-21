@@ -63,8 +63,12 @@ $(document).ready(function () {
                     sessionError();
                     return;
                 }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限编辑改公告！");
+                    return;
+                }
                 _this.text("保存").removeAttr("disabled");
-                if (result.data == null) {
+                if (result.data == false) {
                     $.messager.popup("保存失败，请重试！");
                     return;
                 }

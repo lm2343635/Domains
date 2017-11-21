@@ -89,6 +89,7 @@ function loadUntopBulletins(page) {
                         removeBulletin(bid);
                     });
                 }).show();
+
                 $("#" + bulletin.bid + " .bulletin-list-edit").show();
             } else {
                 $("#" + bulletin.bid + " .bulletin-list-top").remove();
