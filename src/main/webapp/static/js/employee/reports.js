@@ -24,6 +24,7 @@ $(document).ready(function () {
 
     $("#search-reset").click(function () {
         $("#search-panel input, #search-panel select").val("");
+        $("#search-submit").click();
     });
 
 });

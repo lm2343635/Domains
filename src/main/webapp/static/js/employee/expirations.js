@@ -54,13 +54,15 @@ $(document).ready(function () {
 
     $("#search-submit").click(function () {
         var tid = $("#search-expiration-type").val();
+        var customer = $("#search-expiration-customer").val();
         var start = $("#search-expiration-start").val();
         var end = $("#search-expiration-end").val();
-        searchExpirations(tid, null, start, end, 1);
+        searchExpirations(tid, customer, start, end, 1);
     });
 
     $("#search-reset").click(function () {
         $("#search-panel input, #search-panel select").val("");
+        $("#search-submit").click();
     });
 
 });
