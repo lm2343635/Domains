@@ -23,7 +23,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
 
     @RemoteMethod
     @Transactional
-    public Result add(String cid, String tid, String expireAt, HttpSession session) {
+    public Result add(String cid, String tid, String expireAt, int money, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -57,6 +57,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         expiration.setCreateAt(System.currentTimeMillis());
         expiration.setUpdateAt(expiration.getCreateAt());
         expiration.setExpireAt(DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
+        expiration.setMoney(money);
         expiration.setCustomer(customer);
         expiration.setType(type);
         return Result.WithData(expirationDao.save(expiration));
@@ -97,7 +98,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
 
     @RemoteMethod
     @Transactional
-    public Result edit(String eid, String expireAt, HttpSession session) {
+    public Result edit(String eid, String expireAt, int money, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -124,6 +125,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         }
         expiration.setUpdateAt(System.currentTimeMillis());
         expiration.setExpireAt(DateTool.transferDate(expireAt, DateTool.YEAR_MONTH_DATE_FORMAT).getTime());
+        expiration.setMoney(money);
         expirationDao.update(expiration);
         return Result.WithData(true);
     }

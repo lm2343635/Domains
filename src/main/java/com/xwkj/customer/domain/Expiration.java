@@ -23,6 +23,9 @@ public class Expiration implements Serializable {
     @Column(nullable = false)
     private Long expireAt;
 
+    @Column(nullable = false)
+    private Integer money;
+
     @ManyToOne
     @JoinColumn(name = "tid", nullable = false)
     private Type type;
@@ -61,6 +64,14 @@ public class Expiration implements Serializable {
 
     public void setExpireAt(Long expireAt) {
         this.expireAt = expireAt;
+    }
+
+    public Integer getMoney() {
+        return money;
+    }
+
+    public void setMoney(Integer money) {
+        this.money = money;
     }
 
     public Type getType() {

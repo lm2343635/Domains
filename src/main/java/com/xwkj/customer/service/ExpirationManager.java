@@ -12,10 +12,11 @@ public interface ExpirationManager {
      * @param cid
      * @param tid
      * @param expireAt
+     * @param money
      * @param session
      * @return
      */
-    Result add(String cid, String tid, String expireAt, HttpSession session);
+    Result add(String cid, String tid, String expireAt, int money, HttpSession session);
 
     /**
      * Get all expirations of a customer.
@@ -31,10 +32,11 @@ public interface ExpirationManager {
      *
      * @param eid
      * @param expireAt
+     * @param money
      * @param session
      * @return
      */
-    Result edit(String eid, String expireAt, HttpSession session);
+    Result edit(String eid, String expireAt, int money, HttpSession session);
 
     /**
      * Remove an existing expiration.

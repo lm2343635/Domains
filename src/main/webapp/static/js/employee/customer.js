@@ -457,14 +457,33 @@ $(document).ready(function () {
     });
 
     $("#expiration-submit").click(function () {
-        var expireAt = $("#expiration-expireAt").val();
         var tid = $("#expiration-type").val();
+        var expireAt = $("#expiration-expireAt").val();
+        var money = $("#expiration-money").val();
+        var validate = true;
+        if (tid == null || tid == "") {
+            $("#expiration-type").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#expiration-type").parent().removeClass("has-error");
+        }
         if (expireAt == null || expireAt == "") {
-            $.messager.popup("请选择一个到期时间！");
+            $("#expiration-expireAt").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#expiration-expireAt").parent().removeClass("has-error");
+        }
+        if (money == null || money == "" || !isInteger(money)) {
+            $("#expiration-money").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#expiration-money").parent().removeClass("has-error");
+        }
+        if (!validate) {
             return;
         }
         if (editingEid == null) {
-            ExpirationManager.add(cid, tid, expireAt, function (result) {
+            ExpirationManager.add(cid, tid, expireAt, money, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -478,7 +497,7 @@ $(document).ready(function () {
                 $("#expiration-modal").modal("hide");
             });
         } else {
-            ExpirationManager.edit(editingEid, expireAt, function (result) {
+            ExpirationManager.edit(editingEid, expireAt, money, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -653,14 +672,16 @@ function loadExpirations() {
                 updateAt: expiration.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 tid: expiration.type.tid,
                 type: expiration.type.name,
-                expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT)
+                expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT),
+                money: expiration.money
             });
 
             $("#" + expiration.eid + " .expiration-list-edit").click(function () {
                 editingEid = $(this).mengularId();
                 fillValue({
                     "expiration-type": $("#" + editingEid + " .expiration-list-type").attr("data-tid"),
-                    "expiration-expireAt": $("#" + editingEid + " .expiration-list-expireAt").text()
+                    "expiration-expireAt": $("#" + editingEid + " .expiration-list-expireAt").text(),
+                    "expiration-money": $("#" + editingEid + " .expiration-list-money").text()
                 })
                 $("#expiration-type").attr("disabled", "disabled");
                 $("#expiration-modal").modal("show");
