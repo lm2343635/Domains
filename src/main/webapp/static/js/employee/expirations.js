@@ -68,7 +68,7 @@ $(document).ready(function () {
 });
 
 function searchExpirations(tid, customer, start, end, page) {
-    ExpirationManager.getSearchCount(tid, customer, start, end, function (result) {
+    ExpirationManager.getCount(tid, customer, start, end, function (result) {
         if (!result.session) {
             sessionError();
             return;
@@ -79,10 +79,10 @@ function searchExpirations(tid, customer, start, end, page) {
 
         $("#page-size").text(pageSize);
 
-        var count = result.data;
-        $("#page-count").text(count);
+        var searchCount = result.data.searchCount;
+        $("#page-count").text(searchCount);
         $("#page-nav ul").empty();
-        for (var i = 1; i < Math.ceil(count / pageSize + 1); i++) {
+        for (var i = 1; i < Math.ceil(searchCount / pageSize + 1); i++) {
             var li = $("<li>").append($("<a>").attr("href", "javascript:void(0)").text(i));
             if (page == i) {
                 li.addClass("active");
@@ -98,6 +98,8 @@ function searchExpirations(tid, customer, start, end, page) {
                 }, 300);
             });
         });
+
+        $("#expiration-money-count").text(result.data.moneyCount);
     });
 
     ExpirationManager.search(tid, customer, start, end, page, pageSize, function (result) {
@@ -118,6 +120,7 @@ function searchExpirations(tid, customer, start, end, page) {
                 updateAt: expiration.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 type: expiration.type.name,
                 expireAt: expiration.expireAt.format(YEAR_MONTH_DATE_FORMAT),
+                money: expiration.money,
                 cid: expiration.customer.cid,
                 customer: expiration.customer.name
             });

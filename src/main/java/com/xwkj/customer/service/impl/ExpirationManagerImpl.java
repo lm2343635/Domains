@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -162,7 +163,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
     }
 
     @RemoteMethod
-    public Result getSearchCount(String tid, String customer, String start, String end, HttpSession session) {
+    public Result getCount(String tid, String customer, String start, String end, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -185,7 +186,15 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         if (end != null && !end.equals("")) {
             endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
         }
-        return Result.WithData(expirationDao.getCount(type, customer, startStamp, endStamp));
+        final int searchCount = expirationDao.getSearchCount(type, customer, startStamp, endStamp);
+        final int moneyCount = 0;
+        if (searchCount > 0) {
+            expirationDao.getMoneyCount(type, customer, startStamp, endStamp);
+        }
+        return Result.WithData(new HashMap<String, Integer>() {{
+            put("searchCount", searchCount);
+            put("moneyCount", moneyCount);
+        }});
     }
 
     @RemoteMethod

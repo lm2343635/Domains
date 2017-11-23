@@ -34,6 +34,10 @@
         #expiration-list .expiration-list-template i {
             cursor: pointer;
         }
+
+        #expiration-list .expiration-list-template .list-group-item-heading span {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -45,6 +49,7 @@
         <div class="panel-heading">
             <h1 class="panel-title">
                 <span>到期时间列表</span>
+                <span class="pull-right text-muted">合计金额：<span id="expiration-money-count"></span>元</span>
             </h1>
         </div>
         <div id="search-panel" class="panel-body">
@@ -90,8 +95,9 @@
             <div id="${eid}$" class="list-group-item mengular-template expiration-list-template">
                 <p class="text-muted">创建于${createAt}$，更新于${updateAt}$</p>
                 <h4 class="list-group-item-heading">
-                    <span class="text-danger">${type}$：${expireAt}$</span>
-                    <a href="customer.html?cid=${cid}$" target="_blank" class="pull-right">${customer}$</a>
+                    <a href="customer.html?cid=${cid}$" target="_blank">${customer}$</a>
+                    <span class="text-muted pull-right">${type}$：${expireAt}$</span>
+                    <span class="text-muted pull-right">金额：${money}$元</span>
                 </h4>
             </div>
         </div>
@@ -103,7 +109,10 @@
                     </nav>
                 </div>
                 <div class="col-xs-12 col-sm-2">
-                    <p id="page-info" class="pull-right">每页<span id="page-size"></span>条，共<span id="page-count"></span>条</p>
+                    <p id="page-info" class="pull-right" style="line-height: 34px;">
+                        每页<span id="page-size"></span>条，
+                        共<span id="page-count"></span>条
+                    </p>
                 </div>
             </div>
         </div>

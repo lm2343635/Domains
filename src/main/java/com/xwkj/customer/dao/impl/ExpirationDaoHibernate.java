@@ -38,10 +38,41 @@ public class ExpirationDaoHibernate extends BaseHibernateDaoSupport<Expiration> 
         });
     }
 
-    public int getCount(final Type type, final String customer, final Long start, final Long end) {
+    public int getSearchCount(Type type, String customer, Long start, Long end) {
+        return getCount("count(*)", type, customer, start, end);
+    }
+
+    public int getMoneyCount(Type type, String customer, Long start, Long end) {
+        return getCount("sum(money)", type, customer, start, end);
+    }
+
+    public List<Expiration> find(Type type, String customer, Long start, Long end, int offset, int pageSize) {
+        String hql = "from Expiration where true = true";
+        List<Object> values = new ArrayList<Object>();
+        if (type != null) {
+            hql += " and type = ? ";
+            values.add(type);
+        }
+        if (customer != null && !customer.equals("")) {
+            hql += " and customer.name like ? ";
+            values.add("%" + customer + "%");
+        }
+        if (start != null) {
+            hql += " and expireAt >= ? ";
+            values.add(start);
+        }
+        if (end != null) {
+            hql += " and expireAt <= ? ";
+            values.add(end);
+        }
+        hql += " order by expireAt";
+        return findByPage(hql, values, offset, pageSize);
+    }
+
+    private int getCount(final String function, final Type type, final String customer, final Long start, final Long end) {
         return getHibernateTemplate().execute(new HibernateCallback<Long>() {
             public Long doInHibernate(Session session) throws HibernateException {
-                String hql = "select count(*) from Expiration where true = true";
+                String hql = "select " + function + " from Expiration where true = true";
                 List<Object> values = new ArrayList<Object>();
                 if (type != null) {
                     hql += " and type = ? ";
@@ -66,29 +97,6 @@ public class ExpirationDaoHibernate extends BaseHibernateDaoSupport<Expiration> 
                 return (Long) query.uniqueResult();
             }
         }).intValue();
-    }
-
-    public List<Expiration> find(Type type, String customer, Long start, Long end, int offset, int pageSize) {
-        String hql = "from Expiration where true = true";
-        List<Object> values = new ArrayList<Object>();
-        if (type != null) {
-            hql += " and type = ? ";
-            values.add(type);
-        }
-        if (customer != null && !customer.equals("")) {
-            hql += " and customer.name like ? ";
-            values.add("%" + customer + "%");
-        }
-        if (start != null) {
-            hql += " and expireAt >= ? ";
-            values.add(start);
-        }
-        if (end != null) {
-            hql += " and expireAt <= ? ";
-            values.add(end);
-        }
-        hql += " order by expireAt";
-        return findByPage(hql, values, offset, pageSize);
     }
 
 }

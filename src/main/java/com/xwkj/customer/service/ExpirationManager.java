@@ -48,7 +48,7 @@ public interface ExpirationManager {
     Result remove(String eid, HttpSession session);
 
     /**
-     * Get search count.
+     * Get search count and money count.
      *
      * @param tid
      * @param customer
@@ -57,7 +57,7 @@ public interface ExpirationManager {
      * @param session
      * @return
      */
-    Result getSearchCount(String tid, String customer, String start, String end, HttpSession session);
+    Result getCount(String tid, String customer, String start, String end, HttpSession session);
 
     /**
      * Search expirations and show by page.

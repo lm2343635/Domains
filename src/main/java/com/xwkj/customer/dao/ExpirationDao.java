@@ -34,7 +34,18 @@ public interface ExpirationDao extends BaseDao<Expiration> {
      * @param end
      * @return
      */
-    int getCount(Type type, String customer, Long start, Long end);
+    int getSearchCount(Type type, String customer, Long start, Long end);
+
+    /**
+     * Get sum of money.
+     *
+     * @param type
+     * @param customer
+     * @param start
+     * @param end
+     * @return
+     */
+    int getMoneyCount(Type type, String customer, Long start, Long end);
 
     /**
      * Find expiration by page.
