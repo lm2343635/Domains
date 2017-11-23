@@ -187,10 +187,7 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
             endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
         }
         final int searchCount = expirationDao.getSearchCount(type, customer, startStamp, endStamp);
-        final int moneyCount = 0;
-        if (searchCount > 0) {
-            expirationDao.getMoneyCount(type, customer, startStamp, endStamp);
-        }
+        final int moneyCount = (searchCount == 0) ? 0 : expirationDao.getMoneyCount(type, customer, startStamp, endStamp);
         return Result.WithData(new HashMap<String, Integer>() {{
             put("searchCount", searchCount);
             put("moneyCount", moneyCount);
