@@ -1,7 +1,7 @@
 function checkAdminSession(done) {
     AdminManager.checkSession(function (username) {
         if (username == null) {
-            location.href = "/admin";
+            sessionError();
             return;
         }
         done(username);
@@ -11,7 +11,7 @@ function checkAdminSession(done) {
 function checkEmployeeSession(done) {
     EmployeeManager.checkSession(function (employee) {
         if (employee == null) {
-            location.href = "/employee";
+            sessionError();
             return;
         }
         done(employee);
@@ -19,7 +19,8 @@ function checkEmployeeSession(done) {
 }
 
 function sessionError() {
-    location.href = "session.html";
+    var redirect = encodeURIComponent(location.href);
+    location.href = "session.html?redirect=" + redirect;
 }
 
 var RolePrevilgeNone = 0;

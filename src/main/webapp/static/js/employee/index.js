@@ -1,3 +1,5 @@
+var redirect = decodeURIComponent(request("redirect"));
+
 $(document).ready(function () {
     $("#admin-submit-button").click(function () {
         var name = $("#admin-number-input").val();
@@ -24,7 +26,7 @@ $(document).ready(function () {
                     return;
                 }
 
-                location.href = "bulletins.html";
+                location.href = (redirect == null || redirect == "") ? "bulletins.html" : redirect;
             });
         }
     });

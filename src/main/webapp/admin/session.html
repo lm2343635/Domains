@@ -18,16 +18,19 @@
             max-height: 150px;
         }
     </style>
-    <script src="../static/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/tools.js"></script>
     <script type="text/javascript">
         var count = 5;
         $(document).ready(function () {
+            var url = "/admin?redirect=" + request("redirect");
+            $("#toIndex").attr("href", url);
             setInterval(function () {
                 count--;
                 $("#count").html(count);
             }, 1000);
             setTimeout(function () {
-                location.href = "/";
+                location.href = url;
             }, count * 1000);
         });
     </script>

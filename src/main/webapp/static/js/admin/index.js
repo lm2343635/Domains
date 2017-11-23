@@ -1,3 +1,5 @@
+var redirect = decodeURIComponent(request("redirect"));
+
 $(document).ready(function () {
     $("#admin-submit-button").click(function () {
         var name = $("#admin-number-input").val();
@@ -17,13 +19,14 @@ $(document).ready(function () {
         }
         if (validate) {
             AdminManager.login(name, md5(password), function (success) {
-                if (success) {
-                    location.href = "employees.html";
-                } else {
+                if (!success) {
                     $("#admin-number-input").parent().addClass("has-error");
                     $("#admin-password-input").parent().addClass("has-error");
                     $.messager.popup("用户名或密码错误");
+                    return;
                 }
+
+                location.href = (redirect == null || redirect == "") ? "employees.html" : redirect;
             });
         }
     });
