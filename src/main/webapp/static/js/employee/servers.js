@@ -80,12 +80,12 @@ function loadServers(done) {
             return;
         }
 
-        $("#server-list tbody").mengularClear();
+        $("#server-list").mengularClear();
         for (var i in result.data) {
             var server = result.data[i];
             names[server.sid] = server.name;
 
-            $("#server-list tbody").mengular(".server-list-template", {
+            $("#server-list").mengular(".server-list-template", {
                 sid: server.sid,
                 createAt: server.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: server.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
@@ -159,7 +159,7 @@ function loadHighlightDomains() {
             return;
         }
 
-        $("#domain-list tbody").mengularClear();
+        $("#domain-list").mengularClear();
 
         $("#domain-panel .panel-title").fillText({
             domains: result.data.length
@@ -172,11 +172,11 @@ function loadHighlightDomains() {
             for (var j in sites) {
                 links += "<a href='http://" + sites[j] + "' target='_blank'>" + sites[j] + "</a>";
                 if (j != sites.length - 1) {
-                    links += "<br>";
+                    links += ", ";
                 }
             }
 
-            $("#domain-list tbody").mengular(".domain-list-template", {
+            $("#domain-list").mengular(".domain-list-template", {
                 did: domain.did,
                 createAt: domain.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: domain.updateAt.format(DATE_HOUR_MINUTE_FORMAT),

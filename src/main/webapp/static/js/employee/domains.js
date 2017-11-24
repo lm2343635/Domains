@@ -148,7 +148,8 @@ function loadDomains() {
             $.messager.popup("当前用户无权限查看域名！");
             return;
         }
-        $("#domain-list tbody").mengularClear();
+
+        $("#domain-list").mengularClear();
         for (var i in result.data) {
             var domain = result.data[i];
             var sites = domain.domains.split(",");
@@ -156,11 +157,11 @@ function loadDomains() {
             for (var j in sites) {
                 links += "<a href='http://" + sites[j] + "' target='_blank'>" + sites[j] + "</a>";
                 if (j != sites.length - 1) {
-                    links += "<br>";
+                    links += ", ";
                 }
             }
 
-            $("#domain-list tbody").mengular(".domain-list-template", {
+            $("#domain-list").mengular(".domain-list-template", {
                 did: domain.did,
                 createAt: domain.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: domain.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
@@ -201,7 +202,7 @@ function loadDomains() {
                 $("#transfer-domain-modal").modal("show");
             });
 
-            $("#" + domain.did + " .domain-list-highlight input").bootstrapSwitch({
+            $("#" + domain.did + " .domain-list-highlight").bootstrapSwitch({
                 state: domain.highlight
             }).on("switchChange.bootstrapSwitch", function (event, state) {
                 var did = $(this).mengularId();

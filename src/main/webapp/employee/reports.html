@@ -29,6 +29,10 @@
         #report-list .report-list-template i {
             cursor: pointer;
         }
+
+        #report-list .report-list-template a {
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -70,9 +74,7 @@
         <div id="report-list" class="list-group">
             <div id="${rid}$" class="list-group-item mengular-template report-list-template">
                 <p class="text-muted">${employee}$创建于${createAt}$，更新于${updateAt}$</p>
-                <h4 class="list-group-item-heading">
-                    <a class="report-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
-                </h4>
+                <a class="report-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
             </div>
         </div>
         <div class="panel-footer">

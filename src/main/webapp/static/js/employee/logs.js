@@ -1,4 +1,4 @@
-var pageSize = 15;
+var pageSize = 20;
 
 var eid = request("eid");
 
@@ -101,10 +101,10 @@ function searchLogs(customer, title, start, end, page) {
             return;
         }
 
-        $("#log-list tbody").mengularClear();
+        $("#log-list").mengularClear();
         for (var i in result.data) {
             var log = result.data[i];
-            $("#log-list tbody").mengular(".log-list-template", {
+            $("#log-list").mengular(".log-list-template", {
                 lid: log.lid,
                 createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 updateAt: log.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),

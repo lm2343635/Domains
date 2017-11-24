@@ -142,11 +142,11 @@ function searchAssigns(name, aid, iid, lower, higher, page) {
             return;
         }
 
-        $("#customer-list tbody").mengularClear();
+        $("#customer-list").mengularClear();
 
         for (var i in result.data) {
             var customer = result.data[i].customer;
-            $("#customer-list tbody").mengular(".customer-list-template", {
+            $("#customer-list").mengular(".customer-list-template", {
                 cid: customer.cid,
                 createAt: customer.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: customer.updateAt.format(DATE_HOUR_MINUTE_FORMAT),

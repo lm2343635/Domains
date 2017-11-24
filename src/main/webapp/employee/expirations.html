@@ -31,8 +31,8 @@
             overflow: auto;
         }
 
-        #expiration-list .expiration-list-template i {
-            cursor: pointer;
+        #expiration-list .expiration-list-template a {
+            font-size: 17px;
         }
 
         #expiration-list .expiration-list-template .list-group-item-heading span {
@@ -94,11 +94,9 @@
         <div id="expiration-list" class="list-group">
             <div id="${eid}$" class="list-group-item mengular-template expiration-list-template">
                 <p class="text-muted">创建于${createAt}$，更新于${updateAt}$</p>
-                <h4 class="list-group-item-heading">
-                    <a href="customer.html?cid=${cid}$" target="_blank">${customer}$</a>
-                    <span class="text-muted pull-right">${type}$：${expireAt}$</span>
-                    <span class="text-muted pull-right">金额：${money}$元</span>
-                </h4>
+                <a href="customer.html?cid=${cid}$" target="_blank">${customer}$</a>
+                <span class="text-muted pull-right">${type}$：${expireAt}$</span>
+                <span class="text-muted pull-right">金额：${money}$元</span>
             </div>
         </div>
         <div class="panel-footer">

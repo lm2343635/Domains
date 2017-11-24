@@ -23,15 +23,30 @@
     <script src="/static/js/employee/domains.js"></script>
     <style>
         #add-domain {
-            cursor: pointer
+            cursor: pointer;
+            margin-left: 10px;
         }
 
         #domain-list .highlight {
             background: yellow;
         }
 
+        #domain-list .domain-list-template {
+            overflow: auto;
+        }
+
+        #domain-list .domain-list-template .domain-list-name {
+            font-size: 17px;
+            margin-bottom: 3px;
+        }
+
         #domain-list .domain-list-template i {
             cursor: pointer;
+            margin: 5px;
+        }
+
+        #domain-list .domain-list-template .domain-list-remark {
+            margin: 0;
         }
 
         #add-domain-modal .input-group {
@@ -49,41 +64,25 @@
         <div class="panel-heading">
             <h1 class="panel-title">
                 <span>@{name}（@{address}）的域名列表，共@{domains}个域名</span>
-                <a id="add-domain"><i class="fa fa-plus pull-right" data-toggle="modal" data-target="#add-domain-modal"></i></a>
+                <i id="add-domain" class="fa fa-lg fa-plus pull-right text-primary" data-toggle="modal" data-target="#add-domain-modal"></i>
+                <a href="javascript:history.back(-1);" class="pull-right"><i class="fa fa-lg fa-reply text-muted"></i></a>
             </h1>
         </div>
-        <table id="domain-list" class="table">
-            <thead>
-            <tr>
-                <th>更新时间</th>
-                <th>网站名称</th>
-                <th>域名</th>
-                <th>语言</th>
-                <th>解析</th>
-                <th>路径</th>
-                <th>备注</th>
-                <th>编辑</th>
-                <th>转移</th>
-                <th>状态</th>
-                <th>删除</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${did}$" class="mengular-template domain-list-template ${highlight}$">
-                <td>${updateAt}$</td>
-                <td class="domain-list-name">${name}$</td>
-                <td>${domains}$</td>
-                <td>${language}$</td>
-                <td>${resolution}$</td>
-                <td>${path}$</td>
-                <td>${remark}$</td>
-                <td class="domain-list-edit"><i class="fa fa-lg fa-gear text-success"></i></td>
-                <td class="domain-list-transfer"><i class="fa fa-lg  fa-random text-primary"></i></td>
-                <td class="domain-list-highlight"><input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常"></td>
-                <td class="domain-list-remove"><i class="fa fa-lg fa-trash-o text-danger"></i></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="domain-list" class="list-group">
+            <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
+                <p class="text-muted">
+                    <span>更新于${updateAt}$</span>
+                    <span class="pull-right">${language}$，${resolution}$解析，路径：${path}$</span>
+                </p>
+                <span class="domain-list-name">${name}$</span>
+                <span>${domains}$</span>
+                <i class="fa fa-lg fa-trash-o text-danger pull-right domain-list-remove"></i>
+                <i class="fa fa-lg fa-random text-primary pull-right domain-list-transfer"></i>
+                <i class="fa fa-lg fa-gear text-success pull-right domain-list-edit"></i>
+                <div class="pull-right"><input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight"></div>
+                <p class="domain-list-remark text-muted">${remark}$</p>
+            </div>
+        </div>
     </div>
 </div>
 <div id="add-domain-modal" class="modal fade">

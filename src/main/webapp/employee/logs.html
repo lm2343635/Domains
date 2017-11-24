@@ -30,7 +30,12 @@
             margin: 2px 0;
         }
 
-        #log-list .log-list-template i {
+        #log-list .log-list-template,
+        #log-list .log-list-template .log-list-head {
+            overflow: auto;
+        }
+
+        #log-list .log-list-template .log-list-show {
             cursor: pointer;
         }
     </style>
@@ -77,26 +82,15 @@
                 </div>
             </div>
         </div>
-        <table id="log-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>更新时间</th>
-                <th>客户</th>
-                <th>标题</th>
-                <th>查看</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${lid}$" class="mengular-template log-list-template">
-                <td>${createAt}$</td>
-                <td>${updateAt}$</td>
-                <td><a href="customer.html?cid=${cid}$" target="_blank">${customer}$</a></td>
-                <td>${title}$</td>
-                <td class="log-list-show"><i class="fa fa-lg fa-eye text-danger"></i></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="log-list" class="list-group">
+            <div id="${lid}$" class="list-group-item mengular-template log-list-template">
+                <div class="log-list-head">
+                    <p class="text-muted pull-left">创建于${createAt}$</p>
+                    <a href="customer.html?cid=${cid}$" target="_blank" class="pull-right">${customer}$</a>
+                </div>
+                <span>${title}$ <span class="log-list-show text-primary">（查看详情）</span>
+            </div>
+        </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-10">
@@ -127,7 +121,6 @@
                     <label class="control-label">内容</label>
                     <div id="log-content"></div>
                 </div>
-
             </div>
         </div>
     </div>

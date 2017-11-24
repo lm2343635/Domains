@@ -19,9 +19,23 @@
     <script src="/dwr/interface/LogManager.js"></script>
     <script src="/static/js/employee/employees.js"></script>
     <style>
-        #employee-list .employee-list-template i,
-        #log-list .log-list-template i {
+        #log-list .log-list-template .log-list-show {
             cursor: pointer;
+        }
+
+        #employee-list .employee-list-template,
+        #log-panel .panel-heading,
+        #log-list .log-list-template,
+        #log-list .log-list-template .log-list-head {
+            overflow: auto;
+        }
+
+        #employee-list .employee-list-template .employee-list-name {
+            font-size: 16px;
+        }
+
+        #employee-list .employee-list-template .pull-right {
+            margin-left: 5px;
         }
 
         #log-panel {
@@ -42,6 +56,7 @@
             color: #fff;
             background: #888;
         }
+
     </style>
 </head>
 <body>
@@ -55,65 +70,37 @@
                 <span>员工列表</span>
             </h1>
         </div>
-        <table id="employee-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>更新时间</th>
-                <th>员工姓名</th>
-                <th>员工角色</th>
-                <th>负责的客户</th>
-                <th>创建的客户</th>
-                <th>服务记录</th>
-                <th>工资管理</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${eid}$" class="mengular-template employee-list-template">
-                <td>${createAt}$</td>
-                <td>${updateAt}$</td>
-                <td class="employee-list-name">${name}$</td>
-                <td>${role}$</td>
-                <td><a href="assigns.html?eid=${eid}$" target="_blank"><i class="fa fa-lg fa-users text-primary"></i></a></td>
-                <td><a href="creates.html?eid=${eid}$" target="_blank"><i class="fa fa-lg fa-user-plus text-info"></i></a></td>
-                <td><a href="logs.html?eid=${eid}$" target="_blank"><i class="fa fa-lg fa-list text-success"></i></a></td>
-                <td><a href="salaries.html?eid=${eid}$" target="_blank"><i class="fa fa-lg fa-cny text-danger"></i></a></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="employee-list" class="list-group">
+            <div id="${eid}$" class="list-group-item mengular-template employee-list-template">
+                <p class="text-muted">创建于${createAt}$，更新于${updateAt}$</p>
+                <a href="javascipt:void(0)" class="employee-list-name">${name}$（${role}$）</a>
+                <a href="salaries.html?eid=${eid}$" target="_blank" class="pull-right btn btn-xs btn-danger">工资管理</a>
+                <a href="logs.html?eid=${eid}$" target="_blank" class="pull-right btn btn-xs btn-success">服务记录</a>
+                <a href="assigns.html?eid=${eid}$" target="_blank" class="pull-right btn btn-xs btn-info">负责的客户</a>
+                <a href="creates.html?eid=${eid}$" target="_blank" class="pull-right btn btn-xs btn-primary">创建的客户</a>
+            </div>
+        </div>
     </div>
     <div id="log-panel" class="panel panel-default">
         <div class="panel-heading">
             <h1 class="panel-title">
                 <span>最近的服务记录</span>
                 <ul id="log-limit" class="nav nav-pills pull-right">
-                    <li role="presentation" data-limit="20" class="active"><a href="javascript:void(0)">最近20条</a></li>
-                    <li role="presentation" data-limit="50"><a href="javascript:void(0)">最近50条</a></li>
+                    <li role="presentation" data-limit="50" class="active"><a href="javascript:void(0)">最近50条</a></li>
                     <li role="presentation" data-limit="100"><a href="javascript:void(0)">最近100条</a></li>
                     <li role="presentation" data-limit="200"><a href="javascript:void(0)">最近200条</a></li>
                 </ul>
             </h1>
         </div>
-        <table id="log-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>创建人</th>
-                <th>客户</th>
-                <th>标题</th>
-                <th>查看</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${lid}$" class="mengular-template log-list-template">
-                <td>${createAt}$</td>
-                <td>${employee}$</td>
-                <td><a href="customer.html?cid=${cid}$" target="_blank">${customer}$</a></td>
-                <td>${title}$</td>
-                <td class="log-list-show"><i class="fa fa-lg fa-eye text-danger"></i></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="log-list" class="list-group">
+            <div id="${lid}$" class="list-group-item mengular-template log-list-template">
+                <div class="log-list-head">
+                    <p class="text-muted pull-left">${employee}$创建于${createAt}$</p>
+                    <a href="customer.html?cid=${cid}$" target="_blank" class="pull-right">${customer}$</a>
+                </div>
+                <span>${title}$ <span class="log-list-show text-primary">（查看详情）</span>
+            </div>
+        </div>
     </div>
 </div>
 <div id="log-modal" class="modal fade">

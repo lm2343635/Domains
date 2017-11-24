@@ -1,4 +1,4 @@
-var limit = 20;
+var limit = 50;
 
 $(document).ready(function () {
 
@@ -29,11 +29,11 @@ function loadEmployees() {
             return;
         }
 
-        $("#employee-list tbody").mengularClear();
+        $("#employee-list").mengularClear();
 
         for (var i in result.data) {
             var employee = result.data[i];
-            $("#employee-list tbody").mengular(".employee-list-template", {
+            $("#employee-list").mengular(".employee-list-template", {
                 eid: employee.eid,
                 createAt: employee.createAt.format(DATE_HOUR_MINUTE_FORMAT),
                 updateAt: employee.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
@@ -56,10 +56,10 @@ function loadLatestLogs() {
             return;
         }
 
-        $("#log-list tbody").mengularClear();
+        $("#log-list").mengularClear();
         for (var i in result.data) {
             var log = result.data[i];
-            $("#log-list tbody").mengular(".log-list-template", {
+            $("#log-list").mengular(".log-list-template", {
                 lid: log.lid,
                 createAt: log.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 employee: log.employee.name,

@@ -34,6 +34,10 @@
         #document-list .document-list-template i {
             cursor: pointer;
         }
+
+        #document-list .document-list-template a {
+            font-size: 17px;
+        }
     </style>
 </head>
 <body>
@@ -77,11 +81,9 @@
         </div>
         <div id="document-list" class="list-group">
             <div id="${did}$" class="list-group-item mengular-template document-list-template">
-                <p>${employee}$上传于${uploadAt}$，文件大小：${size}$</p>
-                <h4 class="list-group-item-heading">
-                    <a class="document-list-filename" href="/document/download?did=${did}$">${filename}$</a>
-                    <i class="fa fa-lg fa-trash text-danger document-list-remove pull-right"></i>
-                </h4>
+                <p class="text-muted">${employee}$上传于${uploadAt}$，文件大小：${size}$</p>
+                <a class="document-list-filename" href="/document/download?did=${did}$">${filename}$</a>
+                <i class="fa fa-lg fa-trash text-danger document-list-remove pull-right"></i>
             </div>
         </div>
         <div class="panel-footer">

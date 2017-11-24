@@ -43,8 +43,12 @@
             background: #888;
         }
 
-        #customer-list .customer-list-template i {
-            cursor: pointer;
+        #customer-list .customer-list-template {
+            overflow: auto;
+        }
+
+        #customer-list .customer-list-template a {
+            font-size: 17px;
         }
 
     </style>
@@ -104,30 +108,13 @@
                 </div>
             </div>
         </div>
-        <table id="customer-list" class="table">
-            <thead>
-            <tr>
-                <th>创建时间</th>
-                <th>更新时间</th>
-                <th>客户名称</th>
-                <th>注册资金</th>
-                <th>区域</th>
-                <th>行业</th>
-                <th>查看</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr id="${cid}$" class="mengular-template customer-list-template">
-                <td>${createAt}$</td>
-                <td>${updateAt}$</td>
-                <td class="customer-list-name">${name}$</td>
-                <td>${capital}$万元</td>
-                <td>${area}$</td>
-                <td>${industry}$</td>
-                <td><a href="customer.html?cid=${cid}$" target="_blank"><i class="fa fa-lg fa-tag text-primary"></a></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="customer-list" class="list-group">
+            <div id="${cid}$" class="list-group-item mengular-template customer-list-template">
+                <p class="text-muted">创建于${createAt}$，更新于${updateAt}$</p>
+                <a href="customer.html?cid=${cid}$" target="_blank">${name}$</a>
+                <span class="pull-right text-muted">${area}$，${industry}$，注册资金：${capital}$万元</span>
+            </div>
+        </div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-xs-12 col-sm-10">
