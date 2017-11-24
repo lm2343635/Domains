@@ -387,6 +387,8 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         }
         // Delete all assigns of this customer.
         assignDao.deleteByCustomer(customer);
+        // Delete all expirations of this customer.
+        expirationDao.deleteByCustomer(customer);
         // Delete unuseful attributes.
         customer.setItems(null);
         customer.setMoney(null);
