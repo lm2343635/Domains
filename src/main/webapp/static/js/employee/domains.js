@@ -13,6 +13,8 @@ $(document).ready(function () {
                 return;
             }
             var server = result.data;
+            document.title = server.name + document.title;
+
             $("#domain-panel .panel-title").fillText({
                 name: server.name,
                 address: server.address,
