@@ -1,6 +1,6 @@
 package com.xwkj.customer.component;
 
-import com.xwkj.common.util.JsonTool;
+import com.xwkj.common.util.JSONTool;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +23,7 @@ public class ConfigComponent {
 
     public String ConfigPath = "/WEB-INF/config.json";
     public String rootPath;
-    public JsonTool configTool = null;
+    public JSONTool configTool = null;
 
     public ConfigComponent() {
         rootPath = this.getClass().getClassLoader().getResource("/").getPath().split("WEB-INF")[0];
@@ -32,7 +32,7 @@ public class ConfigComponent {
 
     public void load() {
         String pathname = rootPath + ConfigPath;
-        configTool = new JsonTool(pathname);
+        configTool = new JSONTool(pathname);
     }
 
 }

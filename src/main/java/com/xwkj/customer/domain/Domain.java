@@ -45,10 +45,10 @@ public class Domain implements Serializable {
     private Long updateAt;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String index;
+    private String page;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String check;
+    private String checked;
 
     @Column
     private Long checkAt;
@@ -148,20 +148,20 @@ public class Domain implements Serializable {
         this.updateAt = updateAt;
     }
 
-    public String getIndex() {
-        return index;
+    public String getPage() {
+        return page;
     }
 
-    public void setIndex(String index) {
-        this.index = index;
+    public void setPage(String page) {
+        this.page = page;
     }
 
-    public String getCheck() {
-        return check;
+    public String getChecked() {
+        return checked;
     }
 
-    public void setCheck(String check) {
-        this.check = check;
+    public void setChecked(String checked) {
+        this.checked = checked;
     }
 
     public Long getCheckAt() {

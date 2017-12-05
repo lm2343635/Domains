@@ -5,11 +5,7 @@ import net.sf.json.JSONObject;
 
 import java.io.*;
 
-/**
- * @author 浮尘追梦
- * @version 1.1
- */
-public class JsonTool {
+public class JSONTool {
 
     String pathname = null;
     JSONObject object = null;
@@ -19,7 +15,7 @@ public class JsonTool {
      *
      * @param pathname
      */
-    public JsonTool(String pathname) {
+    public JSONTool(String pathname) {
         super();
         File file = new File(pathname);
         if (!file.exists()) {
@@ -56,7 +52,7 @@ public class JsonTool {
      *
      * @param jsonObject
      */
-    public JsonTool(JSONObject jsonObject) {
+    public JSONTool(JSONObject jsonObject) {
         object = jsonObject;
     }
 

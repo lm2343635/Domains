@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>抓取主页</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <script src='http://lovasoa.github.io/tidy-html5/tidy.js'></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/DomainManager.js"></script>
+    <script src="/static/js/employee/page.js"></script>
+    <style>
+
+        html {
+            margin:0 auto;
+            padding:0;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height:100%;
+            width:100%;
+            overflow:hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 50%;
+        }
+
+        #code {
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<iframe id="view" src="" frameborder="0"></iframe>
+<pre id="code"></pre>
+</body>
+</html>

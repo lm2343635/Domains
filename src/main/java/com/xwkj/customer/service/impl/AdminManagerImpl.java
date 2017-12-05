@@ -1,6 +1,6 @@
 package com.xwkj.customer.service.impl;
 
-import com.xwkj.common.util.JsonTool;
+import com.xwkj.common.util.JSONTool;
 import com.xwkj.customer.service.AdminManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import net.sf.json.JSONArray;
@@ -17,13 +17,13 @@ import java.io.File;
 @RemoteProxy(name = "AdminManager")
 public class AdminManagerImpl extends ManagerTemplate implements AdminManager {
 
-    private JsonTool config = null;
+    private JSONTool config = null;
     private JSONArray admins = null;
 
-    public JsonTool getAdminConfig() {
+    public JSONTool getAdminConfig() {
         if (config == null) {
             String pathname = WebContextFactory.get().getServletContext().getRealPath("/") + File.separator + AdminConfigPath;
-            config = new JsonTool(pathname);
+            config = new JSONTool(pathname);
         }
         return config;
     }
