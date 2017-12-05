@@ -211,4 +211,10 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result saveIndex(String did, String index, HttpSession session) {
+        return null;
+    }
+
 }

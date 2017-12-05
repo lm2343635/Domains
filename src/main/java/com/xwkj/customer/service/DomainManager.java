@@ -95,4 +95,14 @@ public interface DomainManager {
      */
     Result setHighlight(String did, boolean highlight, HttpSession session);
 
+    /**
+     * Save the HTML string of index page.
+     *
+     * @param did
+     * @param index
+     * @param session
+     * @return
+     */
+    Result saveIndex(String did, String index, HttpSession session);
+
 }

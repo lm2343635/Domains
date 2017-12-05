@@ -44,6 +44,18 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Long updateAt;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String index;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String check;
+
+    @Column
+    private Long checkAt;
+
+    @Column
+    private Integer similarity;
+
     @ManyToOne
     @JoinColumn(name = "sid", nullable = false)
     private Server server;
@@ -134,6 +146,38 @@ public class Domain implements Serializable {
 
     public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getCheck() {
+        return check;
+    }
+
+    public void setCheck(String check) {
+        this.check = check;
+    }
+
+    public Long getCheckAt() {
+        return checkAt;
+    }
+
+    public void setCheckAt(Long checkAt) {
+        this.checkAt = checkAt;
+    }
+
+    public Integer getSimilarity() {
+        return similarity;
+    }
+
+    public void setSimilarity(Integer similarity) {
+        this.similarity = similarity;
     }
 
     public Server getServer() {
