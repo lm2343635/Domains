@@ -18,7 +18,7 @@ public class DomainBean {
     private boolean highlight;
     private Date createAt;
     private Date updateAt;
-    private boolean pageSaved;
+    private boolean grabbed;
     private String sid;
 
     public String getDid() {
@@ -109,6 +109,14 @@ public class DomainBean {
         this.sid = sid;
     }
 
+    public boolean isGrabbed() {
+        return grabbed;
+    }
+
+    public void setGrabbed(boolean grabbed) {
+        this.grabbed = grabbed;
+    }
+
     public DomainBean(Domain domain) {
         this.did = domain.getDid();
         this.name = domain.getName();
@@ -121,6 +129,6 @@ public class DomainBean {
         this.createAt = new Date(domain.getCreateAt());
         this.updateAt = new Date(domain.getUpdateAt());
         this.sid = domain.getServer().getSid();
-        this.pageSaved = domain.getPage() != null;
+        this.grabbed = domain.getPage() != null;
     }
 }

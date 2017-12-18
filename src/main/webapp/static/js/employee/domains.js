@@ -175,6 +175,11 @@ function loadDomains() {
                 remark: domain.remark,
                 highlight: domain.highlight ? "highlight" : ""
             });
+
+            // Set grab buttons of ungrabbed sites to muted.
+            if (!domain.grabbed) {
+                $("#" + domain.did + " .domain-list-grab").addClass("text-muted");
+            }
             
             $("#" + domain.did + " .domain-list-edit").click(function () {
                 editingDid = $(this).mengularId();
