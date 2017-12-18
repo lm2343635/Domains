@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -216,7 +218,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
-    public Result getWithGrabbedPgae(String did, HttpSession session) {
+    public Result getWithGrabbedPgae(String did, String charset, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -232,9 +234,9 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         String html = null;
         String site = domain.getDomains().split(",")[0];
         if (site != null && !site.equals("")) {
-            html = HTTPTool.httpRequest("http://" + site);
+            html = HTTPTool.httpRequest("http://" + site, charset);
         }
-        final String page = (html == null) ? "" : HTMLTool.compress(html);
+        final String page = (html == null) ? "" : html;
         return Result.WithData(new HashMap<String, Object>() {{
             put("domain", new DomainBean(domain));
             put("page", page);
@@ -243,7 +245,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result savePage(String did, String page, HttpSession session) {
+    public Result savePage(String did, String charset, String page, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -256,6 +258,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             Debug.error("Cannot find a domain by this did.");
             return Result.WithData(false);
         }
+        domain.setCharset(charset);
         domain.setPage(HTMLTool.compress(page));
         domainDao.update(domain);
         return Result.WithData(true);

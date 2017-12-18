@@ -95,16 +95,25 @@ public interface DomainManager {
      */
     Result setHighlight(String did, boolean highlight, HttpSession session);
 
-    Result getWithGrabbedPgae(String did, HttpSession session);
+    /**
+     * Load html of a page with charset.
+     *
+     * @param did
+     * @param charset
+     * @param session
+     * @return
+     */
+    Result getWithGrabbedPgae(String did, String charset, HttpSession session);
 
     /**
      * Save the HTML string of the index page.
      *
      * @param did
+     * @param charset
      * @param page
      * @param session
      * @return
      */
-    Result savePage(String did, String page, HttpSession session);
+    Result savePage(String did, String charset, String page, HttpSession session);
 
 }

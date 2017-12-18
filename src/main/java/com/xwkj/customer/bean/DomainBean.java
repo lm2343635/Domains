@@ -18,6 +18,7 @@ public class DomainBean {
     private boolean highlight;
     private Date createAt;
     private Date updateAt;
+    private boolean pageSaved;
     private String sid;
 
     public String getDid() {
@@ -120,5 +121,6 @@ public class DomainBean {
         this.createAt = new Date(domain.getCreateAt());
         this.updateAt = new Date(domain.getUpdateAt());
         this.sid = domain.getServer().getSid();
+        this.pageSaved = domain.getPage() != null;
     }
 }

@@ -44,6 +44,9 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Long updateAt;
 
+    @Column
+    private String charset;
+
     @Column(columnDefinition = "LONGTEXT")
     private String page;
 
@@ -146,6 +149,14 @@ public class Domain implements Serializable {
 
     public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public String getCharset() {
+        return charset;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
     }
 
     public String getPage() {

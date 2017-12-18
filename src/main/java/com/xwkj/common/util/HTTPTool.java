@@ -41,13 +41,17 @@ public class HTTPTool {
         return result;
     }
 
+    public static String httpRequest(String req_url) {
+        return httpRequest(req_url, "utf-8");
+    }
+
     /**
      * 发起http请求获取返回结果
      *
      * @param req_url 请求地址
      * @return
      */
-    public static String httpRequest(String req_url) {
+    public static String httpRequest(String req_url, String charset) {
         StringBuffer buffer = new StringBuffer();
         try {
             URL url = new URL(req_url);
@@ -62,7 +66,7 @@ public class HTTPTool {
 
             // 将返回的输入流转换成字符串
             InputStream inputStream = httpUrlConn.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, charset);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
             String str = null;

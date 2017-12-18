@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>抓取主页</title>
     <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
-    <script src='http://lovasoa.github.io/tidy-html5/tidy.js'></script>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
     <script src="/static/js/tools.js"></script>
+    <script src="/static/js/tidy.min.js"></script>
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/DomainManager.js"></script>
@@ -31,16 +34,67 @@
 
         iframe {
             width: 100%;
-            height: 50%;
+            height: 100%;
         }
 
         #code {
-            overflow: auto;
+            position: relative;
+            top: -407px;
+            border-top: 2px #009b4c solid;
+            background-color: #fefefe;
         }
+
+        #code pre {
+            height: auto;
+            overflow: auto;
+            word-break: normal !important;
+            word-wrap: normal !important;
+            white-space: pre !important;
+            max-height: 400px;
+            padding: 10px;
+            color: #2196F3;
+            position: absolute;
+        }
+
+        #code div {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
     </style>
 </head>
 <body>
 <iframe id="view" src="" frameborder="0"></iframe>
-<pre id="code"></pre>
+<div id="code">
+    <pre></pre>
+    <div>
+        <a href="javascript:location.reload();" class="btn btn-info">重新抓取</a>
+        <button id="save-code" class="btn btn-success">保存为标准页面</button>
+    </div>
+
+</div>
+<div id="charset-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">选择字符集</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">网站字符集</span>
+                    <select id="charset" class="form-control">
+                        <option value="utf-8">utf-8</option>
+                        <option value="gbk">gbk</option>
+                        <option value="gb2312">gb2312</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="charset-submit" type="button" class="btn btn-success">抓取网站</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
