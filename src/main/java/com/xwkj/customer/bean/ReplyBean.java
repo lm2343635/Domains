@@ -1,19 +1,18 @@
 package com.xwkj.customer.bean;
 
-import com.xwkj.customer.domain.Report;
+import com.xwkj.customer.domain.Reply;
 import org.directwebremoting.annotations.DataTransferObject;
 
 import java.util.Date;
 
 @DataTransferObject
-public class ReportBean {
+public class ReplyBean {
 
     private String rid;
     private Date createAt;
-    private Date updateAt;
-    private String title;
     private String content;
     private EmployeeBean employee;
+    private String wid;
 
     public String getRid() {
         return rid;
@@ -29,22 +28,6 @@ public class ReportBean {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
@@ -63,15 +46,20 @@ public class ReportBean {
         this.employee = employee;
     }
 
-    public ReportBean(Report report, boolean full) {
-        this.rid = report.getRid();
-        this.createAt = new Date(report.getCreateAt());
-        this.updateAt = new Date(report.getUpdateAt());
-        this.title = report.getTitle();
-        this.employee = new EmployeeBean(report.getEmployee(), false);
-        if (full) {
-            this.content = report.getContent();
-        }
+    public String getWid() {
+        return wid;
+    }
+
+    public void setWid(String wid) {
+        this.wid = wid;
+    }
+
+    public ReplyBean(Reply reply) {
+        this.rid = reply.getRid();
+        this.createAt = new Date(reply.getCreateAt());
+        this.content = reply.getContent();
+        this.employee = new EmployeeBean(reply.getEmployee(), false);
+        this.wid = reply.getWork().getWid();
     }
 
 }

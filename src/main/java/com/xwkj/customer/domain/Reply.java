@@ -6,16 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "customer_report")
-public class Report implements Serializable {
+@Table(name = "customer_reply")
+public class Reply implements Serializable {
 
-    /**
-     * Change key name from lid to rid.
-     ALTER TABLE `customer`.`customer_report`
-     CHANGE COLUMN `lid` `rid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL FIRST,
-     DROP PRIMARY KEY,
-     ADD PRIMARY KEY (`rid`) USING BTREE;
-     */
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
@@ -24,18 +17,16 @@ public class Report implements Serializable {
     @Column(nullable = false)
     private Long createAt;
 
-    @Column(nullable = false)
-    private Long updateAt;
-
-    @Column(nullable = false)
-    private String title;
-
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "eid", nullable = false)
     private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "wid", nullable = false)
+    private Work work;
 
     public String getRid() {
         return rid;
@@ -53,22 +44,6 @@ public class Report implements Serializable {
         this.createAt = createAt;
     }
 
-    public Long getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Long updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getContent() {
         return content;
     }
@@ -83,6 +58,14 @@ public class Report implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Work getWork() {
+        return work;
+    }
+
+    public void setWork(Work work) {
+        this.work = work;
     }
 
 }
