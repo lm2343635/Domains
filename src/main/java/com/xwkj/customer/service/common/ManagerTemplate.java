@@ -64,6 +64,12 @@ public class ManagerTemplate {
     @Autowired
     protected ExpirationDao expirationDao;
 
+    @Autowired
+    protected WorkDao workDao;
+
+    @Autowired
+    protected ReplyDao replyDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }
