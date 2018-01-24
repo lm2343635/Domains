@@ -56,7 +56,7 @@ public interface EmployeeManager {
     // ************* For admin & employee ****************
 
     /**
-     * Get all employees for admin.
+     * Get all employees.
      *
      * @param session
      * @return

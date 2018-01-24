@@ -23,6 +23,9 @@ public class Work implements Serializable {
     @Column(nullable = false)
     private Boolean active;
 
+    @Column(nullable = false)
+    private Integer replys;
+
     @ManyToOne
     @JoinColumn(name = "sponsor_uid", nullable = false)
     private Employee sponsor;
@@ -61,6 +64,14 @@ public class Work implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getReplys() {
+        return replys;
+    }
+
+    public void setReplys(Integer replys) {
+        this.replys = replys;
     }
 
     public Employee getSponsor() {

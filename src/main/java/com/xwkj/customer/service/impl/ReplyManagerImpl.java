@@ -35,7 +35,13 @@ public class ReplyManagerImpl extends ManagerTemplate implements ReplyManager {
         reply.setContent(content);
         reply.setEmployee(employee);
         reply.setWork(work);
-        return Result.WithData(replyDao.save(reply));
+        String rid = replyDao.save(reply);
+        if (rid == null) {
+            return Result.WithData(null);
+        }
+        work.setReplys(work.getReplys() + 1);
+        workDao.update(work);
+        return Result.WithData(rid);
     }
     
 }

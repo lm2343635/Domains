@@ -34,6 +34,7 @@ public class WorkManagerImpl extends ManagerTemplate implements WorkManager {
         work.setTitle(title);
         work.setActive(true);
         work.setSponsor(sponsor);
+        work.setReplys(0);
         work.setExecutor(executor);
         return Result.WithData(workDao.save(work));
     }
