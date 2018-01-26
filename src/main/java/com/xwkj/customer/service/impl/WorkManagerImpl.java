@@ -2,6 +2,7 @@ package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.Result;
+import com.xwkj.customer.bean.WorkBean;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Work;
 import com.xwkj.customer.service.WorkManager;
@@ -39,6 +40,8 @@ public class WorkManagerImpl extends ManagerTemplate implements WorkManager {
         return Result.WithData(workDao.save(work));
     }
 
+    @RemoteMethod
+    @Transactional
     public Result close(String wid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -55,6 +58,19 @@ public class WorkManagerImpl extends ManagerTemplate implements WorkManager {
         work.setActive(false);
         workDao.update(work);
         return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    public Result get(String wid, HttpSession session) {
+        if (!checkEmployeeSession(session)) {
+            return Result.NoSession();
+        }
+        Work work = workDao.get(wid);
+        if (work == null) {
+            Debug.error("Cannot find a work by this wid.");
+            return Result.WithData(null);
+        }
+        return Result.WithData(new WorkBean(work));
     }
 
 }

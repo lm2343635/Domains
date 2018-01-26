@@ -23,6 +23,11 @@ function sessionError() {
     location.href = "session.html?redirect=" + redirect;
 }
 
+function linkError() {
+    var redirect = encodeURIComponent(location.href);
+    location.href = "link.html?redirect=" + redirect;
+}
+
 var RolePrevilgeNone = 0;
 var RolePrevilgeAssign = 1;
 var RolePrevilgeHold = 2;

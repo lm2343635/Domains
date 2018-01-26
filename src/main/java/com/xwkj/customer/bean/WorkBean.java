@@ -12,6 +12,7 @@ public class WorkBean {
     private Date createAt;
     private String title;
     private boolean active;
+    private int replys;
     private EmployeeBean sponsor;
     private EmployeeBean executor;
 
@@ -47,6 +48,14 @@ public class WorkBean {
         this.active = active;
     }
 
+    public int getReplys() {
+        return replys;
+    }
+
+    public void setReplys(int replys) {
+        this.replys = replys;
+    }
+
     public EmployeeBean getSponsor() {
         return sponsor;
     }
@@ -68,6 +77,7 @@ public class WorkBean {
         this.createAt = new Date(work.getCreateAt());
         this.title = work.getTitle();
         this.active = work.getActive();
+        this.replys = work.getReplys();
         this.sponsor = new EmployeeBean(work.getSponsor(), false);
         this.executor = new EmployeeBean(work.getExecutor(), false);
     }

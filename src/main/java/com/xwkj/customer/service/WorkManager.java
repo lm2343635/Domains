@@ -25,4 +25,13 @@ public interface WorkManager {
      */
     Result close(String wid, HttpSession session);
 
+    /**
+     * Get a work by wid.
+     *
+     * @param wid
+     * @param session
+     * @return
+     */
+    Result get(String wid, HttpSession session);
+
 }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/summernote.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/summernote.min.js"></script>
+    <script src="/static/js/summernote-zh-CN.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/WorkManager.js"></script>
+    <script src="/dwr/interface/ReplyManager.js"></script>
+    <script src="/static/js/employee/work.js"></script>
+    <style>
+        #add-reply {
+            margin-top: -19px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="work-panel" class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">@{title}，共@{replys}人回复</h1>
+            <button id="add-reply" class="btn btn-xs btn-default pull-right">回复</button>
+        </div>
+        <div id="work-list" class="list-group">
+            <div id="${rid}$" class="list-group-item mengular-template work-list-template">
+                <p class="text-muted">${employee}$创建于${createAt}$，更新于${updateAt}$</p>
+                <a class="work-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div id="add-reply-content"></div>
+            <button class="btn btn-danger">清空</button>
+            <button class="btn btn-success">提交回复</button>
+            <button class="btn btn-warning pull-right">结束工作任务</button>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
