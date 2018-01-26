@@ -25,6 +25,10 @@
         #add-reply {
             margin-top: -19px;
         }
+
+        #reply-list .reply-list-title {
+            padding-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -34,23 +38,32 @@
     </div>
     <div id="work-panel" class="panel panel-default">
         <div class="panel-heading">
-            <h1 class="panel-title">@{title}，共@{replys}人回复</h1>
-            <button id="add-reply" class="btn btn-xs btn-default pull-right">回复</button>
+            <h1 class="panel-title">工作任务名称：@{title}</h1>
+            <button id="add-reply" class="btn btn-xs btn-success pull-right">回复</button>
         </div>
-        <div id="work-list" class="list-group">
-            <div id="${rid}$" class="list-group-item mengular-template work-list-template">
-                <p class="text-muted">${employee}$创建于${createAt}$，更新于${updateAt}$</p>
-                <a class="work-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
+        <div id="reply-list" class="list-group">
+            <div class="list-group-item">
+                <h5 id="work-info">
+                    <strong class="text-success">工作任务发起人：@{sponsor}</strong>
+                    <strong class="text-danger pull-right">工作任务执行人：@{executor}</strong>
+                </h5>
+            </div>
+            <div id="${rid}$" class="list-group-item mengular-template reply-list-template">
+                <h5 class="reply-list-title">
+                    <strong class="${state}$">${employee}$</strong>
+                    <span class="text-muted pull-right">回复于${createAt}$</span>
+                </h5>
+                <div>${content}$</div>
             </div>
         </div>
-        <div class="panel-footer">
-            <div id="add-reply-content"></div>
-            <button class="btn btn-danger">清空</button>
-            <button class="btn btn-success">提交回复</button>
-            <button class="btn btn-warning pull-right">结束工作任务</button>
+        <div class="panel-body">
+            <span class="pull-right">共<span id="work-replys">@{replys}</span>人回复</span>
         </div>
     </div>
-
+    <div id="add-reply-content"></div>
+    <button class="btn btn-warning">结束工作任务</button>
+    <button id="add-reply-submit" class="btn btn-success pull-right">提交回复</button>
+    <hr>
 </div>
 </body>
 </html>

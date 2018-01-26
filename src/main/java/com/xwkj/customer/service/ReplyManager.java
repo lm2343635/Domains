@@ -16,5 +16,13 @@ public interface ReplyManager {
      */
     Result add(String wid, String content, HttpSession session);
 
+    /**
+     * Get all replies of a work by wid.
+     *
+     * @param wid
+     * @param session
+     * @return
+     */
+    Result getByWid(String wid, HttpSession session);
 
 }

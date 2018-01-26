@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.bean.ReplyBean;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Reply;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RemoteProxy(name = "ReplyManager")
@@ -43,5 +46,22 @@ public class ReplyManagerImpl extends ManagerTemplate implements ReplyManager {
         workDao.update(work);
         return Result.WithData(rid);
     }
-    
+
+    @RemoteMethod
+    public Result getByWid(String wid, HttpSession session) {
+        if (!checkEmployeeSession(session)) {
+            return Result.NoSession();
+        }
+        Work work = workDao.get(wid);
+        if (work == null) {
+            Debug.error("Cannot find a work by this wid.");
+            return Result.WithData(null);
+        }
+        List<ReplyBean> replyBeans = new ArrayList<ReplyBean>();
+        for (Reply reply : replyDao.findByWork(work)) {
+            replyBeans.add(new ReplyBean(reply));
+        }
+        return Result.WithData(replyBeans);
+    }
+
 }
