@@ -1,4 +1,6 @@
 var pageSize = 20;
+var page = 1;
+var end = false;
 var eid = null;
 
 $(document).ready(function () {
@@ -7,7 +9,14 @@ $(document).ready(function () {
         eid = employee.eid;
 
         loadTopBulletins();
-        loadUntopBulletins(1);
+        loadUntopBulletins(page);
+    });
+
+    $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height() && !end) {
+            page++;
+            loadUntopBulletins(page);
+        }
     });
 
 });
@@ -57,13 +66,19 @@ function loadTopBulletins() {
 }
 
 function loadUntopBulletins(page) {
+    $("#loading").show();
+
     BulletinManager.getUntopByPage(page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;
         }
+        $("#loading").hide();
+        if (result.data.length == 0) {
+            end = true;
+            return;
+        }
 
-        $("#bulletin-list").mengularClear();
         for (var i in result.data) {
             var bulletin = result.data[i];
             $("#bulletin-list").mengular(".bulletin-list-template", {
@@ -98,6 +113,7 @@ function loadUntopBulletins(page) {
             }
 
         }
+
     });
 }
 
