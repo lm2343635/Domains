@@ -27,7 +27,8 @@ $(document).ready(function () {
             }
             for (var i in result.data) {
                 var employee = result.data[i];
-                $("<option>").val(employee.eid).text(employee.name).appendTo("#add-work-executor");
+                var option = $("<option>").val(employee.eid).text(employee.name);
+                $("#add-work-executor, #search-work-sponsor, #search-work-executor").append(option);
             }
         });
 
@@ -62,7 +63,13 @@ $(document).ready(function () {
                 $.messager.popup("创建失败，请重试！");
                 return;
             }
+
+            searchWorks(true, null, null, null, null, null, 1);
+            $("#work-panel .panel-heading .nav li").removeClass("active");
+            $("#work-panel .panel-heading .nav li").eq(0).addClass("active");
+
             $("#add-work-modal").modal("hide");
+
             $.messager.confirm("创建成功", "任务已创建成功，是否立即添加回复？", function () {
                 location.href = "work.html?wid=" + result.data;
             });
@@ -71,6 +78,20 @@ $(document).ready(function () {
     
     $("#add-work-modal").on("hidden.bs.modal", function () {
         $("#add-work-modal input").val("");
+    });
+
+    $("#search-submit").click(function () {
+        var title = $("#search-work-title").val();
+        var sponsor = $("#search-work-sponsor").val();
+        var executor = $("#search-work-executor").val();
+        var start = $("#search-work-start").val();
+        var end = $("#search-work-end").val();
+        searchWorks(active == 0, title, sponsor, executor, start, end, 1);
+    });
+
+    $("#search-reset").click(function () {
+        $("#search-panel input, #search-panel select").val("");
+        $("#search-submit").click();
     });
 
 });

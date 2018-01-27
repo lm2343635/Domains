@@ -71,13 +71,25 @@
         </div>
         <div id="search-panel" class="panel-body">
             <div class="row">
-                <div class="col-xs-12 col-md-3">
+                <div class="col-xs-12 col-md-2">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lg fa-file-text"></i></span>
-                        <input id="search-report-title" type="text" class="form-control" placeholder="工作任务名称">
+                        <input id="search-work-title" type="text" class="form-control" placeholder="工作任务名称">
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-5">
+                <div class="col-xs-12 col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-addon">发起人</span>
+                        <select id="search-work-sponsor" class="form-control">
+                            <option value="">所有人</option>
+                        </select>
+                        <span class="input-group-addon">执行人~</span>
+                        <select id="search-work-executor" class="form-control">
+                            <option value="">所有人</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lg fa-calendar"></i></span>
                         <input id="search-work-start" type="text" class="form-control" placeholder="起始创建日期">
@@ -85,7 +97,7 @@
                         <input id="search-work-end" type="text" class="form-control" placeholder="结束创建日期">
                     </div>
                 </div>
-                <div class="col-xs-6 col-md-1 col-md-offset-2">
+                <div class="col-xs-6 col-md-1">
                     <button id="search-reset" class="btn btn-block btn-info">重置</button>
                 </div>
                 <div class="col-xs-6 col-md-1">
