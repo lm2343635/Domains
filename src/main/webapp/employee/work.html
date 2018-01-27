@@ -29,6 +29,14 @@
         #reply-list .reply-list-title {
             padding-bottom: 4px;
         }
+
+        #add-reply-submit {
+            margin-bottom: 20px;
+        }
+
+        #close-work {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -36,9 +44,9 @@
     <div id="head">
         <script>$("#head").load("head.html");</script>
     </div>
-    <div id="work-panel" class="panel panel-default">
+    <div id="work-panel" class="panel">
         <div class="panel-heading">
-            <h1 class="panel-title">工作任务名称：@{title}</h1>
+            <h1 class="panel-title">@{active}：@{title}</h1>
             <button id="add-reply" class="btn btn-xs btn-success pull-right">回复</button>
         </div>
         <div id="reply-list" class="list-group">
@@ -61,9 +69,8 @@
         </div>
     </div>
     <div id="add-reply-content"></div>
-    <button class="btn btn-warning">结束工作任务</button>
+    <button id="close-work" class="btn btn-warning">结束工作任务</button>
     <button id="add-reply-submit" class="btn btn-success pull-right">提交回复</button>
-    <hr>
 </div>
 </body>
 </html>

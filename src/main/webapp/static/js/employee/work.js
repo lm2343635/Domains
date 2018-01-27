@@ -7,7 +7,7 @@ $(document).ready(function () {
         height: 300
     });
 
-    checkEmployeeSession(function () {
+    checkEmployeeSession(function (employee) {
         WorkManager.get(wid, function (result) {
             if (!result.session) {
                 sessionError();
@@ -21,6 +21,7 @@ $(document).ready(function () {
 
             document.title = work.title
             $("#work-panel .panel-title").fillText({
+                active: work.active ? "待完成" : "已完成",
                 title: work.title
             });
             $("#work-info").fillText({
@@ -30,6 +31,13 @@ $(document).ready(function () {
             $("#work-replys").fillText({
                 replys: work.replys
             });
+            $("#work-panel").addClass(work.active ? "panel-success" : "panel-danger");
+
+            if (employee.eid == work.sponsor.eid && work.active) {
+                $("#close-work").show();
+            } else {
+                $("#close-work").remove();
+            }
 
             ReplyManager.getByWid(wid, function (result) {
                 if (!result.session) {
@@ -89,6 +97,25 @@ $(document).ready(function () {
             });
         });
 
+    });
+
+    $("#close-work").click(function () {
+        $.messager.confirm("结束工作任务", "结束工作任务后，该任务将转入已完成状态，确认结束任务吗？", function () {
+            WorkManager.close(wid, function (result) {
+                if (!result.session) {
+                    sessionError();
+                    return;
+                }
+                if (!result.privilege) {
+                    $.messager.popup("当前用户无权限结束该任务！仅该任务发起者可结束该任务。");
+                    return;
+                }
+                $.messager.popup("该任务已结束！");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
+        });
     });
 
 });
