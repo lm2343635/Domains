@@ -43,8 +43,8 @@
             background: #888;
         }
 
-        #work-list .work-list-template i {
-            cursor: pointer;
+        #work-list .work-list-template p i {
+            margin: 0 10px;
         }
 
         #work-list .work-list-template a {
@@ -94,9 +94,14 @@
             </div>
         </div>
         <div id="work-list" class="list-group">
-            <div id="${rid}$" class="list-group-item mengular-template work-list-template">
-                <p class="text-muted">${employee}$创建于${createAt}$，更新于${updateAt}$</p>
-                <a class="work-list-title" href="report.html?rid=${rid}$" target="_blank">${title}$</a>
+            <div id="${wid}$" class="list-group-item mengular-template work-list-template">
+                <p>
+                    <strong class="text-success">发起人：${sponsor}$</strong>
+                    <i class="fa fa-arrow-right text-muted"></i>
+                    <strong class="text-danger">执行人：${executor}$</strong>
+                    <span class="text-muted pull-right">创建于${createAt}$，${replys}$个回复</span>
+                </p>
+                <a class="work-list-title" href="work.html?wid=${wid}$" target="_blank">${title}$</a>
             </div>
         </div>
         <div class="panel-footer">
