@@ -34,4 +34,34 @@ public interface WorkManager {
      */
     Result get(String wid, HttpSession session);
 
+    /**
+     * Get search count.
+     *
+     * @param active
+     * @param title
+     * @param sponsor
+     * @param executor
+     * @param start
+     * @param end
+     * @param session
+     * @return
+     */
+    Result getSearchCount(boolean active, String title, String sponsor, String executor, String start, String end, HttpSession session);
+
+    /**
+     * Search works.
+     * 
+     * @param active
+     * @param title
+     * @param sponsor
+     * @param executor
+     * @param start
+     * @param end
+     * @param page
+     * @param pageSize
+     * @param session
+     * @return
+     */
+    Result search(boolean active, String title, String sponsor, String executor, String start, String end, int page, int pageSize, HttpSession session);
+
 }
