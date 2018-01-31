@@ -80,8 +80,8 @@ $(document).ready(function () {
             $.messager.popup("回复不能为空！");
         }
         var length = content.getBytesLength();
-        if (length > 1024 * 200) {
-            $.messager.popup("回复大小不能超过200KB！当前大小：" + formatByte(length));
+        if (length > 1024 * 300) {
+            $.messager.popup("回复大小不能超过300KB！当前大小：" + formatByte(length));
             return;
         }
         $.messager.confirm("回复", "确认回复该工作任务吗？", function () {
