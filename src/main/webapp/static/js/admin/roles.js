@@ -21,7 +21,8 @@ var previlegNames = {
     server: "服务器管理权限",
     domain: "域名管理权限",
     employee: "员工管理权限",
-    expiration: "到期时间查看权限"
+    expiration: "到期时间查看权限",
+    work: "任务管理超级权限"
 }
 
 var symbols = ["<i class='fa fa-times text-muted'></i>",
@@ -113,6 +114,7 @@ function loadRoles() {
                 domain: symbols[role.domain],
                 expiration: symbols[role.expiration],
                 employee: symbols[role.employee],
+                work: symbols[role.work],
                 employees: role.employees,
             });
 

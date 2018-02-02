@@ -30,6 +30,7 @@ public class RoleBean {
     private int domain;
     private int employee;
     private int expiration;
+    private int work;
 
     private int employees;
 
@@ -217,6 +218,14 @@ public class RoleBean {
         this.expiration = expiration;
     }
 
+    public int getWork() {
+        return work;
+    }
+
+    public void setWork(int work) {
+        this.work = work;
+    }
+
     public int getEmployees() {
         return employees;
     }
@@ -249,6 +258,7 @@ public class RoleBean {
         this.domain = role.getDomain();
         this.employee = role.getEmployee();
         this.expiration = role.getExpiration();
+        this.work = role.getWork();
         this.employees = role.getEmployees();
     }
 
