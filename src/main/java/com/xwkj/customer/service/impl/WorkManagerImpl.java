@@ -6,6 +6,7 @@ import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.WorkBean;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Work;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.WorkManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
@@ -55,7 +56,9 @@ public class WorkManagerImpl extends ManagerTemplate implements WorkManager {
             Debug.error("Cannot find a work by this wid.");
             return Result.WithData(null);
         }
-        if (!work.getSponsor().equals(employee)) {
+        // Allow the sponsor and the employee with work privilege to close the work.
+        if (!work.getSponsor().equals(employee)
+                && employee.getRole().getWork() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         work.setActive(false);

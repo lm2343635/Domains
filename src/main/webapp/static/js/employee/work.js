@@ -33,7 +33,7 @@ $(document).ready(function () {
             });
             $("#work-panel").addClass(work.active ? "panel-success" : "panel-danger");
 
-            if (employee.eid == work.sponsor.eid && work.active) {
+            if ((employee.eid == work.sponsor.eid || employee.role.work == RolePrevilgeHold) && work.active) {
                 $("#close-work").show();
             } else {
                 $("#close-work").remove();
@@ -107,7 +107,7 @@ $(document).ready(function () {
                     return;
                 }
                 if (!result.privilege) {
-                    $.messager.popup("当前用户无权限结束该任务！仅该任务发起者可结束该任务。");
+                    $.messager.popup("当前用户无权限结束该任务！仅该任务发起者或拥有任务管理权限的员工可结束该任务。");
                     return;
                 }
                 $.messager.popup("该任务已结束！");
