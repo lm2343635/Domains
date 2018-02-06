@@ -70,6 +70,9 @@ public class ManagerTemplate {
     @Autowired
     protected ReplyDao replyDao;
 
+    @Autowired
+    protected CategoryDao categoryDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }

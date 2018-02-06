@@ -37,6 +37,10 @@ public class Report implements Serializable {
     @JoinColumn(name = "eid", nullable = false)
     private Employee employee;
 
+    @ManyToOne
+    @JoinColumn(name = "cid", nullable = false)
+    private Category category;
+
     public String getRid() {
         return rid;
     }
@@ -83,6 +87,14 @@ public class Report implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
 }
