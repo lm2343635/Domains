@@ -2,11 +2,11 @@ package com.xwkj.customer.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "customer_category")
 public class Category implements Serializable {
 
     @Id

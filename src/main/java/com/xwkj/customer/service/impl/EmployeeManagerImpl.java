@@ -120,15 +120,8 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         if (!admin && employee == null) {
             return Result.NoSession();
         }
-        List<Employee> employees = null;
-        if (admin || employee.getRole().getEmployee() == RoleManager.RolePrivilgeHold) {
-            employees = employeeDao.findAll("createAt", true);
-        } else {
-            employees = new ArrayList<Employee>();
-            employees.add(employee);
-        }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
-        for (Employee e : employees) {
+        for (Employee e : employeeDao.findAll("createAt", true)) {
             employeeBeans.add(new EmployeeBean(e, true));
         }
         return Result.WithData(employeeBeans);
