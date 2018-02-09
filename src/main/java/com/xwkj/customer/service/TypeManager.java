@@ -21,6 +21,15 @@ public interface TypeManager {
     Result add(String name, int category, HttpSession session);
 
     /**
+     * Get types by category.
+     *
+     * @param category
+     * @param session
+     * @return
+     */
+    Result getByCategory(int category, HttpSession session);
+
+    /**
      * Get all types.
      *
      * @param session

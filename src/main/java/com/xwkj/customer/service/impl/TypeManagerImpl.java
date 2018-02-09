@@ -35,6 +35,18 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
     }
 
     @RemoteMethod
+    public Result getByCategory(int category, HttpSession session) {
+        if (!checkAdminSession(session) && !checkEmployeeSession(session)) {
+            return Result.NoSession();
+        }
+        List<TypeBean> typeBeans = new ArrayList<TypeBean>();
+        for (Type type : typeDao.findByCategory(category)) {
+            typeBeans.add(new TypeBean(type));
+        }
+        return Result.WithData(typeBeans);
+    }
+
+    @RemoteMethod
     public Result getAll(HttpSession session) {
         if (!checkAdminSession(session) && !checkEmployeeSession(session)) {
             return Result.NoSession();

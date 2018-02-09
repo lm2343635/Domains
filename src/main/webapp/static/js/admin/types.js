@@ -41,7 +41,7 @@ $(document).ready(function () {
 });
 
 function loadTypes() {
-    TypeManager.getAll(function (result) {
+    TypeManager.getByCategory(category, function (result) {
         if (!result.session) {
             sessionError();
             return;
