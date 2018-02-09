@@ -18,6 +18,9 @@ public class Type implements Serializable {
     private String name;
 
     @Column(nullable = false)
+    private Integer category;
+
+    @Column(nullable = false)
     private Long createAt;
 
     public String getTid() {
@@ -34,6 +37,14 @@ public class Type implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 
     public Long getCreateAt() {

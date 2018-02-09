@@ -38,8 +38,8 @@ public class Report implements Serializable {
     private Employee employee;
 
     @ManyToOne
-    @JoinColumn(name = "cid", nullable = false)
-    private Category category;
+    @JoinColumn(name = "tid", nullable = false)
+    private Type type;
 
     public String getRid() {
         return rid;
@@ -87,14 +87,6 @@ public class Report implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
 }

@@ -1,6 +1,18 @@
+var category = request("category");
+
+if (category != TypeCategoryDocument
+    && category != TypeCategoryReport) {
+    category = TypeCategoryExpiration;
+}
+
 $(document).ready(function () {
     checkAdminSession(function () {
         loadTypes();
+    });
+
+    $("#type-panel .panel-heading .nav li").eq(category).addClass("active");
+    $("#add-type-modal").fillText({
+        category: TypeCategoryNames[category]
     });
 
     $("#add-type-submit").click(function () {
@@ -11,7 +23,7 @@ $(document).ready(function () {
         } else {
             $("#add-type-name").parent().addClass("has-error");
         }
-        TypeManager.add(name, function (aid) {
+        TypeManager.add(name, category, function (aid) {
             if (aid == null) {
                 sessionError();
                 return;

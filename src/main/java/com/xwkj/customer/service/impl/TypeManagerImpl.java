@@ -23,12 +23,13 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
 
     @RemoteMethod
     @Transactional
-    public Result add(String name, HttpSession session) {
+    public Result add(String name, int category, HttpSession session) {
         if (!checkAdminSession(session)) {
             return Result.NoSession();
         }
         Type type = new Type();
         type.setName(name);
+        type.setCategory(category);
         type.setCreateAt(System.currentTimeMillis());
         return Result.WithData(typeDao.save(type));
     }

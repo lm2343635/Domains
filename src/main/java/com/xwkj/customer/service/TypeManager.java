@@ -6,14 +6,19 @@ import javax.servlet.http.HttpSession;
 
 public interface TypeManager {
 
+    public final static int TypeCategoryExpiration = 0;
+    public final static int TypeCategoryReport = 1;
+    public final static int TypeCategoryDocument = 2;
+
     /**
      * Add a new type for expiration.
      *
      * @param name
+     * @param category
      * @param session
      * @return
      */
-    Result add(String name, HttpSession session);
+    Result add(String name, int category, HttpSession session);
 
     /**
      * Get all types.

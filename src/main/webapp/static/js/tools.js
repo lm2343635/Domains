@@ -37,7 +37,12 @@ var CustomerStateDeveloping = 1;
 var CustomerStateDeveloped = 2;
 var CustomerStateLost = 3;
 
+var TypeCategoryExpiration = 0;
+var TypeCategoryReport = 1;
+var TypeCategoryDocument = 2;
+
 var CustomerStateNames = ["未开发", "待开发", "已开发", "已流失"];
+var TypeCategoryNames = ["到期", "报告", "文档"];
 
 if ($.messager != undefined) {
     $.messager.model = {
