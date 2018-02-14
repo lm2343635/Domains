@@ -1,9 +1,29 @@
 var pageSize = 20;
+var tid = request("tid");
 
 $(document).ready(function () {
 
     checkEmployeeSession(function () {
         searchReports(null, null, null, 1);
+
+        TypeManager.getByCategory(TypeCategoryReport, function(result) {
+            if (!result.session) {
+                return;
+            }
+            for (var i in result.data) {
+                var type = result.data[i];
+                $("#report-types").mengular(".report-type-template", {
+                    tid: type.tid,
+                    name: type.name
+                });
+            }
+            $("#report-types").mengularClearTemplate();
+
+            if (tid == null || tid == "") {
+                tid = result.data[0].tid;
+            }
+            $("#" + tid).addClass("active");
+        });
     });
 
     $("#search-report-start, #search-report-end").datetimepicker({

@@ -19,6 +19,8 @@
     <script src="/static/js/tools.js"></script>
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/TypeManager.js"></script>
+    <script src="/dwr/interface/ExpirationManager.js"></script>
     <script src="/dwr/interface/ReportManager.js"></script>
     <script src="/static/js/employee/reports.js"></script>
     <style>
@@ -34,6 +36,20 @@
         #report-list .report-list-template a {
             font-size: 17px;
         }
+
+        #report-panel .panel-heading .nav a {
+            padding: 4px 10px;
+            color: #888;
+        }
+
+        #report-panel .panel-heading .nav .active a {
+            color: #fff;
+            background: #888;
+        }
+
+        #add-report {
+            margin-top: -20px;
+        }
     </style>
 </head>
 <body>
@@ -43,10 +59,12 @@
     </div>
     <div id="report-panel" class="panel panel-default">
         <div class="panel-heading">
-            <h1 class="panel-title">
-                <span>工作报告</span>
-                <a href="report.html" class="pull-right"><i id="add-undeveloped" class="fa fa-plus fa-lg"></i></a>
-            </h1>
+            <ul id="report-types" class="nav nav-pills">
+                <li id="${tid}$" role="presentation" class="mengular-template report-type-template">
+                    <a href="reports.html?tid=${tid}$">${name}$</a>
+                </li>
+            </ul>
+            <a id="add-report" href="report.html" class="pull-right"><i class="fa fa-plus fa-lg"></i></a>
         </div>
         <div id="search-panel" class="panel-body">
             <div class="row">

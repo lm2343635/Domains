@@ -37,6 +37,10 @@ public class Report implements Serializable {
     @JoinColumn(name = "eid", nullable = false)
     private Employee employee;
 
+    /**
+     * Update tid for all reports;
+     update customer_report set tid = '402885ec617332dc0161733323f90000';
+     */
     @ManyToOne
     @JoinColumn(name = "tid", nullable = false)
     private Type type;
@@ -87,6 +91,14 @@ public class Report implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
 }
