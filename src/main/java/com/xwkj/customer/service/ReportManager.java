@@ -30,12 +30,13 @@ public interface ReportManager {
      * Edit an existing report.
      *
      * @param rid
+     * @param tid
      * @param title
      * @param content
      * @param session
      * @return
      */
-    Result edit(String rid, String title, String content, HttpSession session);
+    Result edit(String rid, String title, String tid, String content, HttpSession session);
 
     /**
      * Remove an existing report.

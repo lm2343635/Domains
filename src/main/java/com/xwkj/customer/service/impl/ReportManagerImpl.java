@@ -65,7 +65,7 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
 
     @RemoteMethod
     @Transactional
-    public Result edit(String rid, String title, String content, HttpSession session) {
+    public Result edit(String rid, String title, String tid, String content, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -78,7 +78,16 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
         if (!report.getEmployee().equals(employee)) {
             return Result.NoPrivilege();
         }
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryReport) {
+            Debug.error("Type category error!");
+        }
         report.setTitle(title);
+        report.setType(type);
         report.setContent(content);
         report.setUpdateAt(System.currentTimeMillis());
         reportDao.update(report);
