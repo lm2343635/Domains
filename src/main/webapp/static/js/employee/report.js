@@ -25,6 +25,16 @@ $(document).ready(function () {
             $("#report-save").show();
             editReport();
         }
+
+        TypeManager.getByCategory(TypeCategoryReport, function (result) {
+            if (!result.session) {
+                return;
+            }
+            for (var i in result.data) {
+                var type = result.data[i];
+                $("<option>").val(type.tid).text(type.name).appendTo("#report-type");
+            }
+        });
     });
 
     $("#report-edit").click(function () {
@@ -35,6 +45,7 @@ $(document).ready(function () {
 
     $("#report-save").click(function () {
         var title = $("#report-title").val();
+        var tid = $("#report-type").val();
         var content = $("#report-content").summernote("code");
         if (title == "" || content == "") {
             $.messager.popup("标题和内容不能为空！");
@@ -59,7 +70,7 @@ $(document).ready(function () {
                 $.messager.popup("保存成功！");
             });
         } else {
-            ReportManager.add(title, content, function (result) {
+            ReportManager.add(title, tid, content, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;

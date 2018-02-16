@@ -11,10 +11,11 @@ public interface ReportManager {
      *
      * @param title
      * @param content
+     * @param tid
      * @param session
      * @return
      */
-    Result add(String title, String content, HttpSession session);
+    Result add(String title, String tid, String content, HttpSession session);
 
     /**
      * Get a report.

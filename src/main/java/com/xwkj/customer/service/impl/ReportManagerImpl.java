@@ -6,8 +6,10 @@ import com.xwkj.customer.bean.ReportBean;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Report;
+import com.xwkj.customer.domain.Type;
 import com.xwkj.customer.service.ReportManager;
 import com.xwkj.customer.service.RoleManager;
+import com.xwkj.customer.service.TypeManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -24,15 +26,25 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
 
     @RemoteMethod
     @Transactional
-    public Result add(String title, String content, HttpSession session) {
+    public Result add(String title, String tid, String content, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
+        }
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryReport) {
+            Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         Report report = new Report();
         report.setCreateAt(System.currentTimeMillis());
         report.setUpdateAt(report.getCreateAt());
         report.setTitle(title);
+        report.setType(type);
         report.setContent(content);
         report.setEmployee(employee);
         return Result.WithData(reportDao.save(report));

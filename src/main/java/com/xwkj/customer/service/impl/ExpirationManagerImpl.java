@@ -7,6 +7,7 @@ import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.*;
 import com.xwkj.customer.service.ExpirationManager;
 import com.xwkj.customer.service.RoleManager;
+import com.xwkj.customer.service.TypeManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -32,6 +33,10 @@ public class ExpirationManagerImpl extends ManagerTemplate implements Expiration
         Type type = typeDao.get(tid);
         if (type == null) {
             Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryExpiration) {
+            Debug.error("Type category error!");
             return Result.WithData(null);
         }
         Customer customer = customerDao.get(cid);
