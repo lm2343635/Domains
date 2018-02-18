@@ -3,6 +3,7 @@ package com.xwkj.customer.dao.impl;
 import com.xwkj.common.hibernate.BaseHibernateDaoSupport;
 import com.xwkj.customer.dao.ReportDao;
 import com.xwkj.customer.domain.Report;
+import com.xwkj.customer.domain.Type;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,11 +21,12 @@ public class ReportDaoHibernate extends BaseHibernateDaoSupport<Report> implemen
         setClass(Report.class);
     }
 
-    public int getCount(final String title, final Long start, final Long end) {
+    public int getCount(final Type type, final String title, final Long start, final Long end) {
         return getHibernateTemplate().execute(new HibernateCallback<Long>() {
             public Long doInHibernate(Session session) throws HibernateException {
-                String hql = "select count(*) from Report where true = true ";
+                String hql = "select count(*) from Report where type = ? ";
                 List<Object> values = new ArrayList<Object>();
+                values.add(type);
                 if (title != null && !title.equals("")) {
                     hql += " and title like ?";
                     values.add("%" + title + "%");
@@ -46,9 +48,10 @@ public class ReportDaoHibernate extends BaseHibernateDaoSupport<Report> implemen
         }).intValue();
     }
 
-    public List<Report> find(String title, Long start, Long end, int offset, int pageSize) {
-        String hql = "from Report where true = true ";
+    public List<Report> find(Type type, String title, Long start, Long end, int offset, int pageSize) {
+        String hql = "from Report where type = ? ";
         List<Object> values = new ArrayList<Object>();
+        values.add(type);
         if (title != null && !title.equals("")) {
             hql += " and title like ?";
             values.add("%" + title + "%");

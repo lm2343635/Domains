@@ -48,17 +48,21 @@ public interface ReportManager {
     Result remove(String rid, HttpSession session);
 
     /**
+     * Get search count for reports.
      *
+     * @param tid
      * @param title
      * @param start
      * @param end
      * @param session
      * @return
      */
-    Result getSearchCount(String title, String start, String end, HttpSession session);
+    Result getSearchCount(String tid, String title, String start, String end, HttpSession session);
 
     /**
+     * Search reports.
      *
+     * @param tid
      * @param title
      * @param start
      * @param end
@@ -67,6 +71,6 @@ public interface ReportManager {
      * @param session
      * @return
      */
-    Result search(String title, String start, String end, int page, int pageSize, HttpSession session);
+    Result search(String tid, String title, String start, String end, int page, int pageSize, HttpSession session);
 
 }

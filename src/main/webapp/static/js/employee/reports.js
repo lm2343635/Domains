@@ -4,8 +4,6 @@ var tid = request("tid");
 $(document).ready(function () {
 
     checkEmployeeSession(function () {
-        searchReports(null, null, null, 1);
-
         TypeManager.getByCategory(TypeCategoryReport, function(result) {
             if (!result.session) {
                 return;
@@ -23,6 +21,8 @@ $(document).ready(function () {
                 tid = result.data[0].tid;
             }
             $("#" + tid).addClass("active");
+
+            searchReports(null, null, null, 1);
         });
     });
 
@@ -50,7 +50,7 @@ $(document).ready(function () {
 });
 
 function searchReports(title, start, end, page) {
-    ReportManager.getSearchCount(title, start, end, function (result) {
+    ReportManager.getSearchCount(tid, title, start, end, function (result) {
         if (!result.session) {
             sessionError();
             return;
@@ -79,7 +79,7 @@ function searchReports(title, start, end, page) {
         });
     });
 
-    ReportManager.search(title, start, end, page, pageSize, function (result) {
+    ReportManager.search(tid, title, start, end, page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;
