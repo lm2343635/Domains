@@ -104,6 +104,7 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
             return Result.NoPrivilege();
         }
         bulletin.setTop(top);
+        bulletin.setUpdateAt(System.currentTimeMillis());
         bulletinDao.update(bulletin);
         return Result.WithData(true);
     }

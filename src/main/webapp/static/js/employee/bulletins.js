@@ -37,6 +37,7 @@ function loadTopBulletins() {
                 bid: bulletin.bid,
                 employee: bulletin.employee.name,
                 createAt: bulletin.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: bulletin.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 content: bulletin.content
             });
 
@@ -87,6 +88,7 @@ function loadUntopBulletins(page) {
                 bid: bulletin.bid,
                 employee: bulletin.employee.name,
                 createAt: bulletin.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: bulletin.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 content: bulletin.content
             });
 

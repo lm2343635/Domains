@@ -32,7 +32,7 @@ public class BulletinDaoHibernate extends BaseHibernateDaoSupport<Bulletin> impl
     }
 
     public List<Bulletin> findTop() {
-        String hql = "from Bulletin where top = true order by createAt desc";
+        String hql = "from Bulletin where top = true order by updateAt desc";
         return (List<Bulletin>) getHibernateTemplate().find(hql);
     }
 
@@ -47,7 +47,7 @@ public class BulletinDaoHibernate extends BaseHibernateDaoSupport<Bulletin> impl
     }
 
     public List<Bulletin> findUntop(int offset, int pageSize) {
-        String hql = "from Bulletin where top = false order by createAt desc";
+        String hql = "from Bulletin where top = false order by updateAt desc";
         return findByPage(hql, offset, pageSize);
     }
 
