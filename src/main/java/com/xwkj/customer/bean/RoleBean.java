@@ -31,6 +31,7 @@ public class RoleBean {
     private int employee;
     private int expiration;
     private int work;
+    private int bulletin;
 
     private int employees;
 
@@ -234,6 +235,14 @@ public class RoleBean {
         this.employees = employees;
     }
 
+    public int getBulletin() {
+        return bulletin;
+    }
+
+    public void setBulletin(int bulletin) {
+        this.bulletin = bulletin;
+    }
+
     public RoleBean(Role role) {
         this.rid = role.getRid();
         this.name = role.getName();
@@ -259,6 +268,7 @@ public class RoleBean {
         this.employee = role.getEmployee();
         this.expiration = role.getExpiration();
         this.work = role.getWork();
+        this.bulletin = role.getBulletin();
         this.employees = role.getEmployees();
     }
 

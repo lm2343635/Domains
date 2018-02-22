@@ -108,6 +108,9 @@ public class Role implements Serializable {
     // Privilege to edit all works.
     private Integer work;
 
+    // Privilege to edit all bulletins;
+    private Integer bulletin;
+
     public String getRid() {
         return rid;
     }
@@ -308,6 +311,14 @@ public class Role implements Serializable {
         this.work = work;
     }
 
+    public Integer getBulletin() {
+        return bulletin;
+    }
+
+    public void setBulletin(Integer bulletin) {
+        this.bulletin = bulletin;
+    }
+
     public void setPrivileges(int [] privileges) {
         undevelopedR = privileges[1];
         undevelopedW = privileges[2];
@@ -330,6 +341,7 @@ public class Role implements Serializable {
         employee = privileges[19];
         expiration = privileges[20];
         work = privileges[21];
+        bulletin = privileges[22];
     }
 
 }
