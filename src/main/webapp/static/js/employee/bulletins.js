@@ -2,11 +2,13 @@ var pageSize = 20;
 var page = 1;
 var end = false;
 var eid = null;
+var bulletinPrivilege = false;
 
 $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
         eid = employee.eid;
+        bulletinPrivilege = employee.role.bulletin == RolePrevilgeHold;
 
         loadTopBulletins();
         loadUntopBulletins(page);
@@ -38,7 +40,7 @@ function loadTopBulletins() {
                 content: bulletin.content
             });
 
-            if (bulletin.employee.eid == eid) {
+            if (bulletin.employee.eid == eid || bulletinPrivilege) {
                 $("#" + bulletin.bid + " .bulletin-list-untop").click(function () {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
@@ -88,7 +90,7 @@ function loadUntopBulletins(page) {
                 content: bulletin.content
             });
 
-            if (bulletin.employee.eid == eid) {
+            if (bulletin.employee.eid == eid || bulletinPrivilege) {
                 $("#" + bulletin.bid + " .bulletin-list-top").click(function () {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
