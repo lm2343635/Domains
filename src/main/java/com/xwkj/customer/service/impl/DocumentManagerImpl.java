@@ -47,6 +47,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             }
             return Result.WithData(null);
         }
+
         switch (getPrivilegeForEmployee(employee, customer.getState(), RoleManager.PrivilegeWrite)) {
             case RoleManager.RolePrivilgeAssign:
                 if (!assignWritePrivilege(customer, employee)) {
@@ -71,6 +72,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         document.setSize(file.length());
         document.setCustomer(customer);
         document.setEmployee(employee);
+
         // Save to persistent store.
         if (documentDao.save(document) == null) {
             if (file.exists()) {
@@ -84,7 +86,16 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
     }
 
     @Transactional
-    public Result handlePublicDocument(String filename, HttpSession session) {
+    public Result handlePublicDocument(String tid, String filename, HttpSession session) {
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryDocument) {
+            Debug.error("Type category error!");
+            return Result.WithData(null);
+        }
         String path = configComponent.rootPath + File.separator + configComponent.PublicDocumentFolder;
         File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
@@ -100,6 +111,8 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         document.setStore(UUID.randomUUID().toString());
         document.setSize(file.length());
         document.setEmployee(employee);
+        document.setType(type);
+
         // Save to persistent store.
         if (documentDao.save(document) == null) {
             if (file.exists()) {
@@ -153,6 +166,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         if (type.getCategory() != TypeManager.TypeCategoryDocument) {
             Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {
@@ -176,6 +190,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         if (type.getCategory() != TypeManager.TypeCategoryDocument) {
             Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {

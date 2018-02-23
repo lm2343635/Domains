@@ -43,12 +43,12 @@ public class DocumentController extends ControllerTemplate {
     }
 
     @RequestMapping(value = "/upload/public", method = RequestMethod.POST)
-    public ResponseEntity uploadPublicDocument(HttpServletRequest request) {
+    public ResponseEntity uploadPublicDocument(@RequestParam String tid, HttpServletRequest request) {
         if (!checkEmployeeSession(request.getSession())) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
         }
         String filename = upload(request, configComponent.rootPath + configComponent.PublicDocumentFolder);
-        Result result = documentManager.handlePublicDocument(filename, request.getSession());
+        Result result = documentManager.handlePublicDocument(tid, filename, request.getSession());
         if (!result.isSession()) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
         }

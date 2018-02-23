@@ -19,11 +19,12 @@ public interface DocumentManager {
     /**
      * Save public document info into database.
      *
+     * @param tid
      * @param filename
      * @param session
      * @return
      */
-    Result handlePublicDocument(String filename, HttpSession session);
+    Result handlePublicDocument(String tid, String filename, HttpSession session);
 
     /**
      * Get all documents of a customer.

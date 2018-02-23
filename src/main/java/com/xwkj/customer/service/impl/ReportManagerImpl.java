@@ -85,6 +85,7 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
         }
         if (type.getCategory() != TypeManager.TypeCategoryReport) {
             Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         report.setTitle(title);
         report.setType(type);
@@ -126,6 +127,7 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
         }
         if (type.getCategory() != TypeManager.TypeCategoryReport) {
             Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {
@@ -149,6 +151,7 @@ public class ReportManagerImpl extends ManagerTemplate implements ReportManager 
         }
         if (type.getCategory() != TypeManager.TypeCategoryReport) {
             Debug.error("Type category error!");
+            return Result.WithData(null);
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {
