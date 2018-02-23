@@ -4,6 +4,7 @@ import com.xwkj.common.hibernate.BaseHibernateDaoSupport;
 import com.xwkj.customer.dao.DocumentDao;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Document;
+import com.xwkj.customer.domain.Type;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,11 +27,12 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
         return (List<Document>) getHibernateTemplate().find(hql, customer);
     }
 
-    public int getPublicCount(final String filename, final Long start, final Long end) {
+    public int getPublicCount(final Type type, final String filename, final Long start, final Long end) {
         return getHibernateTemplate().execute(new HibernateCallback<Long>() {
             public Long doInHibernate(Session session) throws HibernateException {
-                String hql = "select count(*) from Document where customer = null ";
+                String hql = "select count(*) from Document where customer = null and type = ? ";
                 List<Object> values = new ArrayList<Object>();
+                values.add(type);
                 if (filename != null && !filename.equals("")) {
                     hql += " and filename like ?";
                     values.add("%" + filename + "%");
@@ -52,9 +54,10 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
         }).intValue();
     }
 
-    public List<Document> findPublic(String filename, Long start, Long end, int offset, int pageSize) {
-        String hql = "from Document where customer = null ";
+    public List<Document> findPublic(final Type type, String filename, Long start, Long end, int offset, int pageSize) {
+        String hql = "from Document where customer = null and type = ? ";
         List<Object> values = new ArrayList<Object>();
+        values.add(type);
         if (filename != null && !filename.equals("")) {
             hql += " and filename like ?";
             values.add("%" + filename + "%");

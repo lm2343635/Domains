@@ -37,17 +37,19 @@ public interface DocumentManager {
     /**
      * Get numbers of public documents searched by file name and update date.
      *
+     * @param tid
      * @param filename
      * @param start
      * @param end
      * @param session
      * @return
      */
-    Result getSearchPublicCount(String filename, String start, String end, HttpSession session);
+    Result getSearchPublicCount(String tid, String filename, String start, String end, HttpSession session);
 
     /**
      * Search public documents.
      *
+     * @param tid
      * @param filename
      * @param start
      * @param end
@@ -56,7 +58,7 @@ public interface DocumentManager {
      * @param session
      * @return
      */
-    Result searchPublic(String filename, String start, String end, int page, int pageSize, HttpSession session);
+    Result searchPublic(String tid, String filename, String start, String end, int page, int pageSize, HttpSession session);
 
     /**
      * Get all public documents.

@@ -1,9 +1,30 @@
 var pageSize = 10;
+var tid = request("tid");
 
 $(document).ready(function () {
 
-    checkEmployeeSession(function () {
-        searchPublicDocuments(null, null, null, 1);
+    checkEmployeeSession(function (employee) {
+        TypeManager.getByCategory(TypeCategoryDocument, function(result) {
+            if (!result.session) {
+                return;
+            }
+            for (var i in result.data) {
+                var type = result.data[i];
+                $("#document-types").mengular(".document-type-template", {
+                    tid: type.tid,
+                    name: type.name
+                });
+            }
+            $("#document-types").mengularClearTemplate();
+
+            if (tid == null || tid == "") {
+                tid = result.data[0].tid;
+            }
+            $("#" + tid).addClass("active");
+
+            searchPublicDocuments(null, null, null, 1);
+        });
+
     });
 
     $("#upload-document").fileupload({
@@ -58,7 +79,7 @@ $(document).ready(function () {
 });
 
 function searchPublicDocuments(filename, start, end, page) {
-    DocumentManager.getSearchPublicCount(filename, start, end, function (result) {
+    DocumentManager.getSearchPublicCount(tid, filename, start, end, function (result) {
         if (!result.session) {
             sessionError();
             return;
@@ -87,7 +108,7 @@ function searchPublicDocuments(filename, start, end, page) {
         });
     });
 
-    DocumentManager.searchPublic(filename, start, end, page, pageSize, function (result) {
+    DocumentManager.searchPublic(tid, filename, start, end, page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;

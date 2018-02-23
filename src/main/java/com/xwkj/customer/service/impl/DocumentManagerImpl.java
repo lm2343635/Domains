@@ -8,8 +8,10 @@ import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Document;
 import com.xwkj.customer.domain.Employee;
+import com.xwkj.customer.domain.Type;
 import com.xwkj.customer.service.DocumentManager;
 import com.xwkj.customer.service.RoleManager;
+import com.xwkj.customer.service.TypeManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -140,9 +142,17 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
     }
 
     @RemoteMethod
-    public Result getSearchPublicCount(String filename, String start, String end, HttpSession session) {
+    public Result getSearchPublicCount(String tid, String filename, String start, String end, HttpSession session) {
         if (!checkEmployeeSession(session)) {
             return Result.NoSession();
+        }
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryDocument) {
+            Debug.error("Type category error!");
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {
@@ -151,13 +161,21 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         if (end != null && !end.equals("")) {
             endStamp = DateTool.transferDate(end + " 23:59:59", DateTool.DATE_HOUR_MINUTE_SECOND_FORMAT).getTime();
         }
-        return Result.WithData(documentDao.getPublicCount(filename, startStamp, endStamp));
+        return Result.WithData(documentDao.getPublicCount(type, filename, startStamp, endStamp));
     }
 
     @RemoteMethod
-    public Result searchPublic(String filename, String start, String end, int page, int pageSize, HttpSession session) {
+    public Result searchPublic(String tid, String filename, String start, String end, int page, int pageSize, HttpSession session) {
         if (!checkEmployeeSession(session)) {
             return Result.NoSession();
+        }
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(null);
+        }
+        if (type.getCategory() != TypeManager.TypeCategoryDocument) {
+            Debug.error("Type category error!");
         }
         Long startStamp = null, endStamp = null;
         if (start != null && !start.equals("")) {
@@ -168,7 +186,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         int offset = (page - 1) * pageSize;
         List<DocumentBean> documentBeans = new ArrayList<DocumentBean>();
-        for (Document document : documentDao.findPublic(filename, startStamp, endStamp, offset, pageSize)) {
+        for (Document document : documentDao.findPublic(type, filename, startStamp, endStamp, offset, pageSize)) {
             documentBeans.add(new DocumentBean(document, false));
         }
         return Result.WithData(documentBeans);
