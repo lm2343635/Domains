@@ -224,6 +224,26 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
+    @Transactional
+    public Result setMonitoring(String did, boolean monitoring, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return Result.WithData(false);
+        }
+        domain.setMonitoring(monitoring);
+        domainDao.update(domain);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
     public Result getWithGrabbedPgae(String did, String charset, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {

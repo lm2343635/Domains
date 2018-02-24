@@ -202,13 +202,13 @@ function loadDomains() {
                     state: domain.monitoring
                 }).on("switchChange.bootstrapSwitch", function (event, state) {
                     var did = $(this).mengularId();
-                    DomainManager.setHighlight(did, state, function(result) {
+                    DomainManager.setMonitoring(did, state, function(result) {
                         if (!result.session) {
                             sessionError();
                             return;
                         }
                         if (!result.privilege) {
-                            $.messager.popup("当前用户无权更改建域名！");
+                            $.messager.popup("当前用户无权更改该域名！");
                             return;
                         }
 

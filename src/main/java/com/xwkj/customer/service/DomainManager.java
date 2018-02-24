@@ -100,6 +100,16 @@ public interface DomainManager {
     Result setHighlight(String did, boolean highlight, HttpSession session);
 
     /**
+     * Set monitoring state of a domain.
+     *
+     * @param did
+     * @param monitoring
+     * @param session
+     * @return
+     */
+    Result setMonitoring(String did, boolean monitoring, HttpSession session);
+
+    /**
      * Load html of a page with charset.
      *
      * @param did
