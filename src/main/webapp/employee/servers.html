@@ -45,7 +45,8 @@
             margin: 0;
         }
 
-        #add-server-modal .input-group {
+        #add-server-modal .input-group,
+        #set-user-modal .input-group {
             margin-bottom: 5px;
         }
 
@@ -72,6 +73,7 @@
                 <a href="domains.html?sid=${sid}$" class="server-list-name" target="_blank">${name}$</a>
                 <i class="fa fa-lg fa-trash-o text-danger pull-right server-list-remove"></i>
                 <i class="fa fa-lg fa-gear text-success pull-right server-list-edit"></i>
+                <i class="fa fa-lg fa-user text-muted pull-right server-list-user"></i>
                 <p class="server-list-remark">${remark}$</p>
             </div>
         </div>
@@ -121,6 +123,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
                 <button id="add-server-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="set-user-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">Linux服务器用户设置</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Linux服务器用户和密码用于恢复网站主页，填写后在此页面无法查看，填写前请确认密码正确。Windows服务器填写此项无效。</p>
+                <div class="input-group">
+                    <span class="input-group-addon">用户名</span>
+                    <input id="server-user" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+                    <input id="server-password" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="set-user-submit" type="button" class="btn btn-success">确认</button>
             </div>
         </div>
     </div>

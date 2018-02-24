@@ -99,6 +99,27 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
 
     @RemoteMethod
     @Transactional
+    public Result setUser(String sid, String user, String password, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getServer() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Server server = serverDao.get(sid);
+        if (server == null) {
+            Debug.error("Cannot find a server by this sid.");
+            return Result.WithData(false);
+        }
+        server.setUser(user);
+        server.setPassword(password);
+        serverDao.update(server);
+        return Result.WithData(true);
+    }
+
+    @RemoteMethod
+    @Transactional
     public Result remove(String sid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {

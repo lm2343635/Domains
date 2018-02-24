@@ -285,7 +285,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             return Result.WithData(false);
         }
         domain.setCharset(charset);
-        domain.setPage(HTMLTool.compress(page));
+        domain.setPage(page);
         domainDao.update(domain);
         return Result.WithData(true);
     }

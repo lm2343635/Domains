@@ -29,10 +29,10 @@ public class Server implements Serializable {
     @Column(nullable = false)
     private Integer domains;
 
-    @Column(nullable = false)
+    @Column
     private String user;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
     @Column

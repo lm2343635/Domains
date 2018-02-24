@@ -14,6 +14,7 @@ public class ServerBean {
     private Date createAt;
     private Date updateAt;
     private int domains;
+    private String user;
     private String remark;
 
     public String getSid() {
@@ -64,6 +65,14 @@ public class ServerBean {
         this.domains = domains;
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -79,6 +88,7 @@ public class ServerBean {
         this.createAt = new Date(server.getCreateAt());
         this.updateAt = new Date(server.getUpdateAt());
         this.domains = server.getDomains();
+        this.user = server.getUser();
         this.remark = server.getRemark() == null ? "" : server.getRemark();
     }
 

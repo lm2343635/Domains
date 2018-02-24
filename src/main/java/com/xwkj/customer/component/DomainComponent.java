@@ -36,7 +36,6 @@ public class DomainComponent {
             if (site != null && !site.equals("")) {
                 html = HTTPTool.httpRequest("http://" + site, domain.getCharset());
             }
-            html = HTMLTool.compress(html);
             System.out.println(html);
             System.out.println(domain.getPage());
             System.out.println(html.equalsIgnoreCase(domain.getPage()) + ", " + levenshtein.similarity(html, domain.getPage()));
