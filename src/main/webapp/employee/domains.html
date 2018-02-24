@@ -70,8 +70,8 @@
         <div id="domain-list" class="list-group">
             <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
                 <p class="text-muted">
-                    <span>更新于${updateAt}$</span>
-                    <span class="pull-right">${language}$，${resolution}$解析，路径：${path}$</span>
+                    <span>更新于${updateAt}$，${language}$，${resolution}$解析，路径：${path}$</span>
+                    <span class="pull-right">每间隔${interval}$检查一次，当相似度低于${similarity}$%时报警并替换</span>
                 </p>
                 <span class="domain-list-name">${name}$</span>
                 <span>${domains}$</span>
@@ -79,7 +79,10 @@
                 <a href="page.html?did=${did}$" target="_blank" class="pull-right domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
                 <i class="fa fa-lg fa-random text-primary pull-right domain-list-transfer"></i>
                 <i class="fa fa-lg fa-gear text-success pull-right domain-list-edit"></i>
-                <div class="pull-right"><input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight"></div>
+                <div class="pull-right">
+                    <input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight">
+                    <input type="checkbox" data-size="mini" data-on-color="danger" data-on-text="监控" data-off-text="暂停" class="domain-list-monitoring">
+                </div>
                 <p class="domain-list-remark text-muted">${remark}$</p>
             </div>
         </div>
@@ -132,6 +135,22 @@
                 <div class="input-group">
                     <span class="input-group-addon">备注信息</span>
                     <input id="add-domain-remark" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">每间隔</span>
+                    <select id="add-domain-interval" class="form-control">
+                        <option value="1">10分钟</option>
+                        <option value="3">30分钟</option>
+                        <option value="6">1小时</option>
+                        <option value="12">2小时</option>
+                        <option value="36">6小时</option>
+                        <option value="72">12小时</option>
+                        <option value="144">一天</option>
+                        <option value="1008">一周</option>
+                    </select>
+                    <span class="input-group-addon">检查一次，当相似度低于</span>
+                    <input id="add-domain-similarity" type="number" max="100" min="0" class="form-control" value="100">
+                    <span class="input-group-addon">%时报警并替换</span>
                 </div>
             </div>
             <div class="modal-footer">

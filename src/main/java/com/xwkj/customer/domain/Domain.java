@@ -26,6 +26,13 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private String resolution;
 
+    /**
+     * SQL to update path.
+
+     update customer_domain set path = concat('/data/wwwroot/', path) where language like '%PHP%';
+     update customer_domain set path = concat('/data/webapps/', path) where language like '%Java%';
+     update customer_domain set path = concat('C:\\home\\root\\', path) where language like '%ASP%';
+     */
     @Column(nullable = false)
     private String path;
 
@@ -50,14 +57,20 @@ public class Domain implements Serializable {
     @Column(columnDefinition = "LONGTEXT")
     private String page;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String checked;
+    @Column(nullable = false)
+    private Boolean monitoring;
 
     @Column
     private Long checkAt;
 
-    @Column
+    @Column(nullable = false)
+    private Boolean alert;
+
+    @Column(nullable = false)
     private Integer similarity;
+
+    @Column(nullable = false)
+    private Integer interval;
 
     @ManyToOne
     @JoinColumn(name = "sid", nullable = false)
@@ -167,12 +180,20 @@ public class Domain implements Serializable {
         this.page = page;
     }
 
-    public String getChecked() {
-        return checked;
+    public Boolean getMonitoring() {
+        return monitoring;
     }
 
-    public void setChecked(String checked) {
-        this.checked = checked;
+    public void setMonitoring(Boolean monitoring) {
+        this.monitoring = monitoring;
+    }
+
+    public Boolean getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Boolean alert) {
+        this.alert = alert;
     }
 
     public Long getCheckAt() {
@@ -189,6 +210,14 @@ public class Domain implements Serializable {
 
     public void setSimilarity(Integer similarity) {
         this.similarity = similarity;
+    }
+
+    public Integer getInterval() {
+        return interval;
+    }
+
+    public void setInterval(Integer interval) {
+        this.interval = interval;
     }
 
     public Server getServer() {

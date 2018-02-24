@@ -42,8 +42,6 @@ $(document).ready(function () {
             var domain = result.data.domain;
             document.title = document.title + domain.name;
 
-            $("#view").attr("src", "http://" + domain.domains.split(",")[0]);
-
             page = result.data.page;
             $("#code pre").text(tidy_html5(page, options));
         });
