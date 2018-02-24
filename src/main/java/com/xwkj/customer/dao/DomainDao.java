@@ -23,4 +23,11 @@ public interface DomainDao extends BaseDao<Domain> {
      */
     List<Domain> findHighlightDomains();
 
+    /**
+     * Find all monitoring domains.
+     *
+     * @return
+     */
+    List<Domain> findMonitoring();
+
 }

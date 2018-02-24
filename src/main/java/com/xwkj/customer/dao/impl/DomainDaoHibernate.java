@@ -26,4 +26,8 @@ public class DomainDaoHibernate extends BaseHibernateDaoSupport<Domain> implemen
         return (List<Domain>) getHibernateTemplate().find(hql);
     }
 
+    public List<Domain> findMonitoring() {
+        String hql = "from Domain where monitoring = true order by updateAt desc";
+        return (List<Domain>) getHibernateTemplate().find(hql);
+    }
 }

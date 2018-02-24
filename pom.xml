@@ -112,6 +112,11 @@
             <artifactId>dwr</artifactId>
             <version>3.0.2-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>info.debatty</groupId>
+            <artifactId>java-string-similarity</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

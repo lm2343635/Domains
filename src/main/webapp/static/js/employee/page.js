@@ -23,8 +23,6 @@ $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
         $("#charset-modal").modal("show");
-
-
     });
 
     $("#charset-submit").click(function () {
