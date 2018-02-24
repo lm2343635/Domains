@@ -71,17 +71,19 @@
             <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
                 <p class="text-muted">
                     <span>更新于${updateAt}$，${language}$，${resolution}$解析，路径：${path}$</span>
-                    <span class="pull-right">每间隔${interval}$检查一次，当相似度低于${similarity}$%时报警并替换</span>
+                    <span class="pull-right">每间隔${frequency}$分检查一次，当相似度低于${similarity}$%时报警并替换</span>
                 </p>
                 <span class="domain-list-name">${name}$</span>
                 <span>${domains}$</span>
-                <i class="fa fa-lg fa-trash-o text-danger pull-right domain-list-remove"></i>
-                <a href="page.html?did=${did}$" target="_blank" class="pull-right domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
-                <i class="fa fa-lg fa-random text-primary pull-right domain-list-transfer"></i>
-                <i class="fa fa-lg fa-gear text-success pull-right domain-list-edit"></i>
+
                 <div class="pull-right">
-                    <input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight">
                     <input type="checkbox" data-size="mini" data-on-color="danger" data-on-text="监控" data-off-text="暂停" class="domain-list-monitoring">
+                    <a href="page.html?did=${did}$" target="_blank" class="domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
+                    &nbsp;
+                    <input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight">
+                    <i class="fa fa-lg fa-random text-primary domain-list-transfer"></i>
+                    <i class="fa fa-lg fa-gear text-success domain-list-edit"></i>
+                    <i class="fa fa-lg fa-trash-o text-danger domain-list-remove"></i>
                 </div>
                 <p class="domain-list-remark text-muted">${remark}$</p>
             </div>
@@ -138,7 +140,7 @@
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">每间隔</span>
-                    <select id="add-domain-interval" class="form-control">
+                    <select id="add-domain-frequency" class="form-control">
                         <option value="1">10分钟</option>
                         <option value="3">30分钟</option>
                         <option value="6">1小时</option>

@@ -66,11 +66,14 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Boolean alert;
 
+    /**
+     update customer_domain set frequency = 1, similarity = 100;
+     */
     @Column(nullable = false)
     private Integer similarity;
 
     @Column(nullable = false)
-    private Integer interval;
+    private Integer frequency;
 
     @ManyToOne
     @JoinColumn(name = "sid", nullable = false)
@@ -212,12 +215,12 @@ public class Domain implements Serializable {
         this.similarity = similarity;
     }
 
-    public Integer getInterval() {
-        return interval;
+    public Integer getFrequency() {
+        return frequency;
     }
 
-    public void setInterval(Integer interval) {
-        this.interval = interval;
+    public void setFrequency(Integer frequency) {
+        this.frequency = frequency;
     }
 
     public Server getServer() {

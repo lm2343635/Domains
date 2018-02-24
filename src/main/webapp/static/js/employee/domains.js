@@ -49,6 +49,8 @@ $(document).ready(function () {
         var resolution = $("#add-domain-resolution").val();
         var path = $("#add-domain-path").val();
         var remark = $("#add-domain-remark").val();
+        var similarity = $("#add-domain-similarity").val();
+        var frequency = $("#add-domain-frequency").val();
         var validate = true;
         if (name == "" || name == null) {
             $("#add-domain-name").parent().addClass("has-error");
@@ -62,17 +64,29 @@ $(document).ready(function () {
         } else {
             $("#add-domain-domains").parent().removeClass("has-error");
         }
+        if (language == "" || language == null) {
+            $("#add-domain-language").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#add-domain-language").parent().removeClass("has-error");
+        }
         if (path == "" || path == null) {
             $("#add-domain-path").parent().addClass("has-error");
             validate = false;
         } else {
             $("#add-domain-path").parent().removeClass("has-error");
         }
+        if (similarity == "" || similarity == null || !isInteger(similarity) || similarity < 0 || similarity > 100) {
+            $("#add-domain-similarity").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#add-domain-similarity").parent().removeClass("has-error");
+        }
         if (!validate) {
             return;
         }
         if (editingDid == null) {
-            DomainManager.add(sid, name, domains, language, resolution, path, remark, function (result) {
+            DomainManager.add(sid, name, domains, language, resolution, path, remark, frequency, similarity, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -86,7 +100,7 @@ $(document).ready(function () {
                 loadDomains();
             });
         } else {
-            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, function (result) {
+            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, frequency, similarity, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -105,6 +119,7 @@ $(document).ready(function () {
     $("#add-domain-modal").on("hidden.bs.modal", function () {
         $("#add-domain-modal .input-group").removeClass("has-error");
         $("#add-domain-modal input").val("");
+        $("#add-domain-similarity").val(100);
         editingDid = null;
     });
     
@@ -173,12 +188,32 @@ function loadDomains() {
                 resolution: domain.resolution,
                 path: domain.path,
                 remark: domain.remark,
-                highlight: domain.highlight ? "highlight" : ""
+                highlight: domain.highlight ? "highlight" : "",
+                frequency: domain.frequency * 10,
+                similarity: domain.similarity
             });
 
             // Set grab buttons of ungrabbed sites to muted.
             if (!domain.grabbed) {
                 $("#" + domain.did + " .domain-list-grab").addClass("text-muted");
+                $("#" + domain.did + " .domain-list-monitoring").remove();
+            } else {
+                $("#" + domain.did + " .domain-list-monitoring").bootstrapSwitch({
+                    state: domain.monitoring
+                }).on("switchChange.bootstrapSwitch", function (event, state) {
+                    var did = $(this).mengularId();
+                    DomainManager.setHighlight(did, state, function(result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.privilege) {
+                            $.messager.popup("当前用户无权更改建域名！");
+                            return;
+                        }
+
+                    });
+                });
             }
             
             $("#" + domain.did + " .domain-list-edit").click(function () {
@@ -198,7 +233,9 @@ function loadDomains() {
                         "add-domain-language": domain.language,
                         "add-domain-resolution": domain.resolution,
                         "add-domain-path": domain.path,
-                        "add-domain-remark": domain.remark
+                        "add-domain-remark": domain.remark,
+                        "add-domain-frequency": domain.frequency,
+                        "add-domain-similarity": domain.similarity
                     });
                     $("#add-domain-modal").modal("show");
                 })
@@ -227,23 +264,6 @@ function loadDomains() {
                     } else {
                         $("#" + did).removeClass("highlight");
                     }
-                });
-            });
-
-            $("#" + domain.did + " .domain-list-monitoring").bootstrapSwitch({
-                state: domain.highlight
-            }).on("switchChange.bootstrapSwitch", function (event, state) {
-                var did = $(this).mengularId();
-                DomainManager.setHighlight(did, state, function(result) {
-                    if (!result.session) {
-                        sessionError();
-                        return;
-                    }
-                    if (!result.privilege) {
-                        $.messager.popup("当前用户无权更改建域名！");
-                        return;
-                    }
-
                 });
             });
 

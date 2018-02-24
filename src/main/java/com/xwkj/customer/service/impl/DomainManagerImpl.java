@@ -29,8 +29,8 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result add(String sid, String name, String domains, String language,
-                      String resolution, String path, String remark, HttpSession session) {
+    public Result add(String sid, String name, String domains, String language, String resolution,
+                      String path, String remark, int frequncy, int similarity, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -54,6 +54,10 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setState(StateNormal);
         domain.setCreateAt(System.currentTimeMillis());
         domain.setUpdateAt(domain.getCreateAt());
+        domain.setMonitoring(false);
+        domain.setAlert(false);
+        domain.setFrequency(frequncy);
+        domain.setSimilarity(similarity);
         domain.setServer(server);
         String did = domainDao.save(domain);
         if (did == null) {
@@ -120,8 +124,8 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result modify(String did, String name, String domains, String language,
-                          String resolution, String path, String remark, HttpSession session) {
+    public Result modify(String did, String name, String domains, String language, String resolution,
+                         String path, String remark, int frequncy, int similarity, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -140,6 +144,8 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setResolution(resolution);
         domain.setPath(path);
         domain.setRemark(remark);
+        domain.setFrequency(frequncy);
+        domain.setSimilarity(similarity);
         domain.setUpdateAt(System.currentTimeMillis());
         domainDao.update(domain);
         return Result.WithData(true);

@@ -18,11 +18,13 @@ public interface DomainManager {
      * @param resolution
      * @param path
      * @param remark
+     * @param frequncy
+     * @param similarity
      * @param session
      * @return
      */
-    Result add(String sid, String name, String domains, String language,
-               String resolution, String path, String remark, HttpSession session);
+    Result add(String sid, String name, String domains, String language, String resolution,
+               String path, String remark, int frequncy, int similarity, HttpSession session);
 
     /**
      * Get all customer of a server.
@@ -60,11 +62,13 @@ public interface DomainManager {
      * @param resolution
      * @param path
      * @param remark
+     * @param frequncy
+     * @param similarity
      * @param session
      * @return
      */
-    Result modify(String did, String name, String domains, String language,
-                   String resolution, String path, String remark, HttpSession session);
+    Result modify(String did, String name, String domains, String language, String resolution,
+                  String path, String remark, int frequncy, int similarity, HttpSession session);
 
     /**
      * Remove a domain.

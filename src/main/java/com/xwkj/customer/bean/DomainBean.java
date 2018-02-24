@@ -19,6 +19,9 @@ public class DomainBean {
     private Date createAt;
     private Date updateAt;
     private boolean grabbed;
+    private boolean monitoring;
+    private int similarity;
+    private int frequency;
     private String sid;
 
     public String getDid() {
@@ -117,6 +120,30 @@ public class DomainBean {
         this.grabbed = grabbed;
     }
 
+    public boolean isMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(boolean monitoring) {
+        this.monitoring = monitoring;
+    }
+
+    public int getSimilarity() {
+        return similarity;
+    }
+
+    public void setSimilarity(int similarity) {
+        this.similarity = similarity;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
     public DomainBean(Domain domain) {
         this.did = domain.getDid();
         this.name = domain.getName();
@@ -130,5 +157,9 @@ public class DomainBean {
         this.updateAt = new Date(domain.getUpdateAt());
         this.sid = domain.getServer().getSid();
         this.grabbed = domain.getPage() != null;
+        this.monitoring = domain.getMonitoring();
+        this.similarity = domain.getSimilarity();
+        this.frequency = domain.getFrequency();
     }
+
 }
