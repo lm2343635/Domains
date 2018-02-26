@@ -88,7 +88,7 @@ public class DocumentBean {
         this.uploadAt = new Date(document.getUploadAt());
         this.employee = document.getEmployee().getName();
         this.cid = document.getCustomer() == null ? null : document.getCustomer().getCid();
-        this.type = new TypeBean(document.getType());
+        this.type = document.getType() == null ? null : new TypeBean(document.getType());
         if (full) {
             this.store = document.getStore();
         }
