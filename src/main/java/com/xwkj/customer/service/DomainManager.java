@@ -124,10 +124,9 @@ public interface DomainManager {
      *
      * @param did
      * @param charset
-     * @param page
      * @param session
      * @return
      */
-    Result savePage(String did, String charset, String page, HttpSession session);
+    Result savePage(String did, String charset, HttpSession session);
 
 }

@@ -156,7 +156,7 @@ public class DomainBean {
         this.createAt = new Date(domain.getCreateAt());
         this.updateAt = new Date(domain.getUpdateAt());
         this.sid = domain.getServer().getSid();
-        this.grabbed = domain.getPage() != null;
+        this.grabbed = domain.getGrabbed();
         this.monitoring = domain.getMonitoring();
         this.similarity = domain.getSimilarity();
         this.frequency = domain.getFrequency();

@@ -51,11 +51,11 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Long updateAt;
 
+    @Column(nullable = false)
+    private Boolean grabbed;
+
     @Column
     private String charset;
-
-    @Column(columnDefinition = "LONGTEXT")
-    private String page;
 
     @Column(nullable = false)
     private Boolean monitoring;
@@ -167,20 +167,20 @@ public class Domain implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public Boolean getGrabbed() {
+        return grabbed;
+    }
+
+    public void setGrabbed(Boolean grabbed) {
+        this.grabbed = grabbed;
+    }
+
     public String getCharset() {
         return charset;
     }
 
     public void setCharset(String charset) {
         this.charset = charset;
-    }
-
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
     }
 
     public Boolean getMonitoring() {
@@ -191,20 +191,20 @@ public class Domain implements Serializable {
         this.monitoring = monitoring;
     }
 
-    public Boolean getAlert() {
-        return alert;
-    }
-
-    public void setAlert(Boolean alert) {
-        this.alert = alert;
-    }
-
     public Long getCheckAt() {
         return checkAt;
     }
 
     public void setCheckAt(Long checkAt) {
         this.checkAt = checkAt;
+    }
+
+    public Boolean getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Boolean alert) {
+        this.alert = alert;
     }
 
     public Integer getSimilarity() {

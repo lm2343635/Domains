@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.common.util.FileTool;
 import com.xwkj.common.util.HTMLTool;
 import com.xwkj.common.util.HTTPTool;
 import com.xwkj.customer.bean.DomainBean;
@@ -11,14 +12,15 @@ import com.xwkj.customer.domain.Server;
 import com.xwkj.customer.service.DomainManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
+import org.apache.commons.io.FileUtils;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -257,12 +259,18 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             Debug.error("Cannot find a domain by this did.");
             return Result.WithData(null);
         }
-        String html = null;
         String site = domain.getDomains().split(",")[0];
-        if (site != null && !site.equals("")) {
-            html = HTTPTool.httpRequest("http://" + site, charset);
+        String path = configComponent.rootPath + configComponent.PublicIndexFolder + File.separator + domain.getDid();
+        FileTool.createDirectoryIfNotExsit(path);
+        File file = new File(path + File.separator + "index.html");
+        String html = null;
+        try {
+            FileUtils.copyURLToFile(new URL("http://" + site), file);
+            html = FileUtils.readFileToString(file, charset);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        final String page = (html == null) ? "" : html;
+        final String page = html;
         return Result.WithData(new HashMap<String, Object>() {{
             put("domain", new DomainBean(domain));
             put("page", page);
@@ -271,7 +279,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result savePage(String did, String charset, String page, HttpSession session) {
+    public Result savePage(String did, String charset, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -285,7 +293,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             return Result.WithData(false);
         }
         domain.setCharset(charset);
-        domain.setPage(page);
+        domain.setGrabbed(true);
         domainDao.update(domain);
         return Result.WithData(true);
     }
