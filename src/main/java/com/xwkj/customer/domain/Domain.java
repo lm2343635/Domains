@@ -57,6 +57,9 @@ public class Domain implements Serializable {
     @Column
     private String charset;
 
+    @Column(columnDefinition = "LONGTEXT")
+    private String page;
+
     @Column(nullable = false)
     private Boolean monitoring;
 
@@ -181,6 +184,14 @@ public class Domain implements Serializable {
 
     public void setCharset(String charset) {
         this.charset = charset;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public void setPage(String page) {
+        this.page = page;
     }
 
     public Boolean getMonitoring() {

@@ -246,6 +246,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
     }
 
     @RemoteMethod
+    @Transactional
     public Result getWithGrabbedPgae(String did, String charset, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -260,17 +261,20 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             return Result.WithData(null);
         }
         String site = domain.getDomains().split(",")[0];
+        if (site == null || site.equals("")) {
+            return  Result.WithData(null);
+        }
         String path = configComponent.rootPath + configComponent.PublicIndexFolder + File.separator + domain.getDid();
         FileTool.createDirectoryIfNotExsit(path);
         File file = new File(path + File.separator + "index.html");
-        String html = null;
         try {
             FileUtils.copyURLToFile(new URL("http://" + site), file);
-            html = FileUtils.readFileToString(file, charset);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        final String page = html;
+        final String page = HTTPTool.httpRequest("http://" + site, charset);
+        domain.setPage(page);
+        domainDao.update(domain);
         return Result.WithData(new HashMap<String, Object>() {{
             put("domain", new DomainBean(domain));
             put("page", page);

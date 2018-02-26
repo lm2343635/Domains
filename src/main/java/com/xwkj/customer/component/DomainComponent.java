@@ -1,5 +1,6 @@
 package com.xwkj.customer.component;
 
+import com.xwkj.common.util.HTMLTool;
 import com.xwkj.common.util.HTTPTool;
 import com.xwkj.customer.dao.DomainDao;
 import com.xwkj.customer.domain.Domain;
@@ -13,7 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.Date;
+import java.util.Scanner;
 
 @Component
 @EnableScheduling
@@ -29,33 +35,26 @@ public class DomainComponent {
      * Monitoring domains every 10 minitus.
      */
 //    @Scheduled(fixedRate = 1000 * 60 * 10)
-//    @Scheduled(fixedRate = 1000 * 10)
+    @Scheduled(fixedRate = 1000 * 10)
     @Transactional
     public void monitoring() {
         System.out.println(new Date());
-        String basePath = config.rootPath + config.ConfigPath;
+        String basePath = config.rootPath + config.PublicIndexFolder;
         NormalizedLevenshtein levenshtein = new NormalizedLevenshtein();
         for (Domain domain : domainDao.findMonitoring()) {
             System.out.println(domain.getDomains());
-            String html = null;
+            String remote = null;
             String site = domain.getDomains().split(",")[0];
             if (site != null && !site.equals("")) {
-                html = HTTPTool.httpRequest("http://" + site, domain.getCharset());
+                remote = HTTPTool.httpRequest("http://" + site, domain.getCharset());
             }
-            File file = new File(basePath + File.separator + domain.getDid() + File.separator + "index.html");
-            String page = null;
-            if (file.exists()) {
-                try {
-                    page = FileUtils.readFileToString(file, domain.getCharset());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (page == null) {
+            if (remote == null || domain.getPage() == null) {
                 continue;
             }
+            double similarity = levenshtein.similarity(remote, domain.getPage());
+            System.out.println(similarity);
             // Replace the index file if the similarity is smaller than the value set before.
-            if (levenshtein.similarity(html, page) * 100 < domain.getSimilarity()) {
+            if (similarity * 100 < domain.getSimilarity()) {
 
             }
             // Update check time.
