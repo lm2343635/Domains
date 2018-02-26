@@ -29,7 +29,7 @@ public class DomainComponent {
      * Monitoring domains every 10 minitus.
      */
 //    @Scheduled(fixedRate = 1000 * 60 * 10)
-    @Scheduled(fixedRate = 1000 * 10)
+//    @Scheduled(fixedRate = 1000 * 10)
     @Transactional
     public void monitoring() {
         System.out.println(new Date());

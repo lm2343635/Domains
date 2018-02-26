@@ -100,6 +100,7 @@ public class ControllerTemplate {
         ServletFileUpload upload = new ServletFileUpload(factory);
         // Set limitation of uploaded file.
         upload.setSizeMax(configComponent.FileMaxSize);
+        upload.setHeaderEncoding("UTF-8");
         try {
             // Get all uploading files information.
             List<FileItem> list = upload.parseRequest(request);
