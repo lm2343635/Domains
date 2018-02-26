@@ -1,11 +1,10 @@
 package com.xwkj.customer.component;
 
-import com.xwkj.common.util.HTMLTool;
 import com.xwkj.common.util.HTTPTool;
 import com.xwkj.customer.dao.DomainDao;
 import com.xwkj.customer.domain.Domain;
+import com.xwkj.customer.domain.Server;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,13 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.Date;
-import java.util.Scanner;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
 
 @Component
 @EnableScheduling
@@ -34,15 +28,17 @@ public class DomainComponent {
     /**
      * Monitoring domains every 10 minitus.
      */
-//    @Scheduled(fixedRate = 1000 * 60 * 10)
-    @Scheduled(fixedRate = 1000 * 10)
+    @Scheduled(fixedRate = 1000 * 60 * 10)
     @Transactional
     public void monitoring() {
-        System.out.println(new Date());
+        Long now = System.currentTimeMillis();
         String basePath = config.rootPath + config.PublicIndexFolder;
         NormalizedLevenshtein levenshtein = new NormalizedLevenshtein();
         for (Domain domain : domainDao.findMonitoring()) {
-            System.out.println(domain.getDomains());
+            long interval = Math.round((now - domain.getCheckAt()) * 1.0 / 1000);
+            if (interval < domain.getFrequency() * 60 * 10) {
+                continue;
+            }
             String remote = null;
             String site = domain.getDomains().split(",")[0];
             if (site != null && !site.equals("")) {
@@ -52,14 +48,37 @@ public class DomainComponent {
                 continue;
             }
             double similarity = levenshtein.similarity(remote, domain.getPage());
-            System.out.println(similarity);
             // Replace the index file if the similarity is smaller than the value set before.
             if (similarity * 100 < domain.getSimilarity()) {
-
+                Server server = domain.getServer();
+                String cmd = "sshpass -p " + server.getPassword()
+                        + " scp -oStrictHostKeyChecking=no " + basePath + File.separator + domain.getDid() + File.separator + "index.html "
+                        + server.getUser() + "@" + server.getAddress() + ":" + domain.getPath();
+                run(cmd);
+                domain.setAlert(true);
             }
             // Update check time.
-            domain.setCheckAt(System.currentTimeMillis());
+            domain.setCheckAt(now);
             domainDao.update(domain);
+        }
+    }
+
+    private void run(String cmd) {
+        String[] cmds = {"/bin/bash", "-c",  cmd};
+        exec(cmds);
+    }
+
+    private void exec(String [] cmds) {
+        try {
+            Process process = Runtime.getRuntime().exec(cmds);
+            InputStreamReader ir = new InputStreamReader(process.getInputStream());
+            LineNumberReader input = new LineNumberReader(ir);
+            String line;
+            while ((line = input.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

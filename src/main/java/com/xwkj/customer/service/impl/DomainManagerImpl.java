@@ -56,6 +56,8 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setState(StateNormal);
         domain.setCreateAt(System.currentTimeMillis());
         domain.setUpdateAt(domain.getCreateAt());
+        domain.setCheckAt((long)0);
+        domain.setGrabbed(false);
         domain.setMonitoring(false);
         domain.setAlert(false);
         domain.setFrequency(frequncy);

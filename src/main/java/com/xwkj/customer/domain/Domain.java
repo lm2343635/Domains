@@ -63,7 +63,7 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Boolean monitoring;
 
-    @Column
+    @Column(nullable = false)
     private Long checkAt;
 
     @Column(nullable = false)
