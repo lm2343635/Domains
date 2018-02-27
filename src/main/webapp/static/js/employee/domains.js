@@ -44,6 +44,7 @@ $(document).ready(function () {
 
     $("#add-domain-submit").click(function () {
         var name = $("#add-domain-name").val();
+        var cid = $("#add-domain-customer .customer-cid").val();
         var domains = $("#add-domain-domains").val();
         var language = $("#add-domain-language").val();
         var resolution = $("#add-domain-resolution").val();
@@ -57,6 +58,14 @@ $(document).ready(function () {
             validate = false;
         } else {
             $("#add-domain-name").parent().removeClass("has-error");
+        }
+        if (cid == "" || cid == null) {
+            $("#add-domain-customer").parent().addClass("has-error");
+            $("#add-domain-customer-select").addClass("btn-danger");
+            validate = false;
+        } else {
+            $("#add-domain-customer").parent().removeClass("has-error");
+            $("#add-domain-customer-select").removeClass("btn-danger");
         }
         if (domains == "" || domains == null) {
             $("#add-domain-domains").parent().addClass("has-error");
@@ -86,7 +95,7 @@ $(document).ready(function () {
             return;
         }
         if (editingDid == null) {
-            DomainManager.add(sid, name, domains, language, resolution, path, remark, frequency, similarity, function (result) {
+            DomainManager.add(sid, name, cid, domains, language, resolution, path, remark, frequency, similarity, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -100,7 +109,7 @@ $(document).ready(function () {
                 loadDomains();
             });
         } else {
-            DomainManager.modify(editingDid, name, domains, language, resolution, path, remark, frequency, similarity, function (result) {
+            DomainManager.modify(editingDid, name, cid, domains, language, resolution, path, remark, frequency, similarity, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;
@@ -118,7 +127,9 @@ $(document).ready(function () {
 
     $("#add-domain-modal").on("hidden.bs.modal", function () {
         $("#add-domain-modal .input-group").removeClass("has-error");
-        $("#add-domain-modal input").val("");
+        $("#add-domain-customer-select").removeClass("btn-danger");
+        $("#add-domain-customer .customer-name").text("拉选择所属客户");
+        $("#add-domain-modal input, #add-domain-customer .customer-cid").val("");
         $("#add-domain-similarity").val(100);
         editingDid = null;
     });
@@ -229,7 +240,9 @@ function loadDomains() {
                 remark: domain.remark,
                 highlight: domain.highlight ? "highlight" : "",
                 frequency: domain.frequency * 10,
-                similarity: domain.similarity
+                similarity: domain.similarity,
+                cid: domain.customer.cid,
+                cname: domain.customer.name
             });
 
             // Set grab buttons of ungrabbed sites to muted.
@@ -300,6 +313,8 @@ function loadDomains() {
                         "add-domain-frequency": domain.frequency,
                         "add-domain-similarity": domain.similarity
                     });
+                    $("#add-domain-customer .customer-cid").val(domain.customer.cid);
+                    $("#add-domain-customer .customer-name").text(domain.customer.name);
                     $("#add-domain-modal").modal("show");
                 })
             });

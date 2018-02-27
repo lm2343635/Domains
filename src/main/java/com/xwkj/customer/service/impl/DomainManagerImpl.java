@@ -6,9 +6,11 @@ import com.xwkj.common.util.HTMLTool;
 import com.xwkj.common.util.HTTPTool;
 import com.xwkj.customer.bean.DomainBean;
 import com.xwkj.customer.bean.Result;
+import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Domain;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Server;
+import com.xwkj.customer.service.CustomerManager;
 import com.xwkj.customer.service.DomainManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -31,7 +33,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result add(String sid, String name, String domains, String language, String resolution,
+    public Result add(String sid, String name, String cid, String domains, String language, String resolution,
                       String path, String remark, int frequncy, int similarity, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -39,6 +41,15 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         }
         if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot fina a customer by this cid.");
+            return Result.WithData(null);
+        }
+        if (customer.getState() != CustomerManager.CustomerStateDeveloped) {
+            Debug.error("Customer should be developed!");
+            return Result.WithData(null);
         }
         Server server = serverDao.get(sid);
         if (server == null) {
@@ -63,6 +74,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setFrequency(frequncy);
         domain.setSimilarity(similarity);
         domain.setServer(server);
+        domain.setCustomer(customer);
         String did = domainDao.save(domain);
         if (did == null) {
             return Result.WithData(null);
@@ -128,7 +140,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
 
     @RemoteMethod
     @Transactional
-    public Result modify(String did, String name, String domains, String language, String resolution,
+    public Result modify(String did, String name, String cid, String domains, String language, String resolution,
                          String path, String remark, int frequncy, int similarity, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -142,6 +154,15 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             Debug.error("Cannot find a domain by this did.");
             return Result.WithData(false);
         }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot fina a customer by this cid.");
+            return Result.WithData(null);
+        }
+        if (customer.getState() != CustomerManager.CustomerStateDeveloped) {
+            Debug.error("Customer should be developed!");
+            return Result.WithData(null);
+        }
         domain.setName(name);
         domain.setDomains(domains);
         domain.setLanguage(language);
@@ -151,6 +172,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setFrequency(frequncy);
         domain.setSimilarity(similarity);
         domain.setUpdateAt(System.currentTimeMillis());
+        domain.setCustomer(customer);
         domainDao.update(domain);
         return Result.WithData(true);
     }

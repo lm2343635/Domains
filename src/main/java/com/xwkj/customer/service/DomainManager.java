@@ -13,6 +13,7 @@ public interface DomainManager {
      *
      * @param sid
      * @param name
+     * @param cid
      * @param domains
      * @param language
      * @param resolution
@@ -23,7 +24,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    Result add(String sid, String name, String domains, String language, String resolution,
+    Result add(String sid, String name, String cid, String domains, String language, String resolution,
                String path, String remark, int frequncy, int similarity, HttpSession session);
 
     /**
@@ -57,6 +58,7 @@ public interface DomainManager {
      *
      * @param did
      * @param name
+     * @param cid
      * @param domains
      * @param language
      * @param resolution
@@ -67,7 +69,7 @@ public interface DomainManager {
      * @param session
      * @return
      */
-    Result modify(String did, String name, String domains, String language, String resolution,
+    Result modify(String did, String name, String cid, String domains, String language, String resolution,
                   String path, String remark, int frequncy, int similarity, HttpSession session);
 
     /**

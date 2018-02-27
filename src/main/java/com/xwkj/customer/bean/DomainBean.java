@@ -23,6 +23,7 @@ public class DomainBean {
     private int similarity;
     private int frequency;
     private boolean alert;
+    private CustomerBean customer;
     private String sid;
 
     public String getDid() {
@@ -105,14 +106,6 @@ public class DomainBean {
         this.updateAt = updateAt;
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
     public boolean isGrabbed() {
         return grabbed;
     }
@@ -153,6 +146,22 @@ public class DomainBean {
         this.alert = alert;
     }
 
+    public CustomerBean getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBean customer) {
+        this.customer = customer;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
     public DomainBean(Domain domain) {
         this.did = domain.getDid();
         this.name = domain.getName();
@@ -170,6 +179,7 @@ public class DomainBean {
         this.similarity = domain.getSimilarity();
         this.frequency = domain.getFrequency();
         this.alert = domain.getAlert();
+        this.customer = new CustomerBean(domain.getCustomer(), false);
     }
 
 }
