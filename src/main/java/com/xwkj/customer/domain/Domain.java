@@ -82,6 +82,13 @@ public class Domain implements Serializable {
     @JoinColumn(name = "sid", nullable = false)
     private Server server;
 
+    /**
+     update customer_domain set cid = '2c9f42425f6b8f7d015f7004bac3004e';
+     */
+    @ManyToOne
+    @JoinColumn(name = "cid", nullable = false)
+    private Customer customer;
+
     public String getDid() {
         return did;
     }
@@ -242,4 +249,11 @@ public class Domain implements Serializable {
         this.server = server;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

@@ -20,6 +20,7 @@
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/ServerManager.js"></script>
     <script src="/dwr/interface/DomainManager.js"></script>
+    <script src="/dwr/interface/CustomerManager.js"></script>
     <script src="/static/js/employee/domains.js"></script>
     <style>
         #add-domain {
@@ -57,6 +58,20 @@
             margin-bottom: 5px;
         }
 
+        #add-domain-customer .dropdown-menu {
+            width: 100%;
+        }
+
+        #add-domain-customer .dropdown-menu .customer-keyword {
+            width: 100%;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        #add-domain-customer .dropdown-menu .customer-search {
+            margin: 2px;
+        }
+
     </style>
 </head>
 <body>
@@ -80,7 +95,6 @@
                 </p>
                 <span class="domain-list-name">${name}$</span>
                 <span>${domains}$</span>
-
                 <div class="pull-right">
                     <input type="checkbox" data-size="mini" data-on-color="danger" data-on-text="监控" data-off-text="暂停" class="domain-list-monitoring">
                     <a href="page.html?did=${did}$" target="_blank" class="domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
@@ -106,6 +120,29 @@
                 <div class="input-group">
                     <span class="input-group-addon">网站名称</span>
                     <input id="add-domain-name" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">所属客户</span>
+                    <div id="add-domain-customer" class="dropdown">
+                        <button id="add-domain-customer-select" class="btn btn-default btn-block dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="customer-name">下拉选择所属客户</span>
+                            <input type="hidden" class="customer-cid">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="add-domain-customer-select">
+                            <li class="row">
+                                <div class="col-xs-10">
+                                    <input class="customer-keyword" type="text" placeholder="搜索已开发的客户名称关键字">
+                                </div>
+                                <div class="col-xs-2">
+                                    <button class="btn btn-xs btn-success customer-search">搜索</button>
+                                </div>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li id="${cid}$" class="mengular-template customer-list-template ${state}$"><a href="javascript:void(0)">${name}$</a></li>
+                        </ul>
+                    </div>
+
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">绑定域名</span>

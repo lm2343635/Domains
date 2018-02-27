@@ -144,6 +144,22 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
     }
 
     @RemoteMethod
+    public Result searchForDomain(String name, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        List<CustomerBean> customerBeans = new ArrayList<CustomerBean>();
+        for (Customer customer : customerDao.find(CustomerManager.CustomerStateDeveloped, name, null, null, -1, -1, 0, Integer.MAX_VALUE)) {
+            customerBeans.add(new CustomerBean(customer, false));
+        }
+        return Result.WithData(customerBeans);
+    }
+
+    @RemoteMethod
     public Result get(String cid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {

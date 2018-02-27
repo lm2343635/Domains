@@ -153,6 +153,45 @@ $(document).ready(function () {
         editingDid = null;
     });
 
+    $("#add-domain-customer .customer-keyword").click(function (event) {
+        event.stopPropagation();
+    });
+
+    $("#add-domain-customer .customer-search").click(function (event) {
+        event.stopPropagation();
+        var keyword = $("#add-domain-customer .customer-keyword").val();
+        if (keyword == null || keyword == "") {
+            $.messager.popup("请输入客户名称搜索！");
+            return;
+        }
+        CustomerManager.searchForDomain(keyword, function (result) {
+            if (!result.session) {
+                sessionError();
+                return;
+            }
+            if (!result.privilege) {
+                $.messager.popup("当前用户无权搜索已开发客户！");
+                return;
+            }
+            $("#add-domain-customer ul .customer-alternative").remove();
+
+            for (var i in result.data) {
+                var customer = result.data[i];
+                $("#add-domain-customer ul").mengular(".customer-list-template", {
+                    cid: customer.cid,
+                    name: customer.name,
+                    state: "customer-alternative"
+                });
+
+                $("#" + customer.cid).click(function (event) {
+                    var cid = $(this).mengularId();
+                    $("#add-domain-customer .customer-cid").val(cid);
+                    $("#add-domain-customer .customer-name").text($("#" + cid + " a").text());
+                });
+            }
+        });
+    });
+
 });
 
 function loadDomains() {
