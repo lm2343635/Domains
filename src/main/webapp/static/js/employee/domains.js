@@ -215,6 +215,30 @@ function loadDomains() {
                     });
                 });
             }
+
+            if (!domain.alert) {
+                $("#" + domain.did + " .domain-list-alert").remove();
+            } else {
+                $("#" + domain.did + " .domain-list-alert").click(function () {
+                    var did = $(this).mengularId();
+                    var name = $("#" + did + " .domain-list-name").text();
+                    $.messager.confirm("取消报警", "确认取消域名" + name + "的报警吗？", function () {
+                        DomainManager.cancelAlert(did, function (result) {
+                            if (!result.session) {
+                                sessionError();
+                                return;
+                            }
+                            if (!result.privilege) {
+                                $.messager.popup("当前用户无权更改该域名！");
+                                return;
+                            }
+                            $.messager.popup("已取消报警！");
+                            $("#" + did + " .domain-list-alert").remove();
+                        });
+                    });
+                });
+
+            }
             
             $("#" + domain.did + " .domain-list-edit").click(function () {
                 editingDid = $(this).mengularId();

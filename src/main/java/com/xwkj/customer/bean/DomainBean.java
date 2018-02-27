@@ -22,6 +22,7 @@ public class DomainBean {
     private boolean monitoring;
     private int similarity;
     private int frequency;
+    private boolean alert;
     private String sid;
 
     public String getDid() {
@@ -144,6 +145,14 @@ public class DomainBean {
         this.frequency = frequency;
     }
 
+    public boolean isAlert() {
+        return alert;
+    }
+
+    public void setAlert(boolean alert) {
+        this.alert = alert;
+    }
+
     public DomainBean(Domain domain) {
         this.did = domain.getDid();
         this.name = domain.getName();
@@ -160,6 +169,7 @@ public class DomainBean {
         this.monitoring = domain.getMonitoring();
         this.similarity = domain.getSimilarity();
         this.frequency = domain.getFrequency();
+        this.alert = domain.getAlert();
     }
 
 }

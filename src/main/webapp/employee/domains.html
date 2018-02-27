@@ -40,6 +40,10 @@
             margin-bottom: 3px;
         }
 
+        #domain-list .domain-list-template .domain-list-alert {
+            margin-left: 10px;
+        }
+
         #domain-list .domain-list-template i {
             cursor: pointer;
             margin: 5px;
@@ -71,7 +75,8 @@
             <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
                 <p class="text-muted">
                     <span>更新于${updateAt}$，${language}$，${resolution}$解析，路径：${path}$</span>
-                    <span class="pull-right">每间隔${frequency}$分检查一次，当相似度低于${similarity}$%时报警并替换</span>
+                    <button class="domain-list-alert btn-xs btn-danger pull-right">报警中</button>
+                    <span class="domain-list-check pull-right">间隔${frequency}$分，相似度阈值${similarity}$% </span>
                 </p>
                 <span class="domain-list-name">${name}$</span>
                 <span>${domains}$</span>
@@ -109,10 +114,10 @@
                 <div class="input-group">
                     <span class="input-group-addon">编程语言</span>
                     <select id="add-domain-language" class="form-control">
-                        <option value="PHP 5.3">PHP 5.3</option>
-                        <option value="PHP 5.4">PHP 5.4</option>
-                        <option value="PHP 5.5">PHP 5.5</option>
                         <option value="PHP 5.6">PHP 5.6</option>
+                        <option value="PHP 5.5">PHP 5.6</option>
+                        <option value="PHP 5.4">PHP 5.4</option>
+                        <option value="PHP 5.3">PHP 5.3</option>
                         <option value="PHP 7.0">PHP 7.0</option>
                         <option value="Java 7">Java 7</option>
                         <option value="Java 8">Java 8</option>
@@ -143,12 +148,13 @@
                     <select id="add-domain-frequency" class="form-control">
                         <option value="1">10分钟</option>
                         <option value="3">30分钟</option>
-                        <option value="6">1小时</option>
-                        <option value="12">2小时</option>
-                        <option value="36">6小时</option>
-                        <option value="72">12小时</option>
-                        <option value="144">一天</option>
-                        <option value="1008">一周</option>
+                        <option value="6">60分钟（1小时）</option>
+                        <option value="12">120分钟（2小时）</option>
+                        <option value="36">360分钟（6小时）</option>
+                        <option value="72">720分钟（12小时）</option>
+                        <option value="144">1440分钟（一天）</option>
+                        <option value="1008">10080分钟（一周）</option>
+                        <option value="1008">43200分钟（30天）</option>
                     </select>
                     <span class="input-group-addon">检查一次，当相似度低于</span>
                     <input id="add-domain-similarity" type="number" max="100" min="0" class="form-control" value="100">

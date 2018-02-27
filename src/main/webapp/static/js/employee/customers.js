@@ -1,4 +1,4 @@
-var pageSize = 20;
+var pageSize = 50;
 
 var state = request("state");
 

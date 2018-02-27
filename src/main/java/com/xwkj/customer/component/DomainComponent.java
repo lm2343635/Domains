@@ -1,5 +1,6 @@
 package com.xwkj.customer.component;
 
+import com.xwkj.common.util.Debug;
 import com.xwkj.common.util.HTTPTool;
 import com.xwkj.customer.dao.DomainDao;
 import com.xwkj.customer.domain.Domain;
@@ -60,6 +61,7 @@ public class DomainComponent {
             // Update check time.
             domain.setCheckAt(now);
             domainDao.update(domain);
+            Debug.log(site + " has been checked, similarity = " + similarity);
         }
     }
 

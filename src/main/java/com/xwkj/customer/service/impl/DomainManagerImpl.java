@@ -304,4 +304,23 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result cancelAlert(String did, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        if (employee.getRole().getDomain() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        Domain domain = domainDao.get(did);
+        if (domain == null) {
+            Debug.error("Cannot find a domain by this did.");
+            return Result.WithData(false);
+        }
+        domain.setAlert(false);
+        domainDao.update(domain);
+        return Result.WithData(true);
+    }
 }

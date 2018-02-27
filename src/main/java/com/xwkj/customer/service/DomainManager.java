@@ -129,4 +129,13 @@ public interface DomainManager {
      */
     Result savePage(String did, String charset, HttpSession session);
 
+    /**
+     * Cancel alert of a domain
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    Result cancelAlert(String did, HttpSession session);
+
 }
