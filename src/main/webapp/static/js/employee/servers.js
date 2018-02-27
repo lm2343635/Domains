@@ -96,7 +96,7 @@ $(document).ready(function () {
             }
             $("#set-user-modal").modal("hide");
             $.messager.popup("Linux用户名密码设置成功！");
-            $("#" + editingSid + " .server-list-user").removeClass("text-muted").addClass("text-info");
+            $("#" + editingSid + " .server-list-user").removeClass("text-muted").addClass("text-warning");
         });
     });
 
@@ -136,7 +136,7 @@ function loadServers(done) {
             });
 
             if (server.user != null) {
-                $("#" + server.sid + " .server-list-user").removeClass("text-muted").addClass("text-info");
+                $("#" + server.sid + " .server-list-user").removeClass("text-muted").addClass("text-warning");
             }
 
             $("#" + server.sid + " .server-list-user").click(function () {

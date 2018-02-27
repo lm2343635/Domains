@@ -130,6 +130,7 @@ $(document).ready(function () {
         $("#add-domain-customer-select").removeClass("btn-danger");
         $("#add-domain-customer .customer-name").text("拉选择所属客户");
         $("#add-domain-modal input, #add-domain-customer .customer-cid").val("");
+        $("#add-domain-customer ul .customer-alternative").remove();
         $("#add-domain-similarity").val(100);
         editingDid = null;
     });
@@ -241,6 +242,7 @@ function loadDomains() {
                 highlight: domain.highlight ? "highlight" : "",
                 frequency: domain.frequency * 10,
                 similarity: domain.similarity,
+                checkAt: domain.checkAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 cid: domain.customer.cid,
                 cname: domain.customer.name
             });

@@ -23,6 +23,7 @@ public class DomainBean {
     private int similarity;
     private int frequency;
     private boolean alert;
+    private Date checkAt;
     private CustomerBean customer;
     private String sid;
 
@@ -146,6 +147,14 @@ public class DomainBean {
         this.alert = alert;
     }
 
+    public Date getCheckAt() {
+        return checkAt;
+    }
+
+    public void setCheckAt(Date checkAt) {
+        this.checkAt = checkAt;
+    }
+
     public CustomerBean getCustomer() {
         return customer;
     }
@@ -179,6 +188,7 @@ public class DomainBean {
         this.similarity = domain.getSimilarity();
         this.frequency = domain.getFrequency();
         this.alert = domain.getAlert();
+        this.checkAt = new Date(domain.getCheckAt());
         this.customer = new CustomerBean(domain.getCustomer(), false);
     }
 
