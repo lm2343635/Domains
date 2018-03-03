@@ -86,11 +86,50 @@
                 <i id="add-domain" class="fa fa-lg fa-plus pull-right text-primary" data-toggle="modal" data-target="#add-domain-modal"></i>
             </h1>
         </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-domain-name" type="text" class="form-control" placeholder="网站名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-globe"></i></span>
+                        <input id="search-domain-domain" type="text" class="form-control" placeholder="域名">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-domain-customer" type="text" class="form-control" placeholder="客户名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-code"></i></span>
+                        <select id="search-domain-language" class="form-control">
+                            <option value="">请选择语言</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div id="search-customer-alert" class="btn-group">
+                        <button class="btn btn-default">所有</button>
+                        <button class="btn btn-default">报警</button>
+                        <button class="btn btn-default">正常</button>
+                    </div>
+                    <button id="search-reset" class="btn btn-info">重置</button>
+                    <button id="search-submit" class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </div>
         <div id="domain-list" class="list-group">
             <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
                 <p class="text-muted">
                     <span>更新于${updateAt}$，${language}$，${resolution}$解析，路径：${path}$</span>
-                    <button class="domain-list-alert btn-xs btn-danger pull-right">报警中</button>
+                    <button class="domain-list-alert btn btn-xs btn-danger pull-right">报警中</button>
                     <span class="domain-list-check pull-right">间隔${frequency}$分，相似度阈值${similarity}$%，检查于${checkAt}$ </span>
                 </p>
                 <span class="domain-list-name">${name}$</span>
@@ -155,7 +194,7 @@
                     <span class="input-group-addon">编程语言</span>
                     <select id="add-domain-language" class="form-control">
                         <option value="PHP 5.6">PHP 5.6</option>
-                        <option value="PHP 5.5">PHP 5.6</option>
+                        <option value="PHP 5.5">PHP 5.5</option>
                         <option value="PHP 5.4">PHP 5.4</option>
                         <option value="PHP 5.3">PHP 5.3</option>
                         <option value="PHP 7.0">PHP 7.0</option>

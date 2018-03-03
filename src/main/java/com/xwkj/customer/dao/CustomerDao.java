@@ -54,4 +54,12 @@ public interface CustomerDao extends BaseDao<Customer> {
      */
     List<Customer> findByRegister(Employee employee, int offset, int pageSize);
 
+    /**
+     * Global search for Customer.
+     *
+     * @param keyword
+     * @return
+     */
+    List<Customer> globalSearch(String keyword);
+
 }

@@ -3,11 +3,9 @@ package com.xwkj.customer.service.impl;
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.AssignBean;
 import com.xwkj.customer.bean.EmployeeBean;
+import com.xwkj.customer.bean.GlobalSearch;
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.domain.Assign;
-import com.xwkj.customer.domain.Customer;
-import com.xwkj.customer.domain.Employee;
-import com.xwkj.customer.domain.Role;
+import com.xwkj.customer.domain.*;
 import com.xwkj.customer.service.EmployeeManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -18,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RemoteProxy(name = "EmployeeManager")
@@ -246,6 +246,27 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             }
         }
         return Result.WithData(assignBean);
+    }
+
+    @RemoteMethod
+    public Result globalSearch(String keyword, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        final List<GlobalSearch> customers = new ArrayList<GlobalSearch>();
+        for (Customer customer : customerDao.globalSearch(keyword)) {
+            customers.add(new GlobalSearch(GlobalSearch.GlobalSearchCustomer, customer.getName(), customer.getCid()));
+        }
+        final List<GlobalSearch> domains = new ArrayList<GlobalSearch>();
+        for (Domain domain : domainDao.globalSearch(keyword)) {
+            domains.add(new GlobalSearch(GlobalSearch.GlobalSearchDomain, domain.getName()
+                    + "(" + domain.getDomains() + ")", domain.getDid()));
+        }
+        return Result.WithData(new HashMap<Integer, List>() {{
+            put(GlobalSearch.GlobalSearchCustomer, customers);
+            put(GlobalSearch.GlobalSearchDomain, domains);
+        }});
     }
 
 }

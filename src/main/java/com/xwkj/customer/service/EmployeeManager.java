@@ -117,5 +117,14 @@ public interface EmployeeManager {
      */
     Result assignForCustomer(String cid, HttpSession session);
 
+    /**
+     * Global search.
+     *
+     * @param keyword
+     * @param session
+     * @return
+     */
+    Result globalSearch(String keyword, HttpSession session);
+
 
 }

@@ -107,6 +107,11 @@ public class CustomerDaoHibernate extends BaseHibernateDaoSupport<Customer> impl
         String hql = "from Customer where register = ? order by createAt desc";
         return findByPage(hql, employee, offset, pageSize);
     }
-    
+
+    public List<Customer> globalSearch(String keyword) {
+        String hql = "from Customer where name like ?";
+        keyword = "%" + keyword + "%";
+        return (List<Customer>)getHibernateTemplate().find(hql, keyword);
+    }
 }
 

@@ -30,4 +30,12 @@ public interface DomainDao extends BaseDao<Domain> {
      */
     List<Domain> findMonitoring();
 
+    /**
+     * Global search for domain.
+     *
+     * @param keyword
+     * @return
+     */
+    List<Domain> globalSearch(String keyword);
+
 }

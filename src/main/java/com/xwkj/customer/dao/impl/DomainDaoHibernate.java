@@ -30,4 +30,11 @@ public class DomainDaoHibernate extends BaseHibernateDaoSupport<Domain> implemen
         String hql = "from Domain where monitoring = true order by updateAt desc";
         return (List<Domain>) getHibernateTemplate().find(hql);
     }
+
+    public List<Domain> globalSearch(String keyword) {
+        String hql = "from Domain where name like ? or domains like ?";
+        keyword = "%" + keyword + "%";
+        return (List<Domain>)getHibernateTemplate().find(hql, keyword, keyword);
+    }
+
 }

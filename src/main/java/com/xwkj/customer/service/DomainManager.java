@@ -27,6 +27,8 @@ public interface DomainManager {
     Result add(String sid, String name, String cid, String domains, String language, String resolution,
                String path, String remark, int frequncy, int similarity, HttpSession session);
 
+//    Result getSearchCount(String sid, String name, String domain, String customer, String langugage, HttpSession session);
+
     /**
      * Get all customer of a server.
      *
