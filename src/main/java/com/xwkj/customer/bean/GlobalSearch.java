@@ -2,6 +2,8 @@ package com.xwkj.customer.bean;
 
 import org.directwebremoting.annotations.DataTransferObject;
 
+import java.util.Date;
+
 @DataTransferObject
 public class GlobalSearch {
 
@@ -10,7 +12,9 @@ public class GlobalSearch {
 
     private int type;
     private String description;
+    private Date updateAt;
     private String id;
+    private String parentId;
 
     public static int getGlobalSearchCustomer() {
         return GlobalSearchCustomer;
@@ -44,14 +48,38 @@ public class GlobalSearch {
         this.id = id;
     }
 
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
     public GlobalSearch() {
 
     }
 
-    public GlobalSearch(int type, String description, String id) {
+    public GlobalSearch(int type, String description, Date updateAt, String id) {
         this.type = type;
         this.description = description;
         this.id = id;
+        this.updateAt = updateAt;
     }
 
+    public GlobalSearch(int type, String description, Date updateAt, String id, String parentId) {
+        this.type = type;
+        this.description = description;
+        this.updateAt = updateAt;
+        this.id = id;
+        this.parentId = parentId;
+    }
 }

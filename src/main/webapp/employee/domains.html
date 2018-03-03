@@ -72,6 +72,14 @@
             margin: 2px;
         }
 
+        #search-panel .row div {
+            margin-bottom: 3px;
+        }
+
+        #search-submit {
+            margin-left: 3px;
+        }
+
     </style>
 </head>
 <body>
@@ -120,8 +128,8 @@
                         <button class="btn btn-default">报警</button>
                         <button class="btn btn-default">正常</button>
                     </div>
-                    <button id="search-reset" class="btn btn-info">重置</button>
-                    <button id="search-submit" class="btn btn-primary">搜索</button>
+                    <button id="search-submit" class="btn btn-primary pull-right">搜索</button>
+                    <button id="search-reset" class="btn btn-info pull-right">重置</button>
                 </div>
             </div>
         </div>
@@ -166,7 +174,7 @@
                 <div class="input-group">
                     <span class="input-group-addon">所属客户</span>
                     <div id="add-domain-customer" class="dropdown">
-                        <button id="add-domain-customer-select" class="btn btn-default btn-block dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button id="add-domain-customer-select" class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="customer-name">下拉选择所属客户</span>
                             <input type="hidden" class="customer-cid" value="">
                             <span class="caret"></span>
@@ -184,7 +192,6 @@
                             <li id="${cid}$" class="mengular-template customer-list-template ${state}$"><a href="javascript:void(0)">${name}$</a></li>
                         </ul>
                     </div>
-
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">绑定域名</span>

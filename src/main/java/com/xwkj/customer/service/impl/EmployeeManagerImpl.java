@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RemoteProxy(name = "EmployeeManager")
@@ -256,12 +253,18 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         final List<GlobalSearch> customers = new ArrayList<GlobalSearch>();
         for (Customer customer : customerDao.globalSearch(keyword)) {
-            customers.add(new GlobalSearch(GlobalSearch.GlobalSearchCustomer, customer.getName(), customer.getCid()));
+            customers.add(new GlobalSearch(GlobalSearch.GlobalSearchCustomer,
+                    customer.getName(),
+                    new Date(customer.getUpdateAt()),
+                    customer.getCid()));
         }
         final List<GlobalSearch> domains = new ArrayList<GlobalSearch>();
         for (Domain domain : domainDao.globalSearch(keyword)) {
-            domains.add(new GlobalSearch(GlobalSearch.GlobalSearchDomain, domain.getName()
-                    + "(" + domain.getDomains() + ")", domain.getDid()));
+            domains.add(new GlobalSearch(GlobalSearch.GlobalSearchDomain,
+                    domain.getName() + "(" + domain.getDomains() + ")",
+                    new Date(domain.getUpdateAt()),
+                    domain.getDid(),
+                    domain.getServer().getSid()));
         }
         return Result.WithData(new HashMap<Integer, List>() {{
             put(GlobalSearch.GlobalSearchCustomer, customers);
