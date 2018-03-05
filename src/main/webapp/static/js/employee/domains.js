@@ -1,4 +1,5 @@
 var sid = request("sid");
+var did = location.hash.substring(1);
 var editingDid = null;
 
 $(document).ready(function () {
@@ -109,6 +110,7 @@ $(document).ready(function () {
                 loadDomains();
             });
         } else {
+            did = editingDid;
             DomainManager.modify(editingDid, name, cid, domains, language, resolution, path, remark, frequency, similarity, function (result) {
                 if (!result.session) {
                     sessionError();
@@ -369,6 +371,12 @@ function loadDomains() {
                     });
                 });
             });
+        }
+
+        if (did != null || did != "") {
+            $('html, body').animate({
+                scrollTop: $("#" + did).offset().top
+            }, 500);
         }
     });
 }
