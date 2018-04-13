@@ -58,7 +58,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         Role role = roleDao.get(rid);
@@ -80,7 +80,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         Role role = employee.getRole();
@@ -92,20 +92,36 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         return true;
     }
 
-    @RemoteMethod
     @Transactional
+    @RemoteMethod
     public boolean resetPassword(String eid, String password, HttpSession session) {
         if (!checkAdminSession(session)) {
             return false;
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         employee.setPassword(password);
         employeeDao.update(employee);
         return true;
+    }
+
+    @Transactional
+    @RemoteMethod
+    public Result enable(String eid, boolean enable, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.getByName(eid);
+        if (employee == null) {
+            Debug.error("Cannot find an employee by this eid.");
+            return Result.WithData(false);
+        }
+        employee.setEnable(enable);
+        employeeDao.update(employee);
+        return Result.WithData(true);
     }
 
     // ************* For admin & employee *************

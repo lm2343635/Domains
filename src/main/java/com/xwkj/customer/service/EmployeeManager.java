@@ -53,6 +53,16 @@ public interface EmployeeManager {
      */
     boolean resetPassword(String eid, String password, HttpSession session);
 
+    /**
+     * Change the enable state of an employee by admin.
+     *
+     * @param eid
+     * @param enable
+     * @param session
+     * @return
+     */
+    Result enable(String eid, boolean enable, HttpSession session);
+
     // ************* For admin & employee ****************
 
     /**
