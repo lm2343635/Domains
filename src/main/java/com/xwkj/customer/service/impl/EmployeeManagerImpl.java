@@ -114,7 +114,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         if (!checkAdminSession(session)) {
             return Result.NoSession();
         }
-        Employee employee = employeeDao.getByName(eid);
+        Employee employee = employeeDao.get(eid);
         if (employee == null) {
             Debug.error("Cannot find an employee by this eid.");
             return Result.WithData(false);
