@@ -85,6 +85,14 @@ public interface EmployeeManager {
     // ************* For employee ****************
 
     /**
+     * Get all enable employees for an employee with the employee privilege.
+     * 
+     * @param session
+     * @return
+     */
+    Result getEnable(HttpSession session);
+
+    /**
      * Employee login
      *
      * @param username

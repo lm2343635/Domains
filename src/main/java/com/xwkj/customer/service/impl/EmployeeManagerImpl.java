@@ -228,6 +228,22 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     }
 
     @RemoteMethod
+    public Result getEnable(HttpSession session) {
+        Employee manager = getEmployeeFromSession(session);
+        if (manager == null) {
+            return Result.NoPrivilege();
+        }
+        if (manager.getRole().getEmployee() != RoleManager.RolePrivilgeHold) {
+            return Result.NoPrivilege();
+        }
+        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
+        for (Employee employee : employeeDao.findByEnable(true)) {
+            employeeBeans.add(new EmployeeBean(employee, true));
+        }
+        return Result.WithData(employeeBeans);
+    }
+
+    @RemoteMethod
     public Result assignForCustomer(String cid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
