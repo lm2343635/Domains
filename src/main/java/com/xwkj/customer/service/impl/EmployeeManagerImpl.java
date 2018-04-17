@@ -161,18 +161,22 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     // ************* For employee ****************
 
     @RemoteMethod
-    public boolean login(String username, String password, HttpSession session) {
+    public Result login(String username, String password, HttpSession session) {
         Employee employee = employeeDao.getByName(username);
         if (employee == null) {
             Debug.error("Cannot find a employee by this name.");
-            return false;
+            return Result.WithData(EmployeeLoginNotFound);
         }
         if (!employee.getPassword().equals(password)) {
             Debug.error("Password error.");
-            return false;
+            return Result.WithData(EmployeeLoginWrongPassword);
+        }
+        if (!employee.getEnable()) {
+            Debug.error("This user is not enable now.");
+            return Result.WithData(EmployeeLoginNotEnable);
         }
         session.setAttribute(EmployeeFlag, employee.getEid());
-        return true;
+        return Result.WithData(EmployeeLoginSuccess);
     }
 
     @RemoteMethod

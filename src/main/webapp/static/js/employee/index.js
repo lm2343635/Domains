@@ -18,11 +18,24 @@ $(document).ready(function () {
             $("#admin-password-input").parent().removeClass("has-error");
         }
         if (validate) {
-            EmployeeManager.login(name, md5(password), function (success) {
-                if (!success) {
+            EmployeeManager.login(name, md5(password), function (result) {
+                var status = result.data;
+                if (status != EmployeeLoginSuccess) {
                     $("#admin-number-input").parent().addClass("has-error");
                     $("#admin-password-input").parent().addClass("has-error");
-                    $.messager.popup("用户名或密码错误");
+                    switch (status) {
+                        case EmployeeLoginNotFound:
+                            $.messager.popup("用户名未找到！");
+                            break;
+                        case EmployeeLoginWrongPassword:
+                            $.messager.popup("用户密码错误！");
+                            break;
+                        case EmployeeLoginNotEnable:
+                            $.messager.popup("用户已被管理员禁用！");
+                            break;
+                        default:
+                            break;
+                    }
                     return;
                 }
 

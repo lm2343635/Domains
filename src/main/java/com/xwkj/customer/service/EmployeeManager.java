@@ -2,6 +2,7 @@ package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.bean.Result;
+import com.xwkj.customer.domain.Employee;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -9,6 +10,11 @@ import java.util.List;
 public interface EmployeeManager {
 
     public static final String EmployeeFlag = "675ea2340289fea2003b6e3f00a7d015";
+
+    public static final int EmployeeLoginSuccess = 0;
+    public static final int EmployeeLoginNotFound = 1;
+    public static final int EmployeeLoginWrongPassword = 2;
+    public static final int EmployeeLoginNotEnable = 3;
 
     // ************* For admin ****************
 
@@ -100,7 +106,7 @@ public interface EmployeeManager {
      * @param session
      * @return first page.
      */
-    boolean login(String username, String password, HttpSession session);
+    Result login(String username, String password, HttpSession session);
 
     /**
      * Check employee session.

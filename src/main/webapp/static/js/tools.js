@@ -41,6 +41,11 @@ var TypeCategoryExpiration = 0;
 var TypeCategoryReport = 1;
 var TypeCategoryDocument = 2;
 
+var EmployeeLoginSuccess = 0;
+var EmployeeLoginNotFound = 1;
+var EmployeeLoginWrongPassword = 2;
+var EmployeeLoginNotEnable = 3;
+
 var CustomerStateNames = ["未开发", "待开发", "已开发", "已流失"];
 var TypeCategoryNames = ["到期", "报告", "文档"];
 
