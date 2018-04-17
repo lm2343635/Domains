@@ -5,7 +5,7 @@ $(document).ready(function () {
     checkEmployeeSession(function (employee) {
         if (employee.role.employee == RolePrevilgeHold) {
             $("#log-panel").show();
-            loadEmployees();
+            loadEnableEmployees();
             loadLatestLogs();
         } else {
             $("#employee-list").mengular(".employee-list-template", {
@@ -28,8 +28,8 @@ $(document).ready(function () {
     
 });
 
-function loadEmployees() {
-    EmployeeManager.getAll(function (result) {
+function loadEnableEmployees() {
+    EmployeeManager.getEnable(function (result) {
         if (!result.session) {
             sessionError();
             return;
