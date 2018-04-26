@@ -135,14 +135,21 @@
                 <h4 class="modal-title">Linux服务器用户设置</h4>
             </div>
             <div class="modal-body">
-                <p class="text-danger">Linux服务器用户和密码用于恢复网站主页，填写后在此页面无法查看，填写前请确认密码正确。Windows服务器填写此项无效。</p>
+                <p class="text-danger">Linux服务器用户和验证凭据用于恢复网站主页，填写后在此页面无法查看，填写前请确认密码正确。Windows服务器填写此项无效。</p>
                 <div class="input-group">
-                    <span class="input-group-addon">用户名</span>
+                    <span class="input-group-addon">用户名称</span>
                     <input id="server-user" type="text" class="form-control" placeholder="">
                 </div>
                 <div class="input-group">
-                    <span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-                    <input id="server-password" type="text" class="form-control" placeholder="">
+                    <span class="input-group-addon">验证方式</span>
+                    <select id="server-using-public-key" class="form-control">
+                        <option value="true">密钥验证</option>
+                        <option value="false">密码验证</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">验证凭据</span>
+                    <textarea id="server-credential" rows="10" class="form-control" placeholder="密码或public key的内容"></textarea>
                 </div>
             </div>
             <div class="modal-footer">

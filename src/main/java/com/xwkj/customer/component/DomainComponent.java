@@ -1,7 +1,9 @@
 package com.xwkj.customer.component;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.common.util.FileTool;
 import com.xwkj.common.util.HTTPTool;
+import com.xwkj.common.util.RumtimeTool;
 import com.xwkj.customer.dao.DomainDao;
 import com.xwkj.customer.domain.Domain;
 import com.xwkj.customer.domain.Server;
@@ -12,9 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
+import java.io.*;
 
 @Component
 @EnableScheduling
@@ -52,10 +52,15 @@ public class DomainComponent {
             // Replace the index file if the similarity is smaller than the value set before.
             if (similarity * 100 < domain.getSimilarity()) {
                 Server server = domain.getServer();
-                String cmd = "sshpass -p " + server.getPassword()
-                        + " scp -oStrictHostKeyChecking=no " + basePath + File.separator + domain.getDid() + File.separator + "index.html "
-                        + server.getUser() + "@" + server.getAddress() + ":" + domain.getPath();
-                run(cmd);
+                String cmd = null;
+                if (server.getUsingPublicKey()) {
+
+                } else {
+                    cmd = "sshpass -p " + server.getCredential()
+                            + " scp -oStrictHostKeyChecking=no " + basePath + File.separator + domain.getDid() + File.separator + "index.html "
+                            + server.getUser() + "@" + server.getAddress() + ":" + domain.getPath();
+                }
+                RumtimeTool.run(cmd);
                 domain.setAlert(true);
             }
             // Update check time.
@@ -65,23 +70,5 @@ public class DomainComponent {
         }
     }
 
-    private void run(String cmd) {
-        String[] cmds = {"/bin/bash", "-c",  cmd};
-        exec(cmds);
-    }
-
-    private void exec(String [] cmds) {
-        try {
-            Process process = Runtime.getRuntime().exec(cmds);
-            InputStreamReader ir = new InputStreamReader(process.getInputStream());
-            LineNumberReader input = new LineNumberReader(ir);
-            String line;
-            while ((line = input.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

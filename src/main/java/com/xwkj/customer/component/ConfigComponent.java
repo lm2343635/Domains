@@ -15,6 +15,8 @@ public class ConfigComponent {
     // Public document folder.
     public String PublicIndexFolder = "/files/index";
 
+    public String PublicKeyFolder = "/WEB-INF/publickeys";
+
     // Limitation of uploaded file.
     public int FileMaxSize = 512 * 1024 * 1024;
 

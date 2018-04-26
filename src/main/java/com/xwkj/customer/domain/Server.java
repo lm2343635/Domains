@@ -33,7 +33,10 @@ public class Server implements Serializable {
     private String user;
 
     @Column
-    private String password;
+    private Boolean usingPublicKey;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String credential;
 
     @Column
     private String remark;
@@ -94,12 +97,20 @@ public class Server implements Serializable {
         this.user = user;
     }
 
-    public String getPassword() {
-        return password;
+    public Boolean getUsingPublicKey() {
+        return usingPublicKey;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUsingPublicKey(Boolean usingPublicKey) {
+        this.usingPublicKey = usingPublicKey;
+    }
+
+    public String getCredential() {
+        return credential;
+    }
+
+    public void setCredential(String credential) {
+        this.credential = credential;
     }
 
     public String getRemark() {

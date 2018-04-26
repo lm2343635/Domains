@@ -68,7 +68,8 @@ $(document).ready(function () {
 
     $("#set-user-submit").click(function () {
         var user = $("#server-user").val();
-        var password = $("#server-password").val();
+        var usingPublicKey = $("#server-using-public-key").val();
+        var credential = $("#server-credential").val();
         var validate = true;
         if (user == "" || user == null) {
             $("#server-user").parent().addClass("has-error");
@@ -76,16 +77,16 @@ $(document).ready(function () {
         } else {
             $("#server-user").parent().removeClass("has-error");
         }
-        if (password == "" || password == null) {
-            $("#server-password").parent().addClass("has-error");
+        if (credential == "" || credential == null) {
+            $("#server-credential").parent().addClass("has-error");
             validate = false;
         } else {
-            $("#server-password").parent().removeClass("has-error");
+            $("#server-credential").parent().removeClass("has-error");
         }
         if (!validate) {
             return;
         }
-        ServerManager.setUser(editingSid, user, password, function (result) {
+        ServerManager.setUser(editingSid, user, usingPublicKey, credential, function (result) {
             if (!result.session) {
                 sessionError();
                 return;
@@ -103,6 +104,7 @@ $(document).ready(function () {
     $("#set-user-modal").on("hidden.bs.modal", function () {
         $("#set-user-modal .input-group").removeClass("has-error");
         $("#set-user-modal input").val("");
+        $("#set-user-modal textarea").val("");
         editingSid = null;
     });
 

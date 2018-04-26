@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.impl;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.ServerBean;
 import com.xwkj.customer.domain.Employee;
@@ -14,8 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RemoteProxy(name = "ServerManager")
@@ -99,7 +108,7 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
 
     @RemoteMethod
     @Transactional
-    public Result setUser(String sid, String user, String password, HttpSession session) {
+    public Result setUser(String sid, String user, boolean usingPublicKey, String credential, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
             return Result.NoSession();
@@ -113,8 +122,12 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
             return Result.WithData(false);
         }
         server.setUser(user);
-        server.setPassword(password);
+        server.setUsingPublicKey(usingPublicKey);
+        server.setCredential(credential);
         serverDao.update(server);
+        if (usingPublicKey) {
+            generatePublicKeyFile(server);
+        }
         return Result.WithData(true);
     }
 
@@ -138,6 +151,32 @@ public class ServerManagerImpl extends ManagerTemplate implements ServerManager 
         }
         serverDao.delete(server);
         return Result.WithData(true);
+    }
+
+    private boolean generatePublicKeyFile(Server server) {
+        if (!server.getUsingPublicKey()) {
+            return false;
+        }
+        String path = configComponent.rootPath + configComponent.PublicKeyFolder;
+        FileTool.createDirectoryIfNotExsit(path);
+        String pathname = path + File.separator + server.getSid();
+        File file = new File(pathname);
+        if (file.exists()) {
+            file.delete();
+        }
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(server.getCredential().getBytes());
+            out.close();
+            Set<PosixFilePermission> permissions = new HashSet<PosixFilePermission>();
+            permissions.add(PosixFilePermission.OWNER_READ);
+            permissions.add(PosixFilePermission.OWNER_WRITE);
+            Files.setPosixFilePermissions(Paths.get(pathname), permissions);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return file.exists();
     }
 
 }
