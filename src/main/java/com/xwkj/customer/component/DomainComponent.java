@@ -60,7 +60,7 @@ public class DomainComponent {
                 String cmd = basePath + File.separator + domain.getDid() + File.separator + "index.html "
                         + server.getUser() + "@" + server.getAddress() + ":" + domain.getPath();
                 if (server.getUsingPublicKey()) {
-                    cmd = "scp -i " + getPublicKeyPath(server) + " ";
+                    cmd = "scp -i " + getPublicKeyPath(server) + " " + cmd;
                 } else {
                     cmd = "sshpass -p " + server.getCredential() + " scp -oStrictHostKeyChecking=no " + cmd;
                 }
