@@ -2,6 +2,7 @@ package com.xwkj.customer.service.common;
 
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.component.ConfigComponent;
+import com.xwkj.customer.component.DomainComponent;
 import com.xwkj.customer.dao.*;
 import com.xwkj.customer.domain.Assign;
 import com.xwkj.customer.domain.Customer;
@@ -18,6 +19,9 @@ public class ManagerTemplate {
 
     @Autowired
     protected ConfigComponent configComponent;
+
+    @Autowired
+    protected DomainComponent domainComponent;
 
     @Autowired
     protected RoleDao roleDao;
