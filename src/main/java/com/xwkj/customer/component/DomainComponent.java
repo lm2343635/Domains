@@ -18,12 +18,16 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
 @EnableScheduling
 public class DomainComponent {
+
+    private static final int FixedRate = 1000 * 60 * 10;
 
     @Autowired
     private ConfigComponent config;
@@ -32,19 +36,29 @@ public class DomainComponent {
     private DomainDao domainDao;
 
     /**
-     * Monitoring domains every 10 minitus.
+     * Monitoring domains every 10 minitus (FixedRate).
      */
-    @Scheduled(fixedRate = 1000 * 60 * 10)
+    @Scheduled(fixedRate = FixedRate)
     @Transactional
     public void monitoring() {
         Long now = System.currentTimeMillis();
         String basePath = config.rootPath + config.PublicIndexFolder;
         NormalizedLevenshtein levenshtein = new NormalizedLevenshtein();
+
+        List<Domain> domains = new ArrayList<Domain>();
         for (Domain domain : domainDao.findMonitoring()) {
             long interval = Math.round((now - domain.getCheckAt()) * 1.0 / 1000);
             if (interval < domain.getFrequency() * 60 * 10) {
                 continue;
             }
+            domains.add(domain);
+        }
+
+        int sleep = (FixedRate / 2) / domains.size();
+        if (sleep > 10 * 1000) {
+            sleep = 10 * 1000;
+        }
+        for (Domain domain : domains) {
             String remote = null;
             String site = domain.getDomains().split(",")[0];
             if (site != null && !site.equals("")) {
@@ -71,6 +85,12 @@ public class DomainComponent {
             domain.setCheckAt(now);
             domainDao.update(domain);
             Debug.log(site + " has been checked, similarity = " + similarity);
+
+            try {
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
