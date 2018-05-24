@@ -54,9 +54,12 @@ public class DomainComponent {
             domains.add(domain);
         }
 
-        int sleep = (FixedRate / 2) / domains.size();
-        if (sleep > 10 * 1000) {
-            sleep = 10 * 1000;
+        int sleep = (int)(FixedRate * 0.9);
+        if (domains.size() > 0) {
+            sleep /= domains.size();
+            if (sleep > 10 * 1000) {
+                sleep = 10 * 1000;
+            }
         }
         for (Domain domain : domains) {
             String remote = null;
