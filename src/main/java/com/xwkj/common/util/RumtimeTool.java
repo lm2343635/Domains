@@ -5,12 +5,12 @@ import java.io.LineNumberReader;
 
 public class RumtimeTool {
 
-    public static void run(String cmd) {
+    public static boolean run(String cmd) {
         String[] cmds = {"/bin/bash", "-c",  cmd};
-        exec(cmds);
+        return exec(cmds);
     }
 
-    public static void exec(String [] cmds) {
+    public static boolean exec(String [] cmds) {
         try {
             Process process = Runtime.getRuntime().exec(cmds);
             InputStreamReader ir = new InputStreamReader(process.getInputStream());
@@ -19,8 +19,10 @@ public class RumtimeTool {
             while ((line = input.readLine()) != null) {
                 System.out.println(line);
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 

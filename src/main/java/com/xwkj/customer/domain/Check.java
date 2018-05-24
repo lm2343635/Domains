@@ -15,10 +15,13 @@ public class Check implements Serializable {
     private String cid;
 
     @Column(nullable = false)
+    private String url;
+
+    @Column(nullable = false)
     private Long checkAt;
 
     @Column(nullable = false)
-    private Integer similarity;
+    private Double similarity;
 
     @Column(nullable = false)
     private Boolean replaced;
@@ -35,6 +38,14 @@ public class Check implements Serializable {
         this.cid = cid;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public Long getCheckAt() {
         return checkAt;
     }
@@ -43,11 +54,11 @@ public class Check implements Serializable {
         this.checkAt = checkAt;
     }
 
-    public Integer getSimilarity() {
+    public Double getSimilarity() {
         return similarity;
     }
 
-    public void setSimilarity(Integer similarity) {
+    public void setSimilarity(Double similarity) {
         this.similarity = similarity;
     }
 
