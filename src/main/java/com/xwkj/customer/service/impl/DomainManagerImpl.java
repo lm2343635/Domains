@@ -195,6 +195,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         Server server = domain.getServer();
         server.setDomains(server.getDomains() - 1);
         serverDao.update(server);
+        checkDao.deleteByDomain(domain);
         domainDao.delete(domain);
         return Result.WithData(true);
     }
