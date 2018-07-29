@@ -171,25 +171,27 @@ public class DomainBean {
         this.sid = sid;
     }
 
-    public DomainBean(Domain domain) {
+    public DomainBean(Domain domain, boolean simple) {
         this.did = domain.getDid();
         this.name = domain.getName();
         this.domains = domain.getDomains();
-        this.language = domain.getLanguage();
-        this.resolution = domain.getResolution();
-        this.path = domain.getPath();
-        this.remark = domain.getRemark() == null ? "" : domain.getRemark();
-        this.highlight = domain.getHighlight();
-        this.createAt = new Date(domain.getCreateAt());
-        this.updateAt = new Date(domain.getUpdateAt());
-        this.sid = domain.getServer().getSid();
-        this.grabbed = domain.getGrabbed();
-        this.monitoring = domain.getMonitoring();
-        this.similarity = domain.getSimilarity();
-        this.frequency = domain.getFrequency();
-        this.alert = domain.getAlert();
-        this.checkAt = new Date(domain.getCheckAt());
-        this.customer = new CustomerBean(domain.getCustomer(), false);
+        if (!simple) {
+            this.language = domain.getLanguage();
+            this.resolution = domain.getResolution();
+            this.path = domain.getPath();
+            this.remark = domain.getRemark() == null ? "" : domain.getRemark();
+            this.highlight = domain.getHighlight();
+            this.createAt = new Date(domain.getCreateAt());
+            this.updateAt = new Date(domain.getUpdateAt());
+            this.sid = domain.getServer().getSid();
+            this.grabbed = domain.getGrabbed();
+            this.monitoring = domain.getMonitoring();
+            this.similarity = domain.getSimilarity();
+            this.frequency = domain.getFrequency();
+            this.alert = domain.getAlert();
+            this.checkAt = new Date(domain.getCheckAt());
+            this.customer = new CustomerBean(domain.getCustomer(), false);
+        }
     }
 
 }

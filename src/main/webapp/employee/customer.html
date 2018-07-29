@@ -35,6 +35,7 @@
     <script src="/dwr/interface/TypeManager.js"></script>
     <script src="/dwr/interface/ExpirationManager.js"></script>
     <script src="/dwr/interface/DocumentManager.js"></script>
+    <script src="/dwr/interface/DomainManager.js"></script>
     <script src="/static/js/employee/customer.js"></script>
     <style>
         #customer-panel .form-group,
@@ -269,6 +270,25 @@
             </div>
         </div>
         <div class="col-xs-12 col-md-6">
+            <div id="domain-panel" class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">
+                        <span>网站列表</span>
+                    </h1>
+                </div>
+                <div id="domain-list" class="list-group">
+                    <div class="list-group-item mengular-template domain-list-template">
+                        <p class="list-group-item-heading">${name}$</p>
+                        ${domains}$
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <i class="fa fa-globe text-success"></i>
+                    <h4 class="text-center text-muted">暂无网站</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
             <div id="document-panel" class="panel panel-default">
                 <div class="panel-heading">
                     <h1 class="panel-title">
@@ -294,25 +314,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-6">
-            <div id="domain-panel" class="panel panel-default">
-                <div class="panel-heading">
-                    <h1 class="panel-title">
-                        <span>网站列表</span>
-                    </h1>
-                </div>
-                <div id="domain-list" class="list-group">
-                    <div class="list-group-item mengular-template document-list-template">
-                        <h4 class="list-group-item-heading">${dname}$</h4>
-                        <a href="${domain}$"></a>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <i class="fa fa-globe text-success"></i>
-                    <h4 class="text-center text-muted">暂无网站</h4>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 <div id="customer-finish-modal" class="modal fade">

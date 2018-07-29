@@ -2,6 +2,7 @@ package com.xwkj.customer.dao.impl;
 
 import com.xwkj.common.hibernate.BaseHibernateDaoSupport;
 import com.xwkj.customer.dao.DomainDao;
+import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Domain;
 import com.xwkj.customer.domain.Server;
 import org.springframework.stereotype.Repository;
@@ -35,6 +36,11 @@ public class DomainDaoHibernate extends BaseHibernateDaoSupport<Domain> implemen
         String hql = "from Domain where name like ? or domains like ?";
         keyword = "%" + keyword + "%";
         return (List<Domain>)getHibernateTemplate().find(hql, keyword, keyword);
+    }
+
+    public List<Domain> findByCustomer(Customer customer) {
+        String hql = "from Domain where customer = ? order by createAt";
+        return (List<Domain>) getHibernateTemplate().find(hql, customer);
     }
 
 }

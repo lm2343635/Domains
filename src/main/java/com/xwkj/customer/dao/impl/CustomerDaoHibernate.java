@@ -113,5 +113,6 @@ public class CustomerDaoHibernate extends BaseHibernateDaoSupport<Customer> impl
         keyword = "%" + keyword + "%";
         return (List<Customer>)getHibernateTemplate().find(hql, keyword);
     }
+
 }
 

@@ -142,4 +142,13 @@ public interface DomainManager {
      */
     Result cancelAlert(String did, HttpSession session);
 
+    /**
+     * Get domains by customer id.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result getByCid(String cid, HttpSession session);
+
 }

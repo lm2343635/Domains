@@ -100,7 +100,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         }
         List<DomainBean> domainBeans = new ArrayList<DomainBean>();
         for (Domain domain : domainDao.findByServer(server)) {
-            domainBeans.add(new DomainBean(domain));
+            domainBeans.add(new DomainBean(domain, false));
         }
         return Result.WithData(domainBeans);
     }
@@ -116,7 +116,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         }
         List<DomainBean> domainBeans = new ArrayList<DomainBean>();
         for (Domain domain : domainDao.findHighlightDomains()) {
-            domainBeans.add(new DomainBean(domain));
+            domainBeans.add(new DomainBean(domain, false));
         }
         return Result.WithData(domainBeans);
     }
@@ -135,7 +135,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
             Debug.error("Cannot find a domain by this did.");
             return Result.WithData(null);
         }
-        return Result.WithData(new DomainBean(domain));
+        return Result.WithData(new DomainBean(domain, false));
     }
 
     @RemoteMethod
@@ -301,7 +301,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domain.setPage(page);
         domainDao.update(domain);
         return Result.WithData(new HashMap<String, Object>() {{
-            put("domain", new DomainBean(domain));
+            put("domain", new DomainBean(domain, false));
             put("page", page);
         }});
     }
@@ -346,4 +346,23 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         domainDao.update(domain);
         return Result.WithData(true);
     }
+
+    @RemoteMethod
+    public Result getByCid(String cid, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        Customer customer = customerDao.get(cid);
+        if (customer == null) {
+            Debug.error("Cannot find a customer by this cid");
+            return Result.WithData(null);
+        }
+        List<DomainBean> domainBeans = new ArrayList<>();
+        for (Domain domain : domainDao.findByCustomer(customer)) {
+            domainBeans.add(new DomainBean(domain, true));
+        }
+        return Result.WithData(domainBeans);
+    }
+
 }
