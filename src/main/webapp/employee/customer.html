@@ -61,12 +61,13 @@
         }
 
         #log-panel {
-            min-height: 322px;
+            min-height: 493px;
         }
 
         #log-panel .panel-body i,
         #document-panel .panel-body i,
-        #expiration-panel .panel-body i {
+        #expiration-panel .panel-body i,
+        #domain-panel .panel-body i {
             font-size: 3em;
             display: block;
             text-align: center;
@@ -262,7 +263,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <i class="fa fa-file-text text-warning"></i>
+                    <i class="fa fa-calendar text-warning"></i>
                     <h4 class="text-center text-muted">暂无到期时间</h4>
                 </div>
             </div>
@@ -290,6 +291,25 @@
                 <div class="panel-body">
                     <i class="fa fa-file-text text-info"></i>
                     <h4 class="text-center text-muted">暂无附件文档</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div id="domain-panel" class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 class="panel-title">
+                        <span>网站列表</span>
+                    </h1>
+                </div>
+                <div id="domain-list" class="list-group">
+                    <div class="list-group-item mengular-template document-list-template">
+                        <h4 class="list-group-item-heading">${dname}$</h4>
+                        <a href="${domain}$"></a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <i class="fa fa-globe text-success"></i>
+                    <h4 class="text-center text-muted">暂无网站</h4>
                 </div>
             </div>
         </div>
