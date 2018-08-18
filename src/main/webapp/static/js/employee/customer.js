@@ -51,7 +51,7 @@ $(document).ready(function () {
                 $("#customer-industry").val(customer.industry.iid);
             });
 
-            TypeManager.getAll(function (result) {
+            TypeManager.getByCategory(TypeCategoryExpiration, function (result) {
                 if (!result.session) {
                     return;
                 }
