@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     checkEmployeeSession(function () {
 
-        EmployeeManager.getAll(function (result) {
+        EmployeeManager.getEnable(function (result) {
             if (!result.session) {
                 sessionError();
                 return;
