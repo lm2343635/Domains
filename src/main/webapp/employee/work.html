@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/summernote.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/summernote.min.js"></script>
+    <script src="/static/js/summernote-zh-CN.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/WorkManager.js"></script>
+    <script src="/dwr/interface/ReplyManager.js"></script>
+    <script src="/static/js/employee/work.js"></script>
+    <style>
+        #add-reply {
+            margin-top: -19px;
+        }
+
+        #reply-list .reply-list-title {
+            padding-bottom: 4px;
+        }
+
+        #add-reply-submit {
+            margin-bottom: 20px;
+        }
+
+        #close-work {
+            display: none;
+        }
+
+        @media screen and (max-width: 768px) {
+            #reply-list .reply-list-template img {
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div id="work-panel" class="panel">
+        <div class="panel-heading">
+            <h1 class="panel-title">@{active}：@{title}</h1>
+            <button id="add-reply" class="btn btn-xs btn-success pull-right">回复</button>
+        </div>
+        <div id="reply-list" class="list-group">
+            <div class="list-group-item">
+                <h5 id="work-info">
+                    <strong class="text-success">工作任务发起人：@{sponsor}</strong>
+                    <strong class="text-danger pull-right">工作任务执行人：@{executor}</strong>
+                </h5>
+            </div>
+            <div id="${rid}$" class="list-group-item mengular-template reply-list-template">
+                <h5 class="reply-list-title">
+                    <strong class="${state}$">${employee}$</strong>
+                    <span class="text-muted pull-right">回复于${createAt}$</span>
+                </h5>
+                <div>${content}$</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <span class="pull-right">共<span id="work-replys">@{replys}</span>人回复</span>
+        </div>
+    </div>
+    <div id="add-reply-content"></div>
+    <button id="close-work" class="btn btn-warning">结束工作任务</button>
+    <button id="add-reply-submit" class="btn btn-success pull-right">提交回复</button>
+</div>
+</body>
+</html>

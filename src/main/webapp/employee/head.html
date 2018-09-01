@@ -12,15 +12,38 @@
                 <li><a href="documents.html">公共文档</a></li>
                 <li><a href="customers.html">客户管理</a></li>
                 <li><a href="employees.html">员工管理</a></li>
+                <li><a href="works.html">工作管理</a></li>
                 <li><a href="expirations.html">到期管理</a></li>
                 <li><a href="servers.html">网站管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="javascript:void(0)"><i class="fa fa-lg fa-search" data-toggle="modal" data-target="#global-search-modal"></i></a></li>
                 <li><a href="/logout/employee">退出</a></li>
             </ul>
         </div>
     </div>
 </nav>
+<div id="global-search-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="glyphicon glyphicon-remove pull-right" data-dismiss="modal"></span>
+                <h4 class="modal-title">全局搜索</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-success">全局搜索客户名称、网站名称、网站域名。</p>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lg fa-search"></i></span>
+                    <input id="global-search-keyword" type="text" class="form-control" placeholder="输入关键词">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+                <button id="global-search-submit" type="button" class="btn btn-success">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     var map = {
         bulletins: 0,
@@ -33,9 +56,23 @@
         creates: 4,
         logs: 4,
         salaries: 4,
-        expirations: 5,
-        servers: 6,
-        domains: 6
+        works: 5,
+        work: 5,
+        expirations: 6,
+        servers: 7,
+        domains: 7
     }
+
     $("#menu-bar>li").eq(map[getPageFullName().split(".")[0]]).addClass("active");
+
+    $("#global-search-submit").click(function () {
+        var keyword = $("#global-search-keyword").val();
+        if (keyword == null || keyword == "") {
+            $("#global-search-keyword").parent().addClass("has-error");
+            return;
+        } else {
+            $("#global-search-keyword").parent().removeClass("has-error");
+        }
+        location.href = "search.html?keyword=" + encodeURIComponent(keyword);
+    });
 </script>

@@ -8,7 +8,7 @@ $(document).ready(function () {
             return;
         }
 
-        TypeManager.getAll(function (result) {
+        TypeManager.getByCategory(TypeCategoryExpiration, function (result) {
             if (!result.session) {
                 return;
             }

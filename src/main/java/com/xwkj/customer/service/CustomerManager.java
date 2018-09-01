@@ -56,6 +56,15 @@ public interface CustomerManager {
     Result search(int state, String name, String aid, String iid, int lower, int higher, int page, int pageSize, HttpSession session);
 
     /**
+     * Search developed customers for creating or editing a domain.
+     *
+     * @param name
+     * @param session
+     * @return
+     */
+    Result searchForDomain(String name, HttpSession session);
+
+    /**
      * Get a customer for a employee.
      *
      * @param cid

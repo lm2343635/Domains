@@ -1,13 +1,24 @@
 var pageSize = 20;
+var page = 1;
+var end = false;
 var eid = null;
+var bulletinPrivilege = false;
 
 $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
         eid = employee.eid;
+        bulletinPrivilege = employee.role.bulletin == RolePrevilgeHold;
 
         loadTopBulletins();
-        loadUntopBulletins(1);
+        loadUntopBulletins(page);
+    });
+
+    $(window).scroll(function () {
+        if ($(document).scrollTop() >= $(document).height() - $(window).height() && !end) {
+            page++;
+            loadUntopBulletins(page);
+        }
     });
 
 });
@@ -26,10 +37,11 @@ function loadTopBulletins() {
                 bid: bulletin.bid,
                 employee: bulletin.employee.name,
                 createAt: bulletin.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: bulletin.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 content: bulletin.content
             });
 
-            if (bulletin.employee.eid == eid) {
+            if (bulletin.employee.eid == eid || bulletinPrivilege) {
                 $("#" + bulletin.bid + " .bulletin-list-untop").click(function () {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
@@ -57,23 +69,30 @@ function loadTopBulletins() {
 }
 
 function loadUntopBulletins(page) {
+    $("#loading").show();
+
     BulletinManager.getUntopByPage(page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;
         }
+        $("#loading").hide();
+        if (result.data.length == 0) {
+            end = true;
+            return;
+        }
 
-        $("#bulletin-list").mengularClear();
         for (var i in result.data) {
             var bulletin = result.data[i];
             $("#bulletin-list").mengular(".bulletin-list-template", {
                 bid: bulletin.bid,
                 employee: bulletin.employee.name,
                 createAt: bulletin.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
+                updateAt: bulletin.updateAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 content: bulletin.content
             });
 
-            if (bulletin.employee.eid == eid) {
+            if (bulletin.employee.eid == eid || bulletinPrivilege) {
                 $("#" + bulletin.bid + " .bulletin-list-top").click(function () {
                     var bid = $(this).mengularId();
                     var info = $("#" + bid + " .bulletin-list-info").text();
@@ -98,6 +117,7 @@ function loadUntopBulletins(page) {
             }
 
         }
+
     });
 }
 

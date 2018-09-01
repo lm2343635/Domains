@@ -3,6 +3,7 @@ package com.xwkj.customer.dao;
 import com.xwkj.common.hibernate.BaseDao;
 import com.xwkj.customer.domain.Customer;
 import com.xwkj.customer.domain.Document;
+import com.xwkj.customer.domain.Type;
 
 import java.util.List;
 
@@ -19,15 +20,18 @@ public interface DocumentDao extends BaseDao<Document> {
     /**
      * Get number of public documents.
      *
+     * @param type
      * @param filename
      * @param start
      * @param end
      * @return
      */
-    int getPublicCount(String filename, Long start, Long end);
+    int getPublicCount(Type type, String filename, Long start, Long end);
 
     /**
      * Find all public documents by file name and update date.
+     *
+     * @param type
      * @param filename
      * @param start
      * @param end
@@ -35,7 +39,7 @@ public interface DocumentDao extends BaseDao<Document> {
      * @param pageSize
      * @return
      */
-    List<Document> findPublic(String filename, Long start, Long end, int offset, int pageSize);
+    List<Document> findPublic(Type type, String filename, Long start, Long end, int offset, int pageSize);
 
     /**
      * Find all public documents.

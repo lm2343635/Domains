@@ -3,11 +3,9 @@ package com.xwkj.customer.service.impl;
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.AssignBean;
 import com.xwkj.customer.bean.EmployeeBean;
+import com.xwkj.customer.bean.GlobalSearch;
 import com.xwkj.customer.bean.Result;
-import com.xwkj.customer.domain.Assign;
-import com.xwkj.customer.domain.Customer;
-import com.xwkj.customer.domain.Employee;
-import com.xwkj.customer.domain.Role;
+import com.xwkj.customer.domain.*;
 import com.xwkj.customer.service.EmployeeManager;
 import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
@@ -17,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RemoteProxy(name = "EmployeeManager")
@@ -61,7 +58,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         Role role = roleDao.get(rid);
@@ -83,7 +80,7 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         Role role = employee.getRole();
@@ -95,20 +92,36 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         return true;
     }
 
-    @RemoteMethod
     @Transactional
+    @RemoteMethod
     public boolean resetPassword(String eid, String password, HttpSession session) {
         if (!checkAdminSession(session)) {
             return false;
         }
         Employee employee = employeeDao.get(eid);
         if (employee == null) {
-            Debug.error("Cannot find a employee by this eid.");
+            Debug.error("Cannot find an employee by this eid.");
             return false;
         }
         employee.setPassword(password);
         employeeDao.update(employee);
         return true;
+    }
+
+    @Transactional
+    @RemoteMethod
+    public Result enable(String eid, boolean enable, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return Result.NoSession();
+        }
+        Employee employee = employeeDao.get(eid);
+        if (employee == null) {
+            Debug.error("Cannot find an employee by this eid.");
+            return Result.WithData(false);
+        }
+        employee.setEnable(enable);
+        employeeDao.update(employee);
+        return Result.WithData(true);
     }
 
     // ************* For admin & employee *************
@@ -120,15 +133,8 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         if (!admin && employee == null) {
             return Result.NoSession();
         }
-        List<Employee> employees = null;
-        if (admin || employee.getRole().getEmployee() == RoleManager.RolePrivilgeHold) {
-            employees = employeeDao.findAll("createAt", true);
-        } else {
-            employees = new ArrayList<Employee>();
-            employees.add(employee);
-        }
         List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
-        for (Employee e : employees) {
+        for (Employee e : employeeDao.findAll("createAt", true)) {
             employeeBeans.add(new EmployeeBean(e, true));
         }
         return Result.WithData(employeeBeans);
@@ -155,18 +161,22 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     // ************* For employee ****************
 
     @RemoteMethod
-    public boolean login(String username, String password, HttpSession session) {
+    public Result login(String username, String password, HttpSession session) {
         Employee employee = employeeDao.getByName(username);
         if (employee == null) {
             Debug.error("Cannot find a employee by this name.");
-            return false;
+            return Result.WithData(EmployeeLoginNotFound);
         }
         if (!employee.getPassword().equals(password)) {
             Debug.error("Password error.");
-            return false;
+            return Result.WithData(EmployeeLoginWrongPassword);
+        }
+        if (!employee.getEnable()) {
+            Debug.error("This user is not enable now.");
+            return Result.WithData(EmployeeLoginNotEnable);
         }
         session.setAttribute(EmployeeFlag, employee.getEid());
-        return true;
+        return Result.WithData(EmployeeLoginSuccess);
     }
 
     @RemoteMethod
@@ -222,6 +232,19 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
     }
 
     @RemoteMethod
+    public Result getEnable(HttpSession session) {
+        Employee manager = getEmployeeFromSession(session);
+        if (manager == null) {
+            return Result.NoPrivilege();
+        }
+        List<EmployeeBean> employeeBeans = new ArrayList<EmployeeBean>();
+        for (Employee employee : employeeDao.findByEnable(true)) {
+            employeeBeans.add(new EmployeeBean(employee, true));
+        }
+        return Result.WithData(employeeBeans);
+    }
+
+    @RemoteMethod
     public Result assignForCustomer(String cid, HttpSession session) {
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -253,6 +276,33 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
             }
         }
         return Result.WithData(assignBean);
+    }
+
+    @RemoteMethod
+    public Result globalSearch(String keyword, HttpSession session) {
+        Employee employee = getEmployeeFromSession(session);
+        if (employee == null) {
+            return Result.NoSession();
+        }
+        final List<GlobalSearch> customers = new ArrayList<GlobalSearch>();
+        for (Customer customer : customerDao.globalSearch(keyword)) {
+            customers.add(new GlobalSearch(GlobalSearch.GlobalSearchCustomer,
+                    customer.getName(),
+                    new Date(customer.getUpdateAt()),
+                    customer.getCid()));
+        }
+        final List<GlobalSearch> domains = new ArrayList<GlobalSearch>();
+        for (Domain domain : domainDao.globalSearch(keyword)) {
+            domains.add(new GlobalSearch(GlobalSearch.GlobalSearchDomain,
+                    domain.getName() + "(" + domain.getDomains() + ")",
+                    new Date(domain.getUpdateAt()),
+                    domain.getDid(),
+                    domain.getServer().getSid()));
+        }
+        return Result.WithData(new HashMap<Integer, List>() {{
+            put(GlobalSearch.GlobalSearchCustomer, customers);
+            put(GlobalSearch.GlobalSearchDomain, domains);
+        }});
     }
 
 }

@@ -14,6 +14,7 @@ public class ReportBean {
     private String title;
     private String content;
     private EmployeeBean employee;
+    private TypeBean type;
 
     public String getRid() {
         return rid;
@@ -63,12 +64,21 @@ public class ReportBean {
         this.employee = employee;
     }
 
+    public TypeBean getType() {
+        return type;
+    }
+
+    public void setType(TypeBean type) {
+        this.type = type;
+    }
+
     public ReportBean(Report report, boolean full) {
-        this.rid = report.getLid();
+        this.rid = report.getRid();
         this.createAt = new Date(report.getCreateAt());
         this.updateAt = new Date(report.getUpdateAt());
         this.title = report.getTitle();
         this.employee = new EmployeeBean(report.getEmployee(), false);
+        this.type = new TypeBean(report.getType());
         if (full) {
             this.content = report.getContent();
         }

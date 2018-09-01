@@ -23,8 +23,6 @@ $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
         $("#charset-modal").modal("show");
-
-
     });
 
     $("#charset-submit").click(function () {
@@ -42,8 +40,6 @@ $(document).ready(function () {
             var domain = result.data.domain;
             document.title = document.title + domain.name;
 
-            $("#view").attr("src", "http://" + domain.domains.split(",")[0]);
-
             page = result.data.page;
             $("#code pre").text(tidy_html5(page, options));
         });
@@ -56,7 +52,7 @@ $(document).ready(function () {
         }
         var charset = $("#charset").val();
         $.messager.confirm("保存为标准页面", "确认保存该页面为该网站的标准页面用于差异检测吗？", function () {
-            DomainManager.savePage(did, charset, page, function (result) {
+            DomainManager.savePage(did, charset, function (result) {
                 if (!result.session) {
                     sessionError();
                     return;

@@ -36,6 +36,10 @@ public class Document implements Serializable {
     @JoinColumn(name = "eid")
     private Employee employee;
 
+    @ManyToOne
+    @JoinColumn(name = "tid")
+    private Type type;
+
     public static String[] getUnits() {
         return units;
     }
@@ -94,6 +98,14 @@ public class Document implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getSizeString() {

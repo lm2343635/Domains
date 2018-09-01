@@ -51,7 +51,7 @@ $(document).ready(function () {
                 $("#customer-industry").val(customer.industry.iid);
             });
 
-            TypeManager.getAll(function (result) {
+            TypeManager.getByCategory(TypeCategoryExpiration, function (result) {
                 if (!result.session) {
                     return;
                 }
@@ -171,10 +171,11 @@ $(document).ready(function () {
                 addManager(assinableEmployees[i]);
             }
 
-            // Show all logs, expirations and documents.
+            // Show all logs, domains, expirations and documents.
             loadLogs();
             loadExpirations();
             loadDocuments();
+            loadDomains()
         });
     });
     
@@ -750,6 +751,33 @@ function loadDocuments() {
                         $("#" + did).remove();
                     });
                 });
+            });
+        }
+    });
+}
+
+function loadDomains() {
+    DomainManager.getByCid(cid, function (result) {
+        if (!result.session) {
+            sessionError();
+            return;
+        }
+        $("#domain-list").mengularClear();
+        if (result.data.length > 0) {
+            $("#domain-panel .panel-body").hide();
+        }
+
+        for (var i in result.data) {
+            var domain = result.data[i];
+            var domains = "";
+            var sites = domain.domains.split(",")
+            for (var i in sites) {
+                var site = sites[i];
+                domains += "<a href='http://" + site + "' target='_blank'>" + site + "</a> "
+            }
+            $("#domain-list").mengular(".domain-list-template", {
+                name: domain.name,
+                domains: domains
             });
         }
     });

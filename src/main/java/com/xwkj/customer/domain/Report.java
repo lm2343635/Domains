@@ -9,10 +9,17 @@ import java.io.Serializable;
 @Table(name = "customer_report")
 public class Report implements Serializable {
 
+    /**
+     * Change key name from lid to rid.
+     ALTER TABLE `customer`.`customer_report`
+     CHANGE COLUMN `lid` `rid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL FIRST,
+     DROP PRIMARY KEY,
+     ADD PRIMARY KEY (`rid`) USING BTREE;
+     */
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    private String lid;
+    private String rid;
 
     @Column(nullable = false)
     private Long createAt;
@@ -30,12 +37,20 @@ public class Report implements Serializable {
     @JoinColumn(name = "eid", nullable = false)
     private Employee employee;
 
-    public String getLid() {
-        return lid;
+    /**
+     * Update tid for all reports;
+     update customer_report set tid = '402885ec617332dc0161733323f90000';
+     */
+    @ManyToOne
+    @JoinColumn(name = "tid", nullable = false)
+    private Type type;
+
+    public String getRid() {
+        return rid;
     }
 
-    public void setLid(String lid) {
-        this.lid = lid;
+    public void setRid(String rid) {
+        this.rid = rid;
     }
 
     public Long getCreateAt() {
@@ -76,6 +91,14 @@ public class Report implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
 }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>全局搜索</title>
+    <link href="/static/images/favicon.ico" type="image/x-icon" rel="icon">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/mengular.css" rel="stylesheet">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.bootstrap.min.js"></script>
+    <script src="/static/js/mengular.js"></script>
+    <script src="/static/js/tools.js"></script>
+    <script src="/dwr/engine.js"></script>
+    <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/static/js/employee/search.js"></script>
+
+</head>
+<body>
+<div class="container">
+    <div id="head">
+        <script>$("#head").load("head.html");</script>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4>关键词：<span id="keyword"></span> 的搜索结果</h4>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span id="customers">0</span>
+                <span>个客户</span>
+            </h1>
+        </div>
+        <div id="customer-list" class="list-group">
+            <div id="${cid}$" class="list-group-item mengular-template customer-list-template">
+                <a href="customer.html?cid=${cid}$" target="_blank">${description}$</a>
+                <p class="text-muted pull-right">更新于${updateAt}$</p>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <span id="domains">0</span>
+                <span>个网站</span>
+            </h1>
+        </div>
+        <div id="domain-list" class="list-group">
+            <div id="${did}$" class="list-group-item mengular-template domain-list-template">
+                <a href="domains.html?sid=${sid}$#${did}$" target="_blank">${description}$</a>
+                <p class="text-muted pull-right">更新于${updateAt}$</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

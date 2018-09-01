@@ -126,6 +126,22 @@ function loadEmployees() {
                 $("#reset-password-title").text(name);
                 $("#reset-password-modal").modal("show");
             });
+            
+            $("#" + employee.eid + " .employee-list-enable input").bootstrapSwitch({
+                state: employee.enable
+            }).on("switchChange.bootstrapSwitch", function (event, state) {
+                var eid = $(this).mengularId();
+                EmployeeManager.enable(eid, state, function(result) {
+                    if (!result.session) {
+                        sessionError();
+                        return;
+                    }
+                    if (!result.data) {
+                        $.messager.popup("更改状态失败！");
+                        return;
+                    }
+                });
+            });
 
             $("#" + employee.eid + " .employee-list-edit").click(function () {
                 editingEid = $(this).mengularId();

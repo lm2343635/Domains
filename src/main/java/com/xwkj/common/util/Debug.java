@@ -9,4 +9,8 @@ public class Debug {
         System.err.println(new Date() + " " + method + ": " + message);
     }
 
+    public static void log(String message) {
+        System.err.println(new Date() + ": " + message);
+    }
+
 }

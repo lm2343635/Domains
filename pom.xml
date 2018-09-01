@@ -112,6 +112,11 @@
             <artifactId>dwr</artifactId>
             <version>3.0.2-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>info.debatty</groupId>
+            <artifactId>java-string-similarity</artifactId>
+            <version>1.0.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -122,6 +127,14 @@
                 <configuration>
                     <url>http://localhost:8080/</url>
                     <server>Tomcat</server>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

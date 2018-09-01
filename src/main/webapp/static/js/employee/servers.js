@@ -65,7 +65,49 @@ $(document).ready(function () {
         $("#add-server-modal input").val("");
         editingSid = null;
     });
-    
+
+    $("#set-user-submit").click(function () {
+        var user = $("#server-user").val();
+        var usingPublicKey = $("#server-using-public-key").val();
+        var credential = $("#server-credential").val();
+        var validate = true;
+        if (user == "" || user == null) {
+            $("#server-user").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#server-user").parent().removeClass("has-error");
+        }
+        if (credential == "" || credential == null) {
+            $("#server-credential").parent().addClass("has-error");
+            validate = false;
+        } else {
+            $("#server-credential").parent().removeClass("has-error");
+        }
+        if (!validate) {
+            return;
+        }
+        ServerManager.setUser(editingSid, user, usingPublicKey, credential, function (result) {
+            if (!result.session) {
+                sessionError();
+                return;
+            }
+            if (!result.privilege) {
+                $.messager.popup("当前用户无权限更改该服务器！");
+                return;
+            }
+            $("#set-user-modal").modal("hide");
+            $.messager.popup("Linux用户名密码设置成功！");
+            $("#" + editingSid + " .server-list-user").removeClass("text-muted").addClass("text-warning");
+        });
+    });
+
+    $("#set-user-modal").on("hidden.bs.modal", function () {
+        $("#set-user-modal .input-group").removeClass("has-error");
+        $("#set-user-modal input").val("");
+        $("#set-user-modal textarea").val("");
+        editingSid = null;
+    });
+
 });
 
 function loadServers(done) {
@@ -93,6 +135,15 @@ function loadServers(done) {
                 address: server.address,
                 domains: server.domains,
                 remark: server.remark
+            });
+
+            if (server.user != null) {
+                $("#" + server.sid + " .server-list-user").removeClass("text-muted").addClass("text-warning");
+            }
+
+            $("#" + server.sid + " .server-list-user").click(function () {
+                editingSid = $(this).mengularId();
+                $("#set-user-modal").modal("show");
             });
             
             $("#" + server.sid + " .server-list-edit").click(function () {

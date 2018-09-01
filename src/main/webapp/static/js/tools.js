@@ -23,6 +23,11 @@ function sessionError() {
     location.href = "session.html?redirect=" + redirect;
 }
 
+function linkError() {
+    var redirect = encodeURIComponent(location.href);
+    location.href = "link.html?redirect=" + redirect;
+}
+
 var RolePrevilgeNone = 0;
 var RolePrevilgeAssign = 1;
 var RolePrevilgeHold = 2;
@@ -32,7 +37,17 @@ var CustomerStateDeveloping = 1;
 var CustomerStateDeveloped = 2;
 var CustomerStateLost = 3;
 
+var TypeCategoryExpiration = 0;
+var TypeCategoryReport = 1;
+var TypeCategoryDocument = 2;
+
+var EmployeeLoginSuccess = 0;
+var EmployeeLoginNotFound = 1;
+var EmployeeLoginWrongPassword = 2;
+var EmployeeLoginNotEnable = 3;
+
 var CustomerStateNames = ["未开发", "待开发", "已开发", "已流失"];
+var TypeCategoryNames = ["到期", "报告", "文档"];
 
 if ($.messager != undefined) {
     $.messager.model = {

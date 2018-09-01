@@ -26,6 +26,13 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private String resolution;
 
+    /**
+     * SQL to update path.
+
+     update customer_domain set path = concat('/data/wwwroot/', path) where language like '%PHP%';
+     update customer_domain set path = concat('/data/webapps/', path) where language like '%Java%';
+     update customer_domain set path = concat('C:\\home\\root\\', path) where language like '%ASP%';
+     */
     @Column(nullable = false)
     private String path;
 
@@ -44,24 +51,43 @@ public class Domain implements Serializable {
     @Column(nullable = false)
     private Long updateAt;
 
+    @Column(nullable = false)
+    private Boolean grabbed;
+
     @Column
     private String charset;
 
     @Column(columnDefinition = "LONGTEXT")
     private String page;
 
-    @Column(columnDefinition = "LONGTEXT")
-    private String checked;
+    @Column(nullable = false)
+    private Boolean monitoring;
 
-    @Column
+    @Column(nullable = false)
     private Long checkAt;
 
-    @Column
+    @Column(nullable = false)
+    private Boolean alert;
+
+    /**
+     update customer_domain set frequency = 1, similarity = 100;
+     */
+    @Column(nullable = false)
     private Integer similarity;
+
+    @Column(nullable = false)
+    private Integer frequency;
 
     @ManyToOne
     @JoinColumn(name = "sid", nullable = false)
     private Server server;
+
+    /**
+     update customer_domain set cid = '2c9f42425f6b8f7d015f7004bac3004e';
+     */
+    @ManyToOne
+    @JoinColumn(name = "cid", nullable = false)
+    private Customer customer;
 
     public String getDid() {
         return did;
@@ -151,6 +177,14 @@ public class Domain implements Serializable {
         this.updateAt = updateAt;
     }
 
+    public Boolean getGrabbed() {
+        return grabbed;
+    }
+
+    public void setGrabbed(Boolean grabbed) {
+        this.grabbed = grabbed;
+    }
+
     public String getCharset() {
         return charset;
     }
@@ -167,12 +201,12 @@ public class Domain implements Serializable {
         this.page = page;
     }
 
-    public String getChecked() {
-        return checked;
+    public Boolean getMonitoring() {
+        return monitoring;
     }
 
-    public void setChecked(String checked) {
-        this.checked = checked;
+    public void setMonitoring(Boolean monitoring) {
+        this.monitoring = monitoring;
     }
 
     public Long getCheckAt() {
@@ -183,12 +217,28 @@ public class Domain implements Serializable {
         this.checkAt = checkAt;
     }
 
+    public Boolean getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Boolean alert) {
+        this.alert = alert;
+    }
+
     public Integer getSimilarity() {
         return similarity;
     }
 
     public void setSimilarity(Integer similarity) {
         this.similarity = similarity;
+    }
+
+    public Integer getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Integer frequency) {
+        this.frequency = frequency;
     }
 
     public Server getServer() {
@@ -199,4 +249,11 @@ public class Domain implements Serializable {
         this.server = server;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

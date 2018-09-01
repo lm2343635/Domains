@@ -15,6 +15,7 @@ public class DocumentBean {
     private Date uploadAt;
     private String employee;
     private String cid;
+    private TypeBean type;
 
     public String getDid() {
         return did;
@@ -72,6 +73,14 @@ public class DocumentBean {
         this.employee = employee;
     }
 
+    public TypeBean getType() {
+        return type;
+    }
+
+    public void setType(TypeBean type) {
+        this.type = type;
+    }
+
     public DocumentBean(Document document, boolean full) {
         this.did = document.getDid();
         this.filename = document.getFilename();
@@ -79,6 +88,7 @@ public class DocumentBean {
         this.uploadAt = new Date(document.getUploadAt());
         this.employee = document.getEmployee().getName();
         this.cid = document.getCustomer() == null ? null : document.getCustomer().getCid();
+        this.type = document.getType() == null ? null : new TypeBean(document.getType());
         if (full) {
             this.store = document.getStore();
         }

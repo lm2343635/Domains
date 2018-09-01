@@ -1,37 +1,58 @@
 var pageSize = 10;
+var tid = request("tid");
 
 $(document).ready(function () {
 
-    checkEmployeeSession(function () {
-        searchPublicDocuments(null, null, null, 1);
-    });
+    checkEmployeeSession(function (employee) {
+        TypeManager.getByCategory(TypeCategoryDocument, function(result) {
+            if (!result.session) {
+                return;
+            }
+            for (var i in result.data) {
+                var type = result.data[i];
+                $("#document-types").mengular(".document-type-template", {
+                    tid: type.tid,
+                    name: type.name
+                });
+            }
+            $("#document-types").mengularClearTemplate();
 
-    $("#upload-document").fileupload({
-        autoUpload: true,
-        url: "/document/upload/public",
-        dataType: "json",
-        start: function (e) {
-            $("#document-upload-modal").modal("show");
-        },
-        done: function (e, data) {
-            if (data.result.status == 801) {
-                sessionError();
-                return;
+            if (tid == null || tid == "") {
+                tid = result.data[0].tid;
             }
-            if (data.result.status == 803) {
-                $.messager.popup("刷新页面重试！");
-                return;
-            }
-            loadPublicDocuments();
-            setTimeout(function () {
-                $("#document-upload-modal").modal("hide");
-            }, 1000);
-        },
-        progressall: function (e, data) {
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-            $("#document-upload-progress .progress-bar").css("width", progress + "%");
-            $("#document-upload-progress .progress-bar").text(progress + "%");
-        }
+            $("#" + tid).addClass("active");
+
+            searchPublicDocuments(null, null, null, 1);
+
+            $("#upload-document").fileupload({
+                autoUpload: true,
+                url: "/document/upload/public?tid=" + tid,
+                dataType: "json",
+                start: function (e) {
+                    $("#document-upload-modal").modal("show");
+                },
+                done: function (e, data) {
+                    if (data.result.status == 801) {
+                        sessionError();
+                        return;
+                    }
+                    if (data.result.status == 803) {
+                        $.messager.popup("刷新页面重试！");
+                        return;
+                    }
+                    searchPublicDocuments(null, null, null, 1);
+                    setTimeout(function () {
+                        $("#document-upload-modal").modal("hide");
+                    }, 1000);
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $("#document-upload-progress .progress-bar").css("width", progress + "%");
+                    $("#document-upload-progress .progress-bar").text(progress + "%");
+                }
+            });
+        });
+
     });
 
     $("#search-document-start, #search-document-end").datetimepicker({
@@ -58,7 +79,7 @@ $(document).ready(function () {
 });
 
 function searchPublicDocuments(filename, start, end, page) {
-    DocumentManager.getSearchPublicCount(filename, start, end, function (result) {
+    DocumentManager.getSearchPublicCount(tid, filename, start, end, function (result) {
         if (!result.session) {
             sessionError();
             return;
@@ -87,7 +108,7 @@ function searchPublicDocuments(filename, start, end, page) {
         });
     });
 
-    DocumentManager.searchPublic(filename, start, end, page, pageSize, function (result) {
+    DocumentManager.searchPublic(tid, filename, start, end, page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;

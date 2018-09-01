@@ -20,6 +20,7 @@
     <script src="/dwr/interface/EmployeeManager.js"></script>
     <script src="/dwr/interface/ServerManager.js"></script>
     <script src="/dwr/interface/DomainManager.js"></script>
+    <script src="/dwr/interface/CustomerManager.js"></script>
     <script src="/static/js/employee/domains.js"></script>
     <style>
         #add-domain {
@@ -40,6 +41,10 @@
             margin-bottom: 3px;
         }
 
+        #domain-list .domain-list-template .domain-list-alert {
+            margin-left: 10px;
+        }
+
         #domain-list .domain-list-template i {
             cursor: pointer;
             margin: 5px;
@@ -51,6 +56,28 @@
 
         #add-domain-modal .input-group {
             margin-bottom: 5px;
+        }
+
+        #add-domain-customer .dropdown-menu {
+            width: 100%;
+        }
+
+        #add-domain-customer .dropdown-menu .customer-keyword {
+            width: 100%;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        #add-domain-customer .dropdown-menu .customer-search {
+            margin: 2px;
+        }
+
+        #search-panel .row div {
+            margin-bottom: 3px;
+        }
+
+        #search-submit {
+            margin-left: 3px;
         }
 
     </style>
@@ -67,20 +94,67 @@
                 <i id="add-domain" class="fa fa-lg fa-plus pull-right text-primary" data-toggle="modal" data-target="#add-domain-modal"></i>
             </h1>
         </div>
+        <div id="search-panel" class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-domain-name" type="text" class="form-control" placeholder="网站名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-globe"></i></span>
+                        <input id="search-domain-domain" type="text" class="form-control" placeholder="域名">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-user"></i></span>
+                        <input id="search-domain-customer" type="text" class="form-control" placeholder="客户名称">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-2">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lg fa-code"></i></span>
+                        <select id="search-domain-language" class="form-control">
+                            <option value="">请选择语言</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <div id="search-customer-alert" class="btn-group">
+                        <button class="btn btn-default">所有</button>
+                        <button class="btn btn-default">报警</button>
+                        <button class="btn btn-default">正常</button>
+                    </div>
+                    <button id="search-submit" class="btn btn-primary pull-right">搜索</button>
+                    <button id="search-reset" class="btn btn-info pull-right">重置</button>
+                </div>
+            </div>
+        </div>
         <div id="domain-list" class="list-group">
             <div id="${did}$" class="list-group-item mengular-template domain-list-template ${highlight}$">
                 <p class="text-muted">
-                    <span>更新于${updateAt}$</span>
-                    <span class="pull-right">${language}$，${resolution}$解析，路径：${path}$</span>
+                    <span>更新于${updateAt}$，${language}$，${resolution}$解析，路径：${path}$</span>
+                    <button class="domain-list-alert btn btn-xs btn-danger pull-right">报警中</button>
+                    <span class="domain-list-check pull-right">间隔${frequency}$分，相似度阈值${similarity}$%，检查于${checkAt}$ </span>
                 </p>
                 <span class="domain-list-name">${name}$</span>
                 <span>${domains}$</span>
-                <i class="fa fa-lg fa-trash-o text-danger pull-right domain-list-remove"></i>
-                <a href="page.html?did=${did}$" target="_blank" class="pull-right domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
-                <i class="fa fa-lg fa-random text-primary pull-right domain-list-transfer"></i>
-                <i class="fa fa-lg fa-gear text-success pull-right domain-list-edit"></i>
-                <div class="pull-right"><input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight"></div>
-                <p class="domain-list-remark text-muted">${remark}$</p>
+                <div class="pull-right">
+                    <input type="checkbox" data-size="mini" data-on-color="danger" data-on-text="监控" data-off-text="暂停" class="domain-list-monitoring">
+                    <a href="page.html?did=${did}$" target="_blank" class="domain-list-grab"><i class="fa fa-lg fa-download"></i></a>
+                    &nbsp;
+                    <input type="checkbox" data-size="mini" data-on-text="处理" data-off-text="正常" class="domain-list-highlight">
+                    <i class="fa fa-lg fa-random text-primary domain-list-transfer"></i>
+                    <i class="fa fa-lg fa-gear text-success domain-list-edit"></i>
+                    <i class="fa fa-lg fa-trash-o text-danger domain-list-remove"></i>
+                </div>
+                <div>
+                    <a href="customer.html?cid=${cid}$" target="_blank">所属客户：${cname}$</a>
+                    <p class="domain-list-remark text-muted">${remark}$</p>
+                </div>
             </div>
         </div>
     </div>
@@ -98,16 +172,38 @@
                     <input id="add-domain-name" type="text" class="form-control" placeholder="">
                 </div>
                 <div class="input-group">
+                    <span class="input-group-addon">所属客户</span>
+                    <div id="add-domain-customer" class="dropdown">
+                        <button id="add-domain-customer-select" class="btn btn-default btn-block dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="customer-name">下拉选择所属客户</span>
+                            <input type="hidden" class="customer-cid" value="">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="add-domain-customer-select">
+                            <li class="row">
+                                <div class="col-xs-10">
+                                    <input class="customer-keyword" type="text" placeholder="搜索已开发的客户名称关键字">
+                                </div>
+                                <div class="col-xs-2">
+                                    <button class="btn btn-xs btn-success customer-search">搜索</button>
+                                </div>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li id="${cid}$" class="mengular-template customer-list-template ${state}$"><a href="javascript:void(0)">${name}$</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="input-group">
                     <span class="input-group-addon">绑定域名</span>
                     <input id="add-domain-domains" type="text" class="form-control" placeholder="多个域名用英文逗号(,)隔开">
                 </div>
                 <div class="input-group">
                     <span class="input-group-addon">编程语言</span>
                     <select id="add-domain-language" class="form-control">
-                        <option value="PHP 5.3">PHP 5.3</option>
-                        <option value="PHP 5.4">PHP 5.4</option>
-                        <option value="PHP 5.5">PHP 5.5</option>
                         <option value="PHP 5.6">PHP 5.6</option>
+                        <option value="PHP 5.5">PHP 5.5</option>
+                        <option value="PHP 5.4">PHP 5.4</option>
+                        <option value="PHP 5.3">PHP 5.3</option>
                         <option value="PHP 7.0">PHP 7.0</option>
                         <option value="Java 7">Java 7</option>
                         <option value="Java 8">Java 8</option>
@@ -132,6 +228,23 @@
                 <div class="input-group">
                     <span class="input-group-addon">备注信息</span>
                     <input id="add-domain-remark" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">每间隔</span>
+                    <select id="add-domain-frequency" class="form-control">
+                        <option value="1">10分钟</option>
+                        <option value="3">30分钟</option>
+                        <option value="6">60分钟（1小时）</option>
+                        <option value="12">120分钟（2小时）</option>
+                        <option value="36">360分钟（6小时）</option>
+                        <option value="72">720分钟（12小时）</option>
+                        <option value="144">1440分钟（一天）</option>
+                        <option value="1008">10080分钟（一周）</option>
+                        <option value="1008">43200分钟（30天）</option>
+                    </select>
+                    <span class="input-group-addon">检查一次，当相似度低于</span>
+                    <input id="add-domain-similarity" type="number" max="100" min="0" class="form-control" value="100">
+                    <span class="input-group-addon">%时报警并替换</span>
                 </div>
             </div>
             <div class="modal-footer">

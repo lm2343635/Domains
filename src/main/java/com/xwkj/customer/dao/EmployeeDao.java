@@ -24,4 +24,12 @@ public interface EmployeeDao extends BaseDao<Employee> {
      */
     List<Employee> findByRolePrivilege(String privilegeName, int privilegeValue);
 
+    /**
+     * Find employees by enable state.
+     *
+     * @param enable
+     * @return
+     */
+    List<Employee> findByEnable(boolean enable);
+
 }

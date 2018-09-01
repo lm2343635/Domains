@@ -47,6 +47,17 @@ public interface ServerManager {
     Result modify(String sid, String name, String address, String remark, HttpSession session);
 
     /**
+     * Save user and credential for linux servers.
+     * @param sid
+     * @param user
+     * @param usingPublicKey
+     * @param credential
+     * @param session
+     * @return
+     */
+    Result setUser(String sid, String user, boolean usingPublicKey, String credential, HttpSession session);
+
+    /**
      * Remove a domain.
      *
      * @param sid

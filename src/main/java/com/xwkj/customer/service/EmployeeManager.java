@@ -2,6 +2,7 @@ package com.xwkj.customer.service;
 
 import com.xwkj.customer.bean.EmployeeBean;
 import com.xwkj.customer.bean.Result;
+import com.xwkj.customer.domain.Employee;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -9,6 +10,11 @@ import java.util.List;
 public interface EmployeeManager {
 
     public static final String EmployeeFlag = "675ea2340289fea2003b6e3f00a7d015";
+
+    public static final int EmployeeLoginSuccess = 0;
+    public static final int EmployeeLoginNotFound = 1;
+    public static final int EmployeeLoginWrongPassword = 2;
+    public static final int EmployeeLoginNotEnable = 3;
 
     // ************* For admin ****************
 
@@ -53,10 +59,20 @@ public interface EmployeeManager {
      */
     boolean resetPassword(String eid, String password, HttpSession session);
 
+    /**
+     * Change the enable state of an employee by admin.
+     *
+     * @param eid
+     * @param enable
+     * @param session
+     * @return
+     */
+    Result enable(String eid, boolean enable, HttpSession session);
+
     // ************* For admin & employee ****************
 
     /**
-     * Get all employees for admin.
+     * Get all employees.
      *
      * @param session
      * @return
@@ -75,6 +91,14 @@ public interface EmployeeManager {
     // ************* For employee ****************
 
     /**
+     * Get all enable employees for an employee with the employee privilege.
+     * 
+     * @param session
+     * @return
+     */
+    Result getEnable(HttpSession session);
+
+    /**
      * Employee login
      *
      * @param username
@@ -82,7 +106,7 @@ public interface EmployeeManager {
      * @param session
      * @return first page.
      */
-    boolean login(String username, String password, HttpSession session);
+    Result login(String username, String password, HttpSession session);
 
     /**
      * Check employee session.
@@ -116,6 +140,15 @@ public interface EmployeeManager {
      * @return
      */
     Result assignForCustomer(String cid, HttpSession session);
+
+    /**
+     * Global search.
+     *
+     * @param keyword
+     * @param session
+     * @return
+     */
+    Result globalSearch(String keyword, HttpSession session);
 
 
 }

@@ -12,14 +12,14 @@ public class ConfigComponent {
     // Public document folder.
     public String PublicDocumentFolder = "/files/public";
 
-    // Picture format.
-    public String ImageFormat = ".jpg";
+    // Public document folder.
+    public String PublicIndexFolder = "/files/index";
+
+    public String PublicKeyFolder = "/WEB-INF/publickeys";
 
     // Limitation of uploaded file.
     public int FileMaxSize = 512 * 1024 * 1024;
 
-    // Max image width.
-    public int MaxImageWidth = 1440;
 
     public String ConfigPath = "/WEB-INF/config.json";
     public String rootPath;

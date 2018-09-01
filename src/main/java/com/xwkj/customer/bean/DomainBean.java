@@ -19,6 +19,12 @@ public class DomainBean {
     private Date createAt;
     private Date updateAt;
     private boolean grabbed;
+    private boolean monitoring;
+    private int similarity;
+    private int frequency;
+    private boolean alert;
+    private Date checkAt;
+    private CustomerBean customer;
     private String sid;
 
     public String getDid() {
@@ -101,14 +107,6 @@ public class DomainBean {
         this.updateAt = updateAt;
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
-
     public boolean isGrabbed() {
         return grabbed;
     }
@@ -117,18 +115,83 @@ public class DomainBean {
         this.grabbed = grabbed;
     }
 
-    public DomainBean(Domain domain) {
+    public boolean isMonitoring() {
+        return monitoring;
+    }
+
+    public void setMonitoring(boolean monitoring) {
+        this.monitoring = monitoring;
+    }
+
+    public int getSimilarity() {
+        return similarity;
+    }
+
+    public void setSimilarity(int similarity) {
+        this.similarity = similarity;
+    }
+
+    public int getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
+    public boolean isAlert() {
+        return alert;
+    }
+
+    public void setAlert(boolean alert) {
+        this.alert = alert;
+    }
+
+    public Date getCheckAt() {
+        return checkAt;
+    }
+
+    public void setCheckAt(Date checkAt) {
+        this.checkAt = checkAt;
+    }
+
+    public CustomerBean getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBean customer) {
+        this.customer = customer;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public DomainBean(Domain domain, boolean simple) {
         this.did = domain.getDid();
         this.name = domain.getName();
         this.domains = domain.getDomains();
-        this.language = domain.getLanguage();
-        this.resolution = domain.getResolution();
-        this.path = domain.getPath();
-        this.remark = domain.getRemark() == null ? "" : domain.getRemark();
-        this.highlight = domain.getHighlight();
-        this.createAt = new Date(domain.getCreateAt());
-        this.updateAt = new Date(domain.getUpdateAt());
-        this.sid = domain.getServer().getSid();
-        this.grabbed = domain.getPage() != null;
+        if (!simple) {
+            this.language = domain.getLanguage();
+            this.resolution = domain.getResolution();
+            this.path = domain.getPath();
+            this.remark = domain.getRemark() == null ? "" : domain.getRemark();
+            this.highlight = domain.getHighlight();
+            this.createAt = new Date(domain.getCreateAt());
+            this.updateAt = new Date(domain.getUpdateAt());
+            this.sid = domain.getServer().getSid();
+            this.grabbed = domain.getGrabbed();
+            this.monitoring = domain.getMonitoring();
+            this.similarity = domain.getSimilarity();
+            this.frequency = domain.getFrequency();
+            this.alert = domain.getAlert();
+            this.checkAt = new Date(domain.getCheckAt());
+            this.customer = new CustomerBean(domain.getCustomer(), false);
+        }
     }
+
 }

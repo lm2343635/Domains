@@ -13,16 +13,21 @@ public interface DomainManager {
      *
      * @param sid
      * @param name
+     * @param cid
      * @param domains
      * @param language
      * @param resolution
      * @param path
      * @param remark
+     * @param frequncy
+     * @param similarity
      * @param session
      * @return
      */
-    Result add(String sid, String name, String domains, String language,
-               String resolution, String path, String remark, HttpSession session);
+    Result add(String sid, String name, String cid, String domains, String language, String resolution,
+               String path, String remark, int frequncy, int similarity, HttpSession session);
+
+//    Result getSearchCount(String sid, String name, String domain, String customer, String langugage, HttpSession session);
 
     /**
      * Get all customer of a server.
@@ -55,16 +60,19 @@ public interface DomainManager {
      *
      * @param did
      * @param name
+     * @param cid
      * @param domains
      * @param language
      * @param resolution
      * @param path
      * @param remark
+     * @param frequncy
+     * @param similarity
      * @param session
      * @return
      */
-    Result modify(String did, String name, String domains, String language,
-                   String resolution, String path, String remark, HttpSession session);
+    Result modify(String did, String name, String cid, String domains, String language, String resolution,
+                  String path, String remark, int frequncy, int similarity, HttpSession session);
 
     /**
      * Remove a domain.
@@ -96,6 +104,16 @@ public interface DomainManager {
     Result setHighlight(String did, boolean highlight, HttpSession session);
 
     /**
+     * Set monitoring state of a domain.
+     *
+     * @param did
+     * @param monitoring
+     * @param session
+     * @return
+     */
+    Result setMonitoring(String did, boolean monitoring, HttpSession session);
+
+    /**
      * Load html of a page with charset.
      *
      * @param did
@@ -110,10 +128,27 @@ public interface DomainManager {
      *
      * @param did
      * @param charset
-     * @param page
      * @param session
      * @return
      */
-    Result savePage(String did, String charset, String page, HttpSession session);
+    Result savePage(String did, String charset, HttpSession session);
+
+    /**
+     * Cancel alert of a domain
+     *
+     * @param did
+     * @param session
+     * @return
+     */
+    Result cancelAlert(String did, HttpSession session);
+
+    /**
+     * Get domains by customer id.
+     *
+     * @param cid
+     * @param session
+     * @return
+     */
+    Result getByCid(String cid, HttpSession session);
 
 }

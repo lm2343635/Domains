@@ -30,6 +30,15 @@ public class Server implements Serializable {
     private Integer domains;
 
     @Column
+    private String user;
+
+    @Column
+    private Boolean usingPublicKey;
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String credential;
+
+    @Column
     private String remark;
 
     public String getSid() {
@@ -78,6 +87,30 @@ public class Server implements Serializable {
 
     public void setDomains(Integer domains) {
         this.domains = domains;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public Boolean getUsingPublicKey() {
+        return usingPublicKey;
+    }
+
+    public void setUsingPublicKey(Boolean usingPublicKey) {
+        this.usingPublicKey = usingPublicKey;
+    }
+
+    public String getCredential() {
+        return credential;
+    }
+
+    public void setCredential(String credential) {
+        this.credential = credential;
     }
 
     public String getRemark() {

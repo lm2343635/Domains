@@ -3,12 +3,18 @@ var limit = 50;
 $(document).ready(function () {
 
     checkEmployeeSession(function (employee) {
-        loadEmployees();
-
         if (employee.role.employee == RolePrevilgeHold) {
             $("#log-panel").show();
+            loadEnableEmployees();
             loadLatestLogs();
         } else {
+            $("#employee-list").mengular(".employee-list-template", {
+                eid: employee.eid,
+                createAt: employee.createAt.format(DATE_HOUR_MINUTE_FORMAT),
+                updateAt: employee.updateAt.format(DATE_HOUR_MINUTE_FORMAT),
+                name: employee.name,
+                role: employee.role.name
+            });
             $("#log-panel, #log-modal").remove();
         }
     });
@@ -22,8 +28,8 @@ $(document).ready(function () {
     
 });
 
-function loadEmployees() {
-    EmployeeManager.getAll(function (result) {
+function loadEnableEmployees() {
+    EmployeeManager.getEnable(function (result) {
         if (!result.session) {
             sessionError();
             return;

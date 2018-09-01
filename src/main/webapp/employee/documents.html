@@ -24,11 +24,13 @@
     <script src="/static/js/tools.js"></script>
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/TypeManager.js"></script>
     <script src="/dwr/interface/DocumentManager.js"></script>
     <script src="/static/js/employee/documents.js"></script>
     <style>
         #search-panel .row div {
-            margin: 2px 0;
+            margin-top: 2px;
+            margin-bottom: 2px;
         }
 
         #document-list .document-list-template i {
@@ -37,6 +39,16 @@
 
         #document-list .document-list-template a {
             font-size: 17px;
+        }
+
+        #document-types a {
+            padding: 4px 10px;
+            color: #888;
+        }
+
+        #document-types .active a {
+            color: #fff;
+            background: #888;
         }
     </style>
 </head>
@@ -47,13 +59,15 @@
     </div>
     <div id="role-panel" class="panel panel-default">
         <div class="panel-heading">
-            <h1 class="panel-title">
-                <span>公共文档列表</span>
-                <button class="btn btn-info btn-xs pull-right fileinput-button">
-                    <span>上传公共文档</span>
-                    <input id="upload-document" type="file" name="files[]">
-                </button>
-            </h1>
+            <ul id="document-types" class="nav nav-pills">
+                <li id="${tid}$" role="presentation" class="mengular-template document-type-template">
+                    <a href="documents.html?tid=${tid}$">${name}$</a>
+                </li>
+            </ul>
+            <button class="btn btn-info btn-xs pull-right fileinput-button" style="margin-top: -23px;">
+                <span>上传公共文档</span>
+                <input id="upload-document" type="file" name="files[]">
+            </button>
         </div>
         <div id="search-panel" class="panel-body">
             <div class="row">

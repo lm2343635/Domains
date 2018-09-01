@@ -1,9 +1,29 @@
 var pageSize = 20;
+var tid = request("tid");
 
 $(document).ready(function () {
 
     checkEmployeeSession(function () {
-        searchReports(null, null, null, 1);
+        TypeManager.getByCategory(TypeCategoryReport, function(result) {
+            if (!result.session) {
+                return;
+            }
+            for (var i in result.data) {
+                var type = result.data[i];
+                $("#report-types").mengular(".report-type-template", {
+                    tid: type.tid,
+                    name: type.name
+                });
+            }
+            $("#report-types").mengularClearTemplate();
+
+            if (tid == null || tid == "") {
+                tid = result.data[0].tid;
+            }
+            $("#" + tid).addClass("active");
+
+            searchReports(null, null, null, 1);
+        });
     });
 
     $("#search-report-start, #search-report-end").datetimepicker({
@@ -30,7 +50,7 @@ $(document).ready(function () {
 });
 
 function searchReports(title, start, end, page) {
-    ReportManager.getSearchCount(title, start, end, function (result) {
+    ReportManager.getSearchCount(tid, title, start, end, function (result) {
         if (!result.session) {
             sessionError();
             return;
@@ -59,7 +79,7 @@ function searchReports(title, start, end, page) {
         });
     });
 
-    ReportManager.search(title, start, end, page, pageSize, function (result) {
+    ReportManager.search(tid, title, start, end, page, pageSize, function (result) {
         if (!result.session) {
             sessionError();
             return;

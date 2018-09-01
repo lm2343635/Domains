@@ -19,6 +19,7 @@
     <script src="/static/js/tools.js"></script>
     <script src="/dwr/engine.js"></script>
     <script src="/dwr/interface/EmployeeManager.js"></script>
+    <script src="/dwr/interface/TypeManager.js"></script>
     <script src="/dwr/interface/ReportManager.js"></script>
     <script src="/static/js/employee/report.js"></script>
     <style>
@@ -50,7 +51,15 @@
     <div id="head">
         <script>$("#head").load("head.html");</script>
     </div>
-    <input id="report-title" type="text" placeholder="在此输入报告标题" disabled>
+    <div class="row">
+        <div class="col-xs-12 col-md-9">
+            <input id="report-title" type="text" placeholder="在此输入报告标题" disabled>
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <select id="report-type" class="form-control" disabled></select>
+        </div>
+    </div>
+
     <hr>
     <h5 id="report-info" class="text-muted">
         <span>创建人：@{employee}</span>

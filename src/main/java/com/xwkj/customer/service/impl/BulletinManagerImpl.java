@@ -6,6 +6,7 @@ import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.domain.Bulletin;
 import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.service.BulletinManager;
+import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -98,10 +99,12 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
             Debug.error("Cannot find a bulletin by this bid.");
             return Result.WithData(false);
         }
-        if (!bulletin.getEmployee().equals(employee)) {
+        if (!bulletin.getEmployee().equals(employee)
+                && employee.getRole().getBulletin() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         bulletin.setTop(top);
+        bulletin.setUpdateAt(System.currentTimeMillis());
         bulletinDao.update(bulletin);
         return Result.WithData(true);
     }
@@ -118,7 +121,8 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
             Debug.error("Cannot find a bulletin by this bid.");
             return Result.WithData(false);
         }
-        if (!bulletin.getEmployee().equals(employee)) {
+        if (!bulletin.getEmployee().equals(employee)
+                && employee.getRole().getBulletin() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         bulletinDao.delete(bulletin);
@@ -137,7 +141,8 @@ public class BulletinManagerImpl extends ManagerTemplate implements BulletinMana
             Debug.error("Cannot find a bulletin by this bid.");
             return Result.WithData(false);
         }
-        if (!bulletin.getEmployee().equals(employee)) {
+        if (!bulletin.getEmployee().equals(employee)
+                && employee.getRole().getBulletin() != RoleManager.RolePrivilgeHold) {
             return Result.NoPrivilege();
         }
         bulletin.setContent(content);
