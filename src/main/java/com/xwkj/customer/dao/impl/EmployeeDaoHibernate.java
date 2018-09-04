@@ -25,7 +25,7 @@ public class EmployeeDaoHibernate extends BaseHibernateDaoSupport<Employee> impl
     }
 
     public List<Employee> findByRolePrivilege(String privilegeName, int privilegeValue) {
-        String hql = "from Employee where role." + privilegeName+ " = ?";
+        String hql = "from Employee where enable = true and role." + privilegeName+ " = ?";
         return (List<Employee>) getHibernateTemplate().find(hql, privilegeValue);
     }
 
