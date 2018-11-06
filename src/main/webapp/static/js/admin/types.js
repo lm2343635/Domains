@@ -2,7 +2,7 @@ var category = request("category");
 
 if (category != TypeCategoryDocument
     && category != TypeCategoryReport) {
-    category = TypeCategoryExpiration;
+    category = TypeCategoryReport;
 }
 
 $(document).ready(function () {
