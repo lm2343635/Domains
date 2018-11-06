@@ -320,14 +320,15 @@ public class Role implements Serializable {
     }
 
     public void setPrivileges(int [] privileges) {
-        undevelopedR = privileges[1];
-        undevelopedW = privileges[2];
-        undevelopedD = privileges[3];
-        developingR = privileges[4];
-        developingW = privileges[5];
-        developingD = privileges[6];
-        developedR = privileges[7];
-        developedW = privileges[8];
+        undevelopedR = privileges[0];
+        undevelopedW = privileges[1];
+        undevelopedD = privileges[2];
+        developingR = privileges[3];
+        developingW = privileges[4];
+        developingD = privileges[5];
+        developedR = privileges[6];
+        developedW = privileges[7];
+        developedD = privileges[8];
         lostR = privileges[9];
         lostW = privileges[10];
         lostD = privileges[11];
