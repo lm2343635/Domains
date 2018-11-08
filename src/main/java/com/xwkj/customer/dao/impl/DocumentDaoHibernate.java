@@ -54,6 +54,18 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
         }).intValue();
     }
 
+    @Override
+    public int getCountByType(Type type) {
+        return getHibernateTemplate().execute(new HibernateCallback<Long>() {
+            public Long doInHibernate(Session session) throws HibernateException {
+                String hql = "select count(*) from Document where type = ? ";
+                Query query = session.createQuery(hql);
+                query.setParameter(0, type);
+                return (Long) query.uniqueResult();
+            }
+        }).intValue();
+    }
+
     public List<Document> findPublic(final Type type, String filename, Long start, Long end, int offset, int pageSize) {
         String hql = "from Document where customer = null and type = ? ";
         List<Object> values = new ArrayList<Object>();

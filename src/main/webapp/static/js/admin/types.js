@@ -23,10 +23,13 @@ $(document).ready(function () {
         } else {
             $("#add-type-name").parent().addClass("has-error");
         }
-        TypeManager.add(name, category, function (aid) {
-            if (aid == null) {
+        TypeManager.add(name, category, function (result) {
+            if (!result.session) {
                 sessionError();
                 return;
+            }
+            if (!result.data) {
+                $.messager.popup("创建失败，请重试！");
             }
             $.messager.popup("创建成功！");
             $("#add-type-modal").modal("hide");
@@ -55,6 +58,25 @@ function loadTypes() {
                 tid: type.tid,
                 createAt: type.createAt.format(DATE_HOUR_MINUTE_SECOND_FORMAT),
                 name: type.name
+            });
+
+            $("#" + type.tid + " .type-list-remove").click(function () {
+                var tid = $(this).mengularId();
+                var name = $("#" + tid + " .type-list-name").text();
+                $.messager.confirm("删除类别", "确认删除类别" + name + "吗？", function() {
+                    TypeManager.remove(tid, function (result) {
+                        if (!result.session) {
+                            sessionError();
+                            return;
+                        }
+                        if (!result.data) {
+                            $.messager.popup("该类别已被使用，无法删除！");
+                            return;
+                        }
+                        $.messager.popup("删除成功！");
+                        $("#" + tid).remove();
+                    });
+                });
             });
         }
     });

@@ -1,5 +1,7 @@
 package com.xwkj.customer.service.impl;
 
+import com.sun.org.apache.bcel.internal.generic.FADD;
+import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.TypeBean;
 import com.xwkj.customer.domain.Employee;
@@ -31,7 +33,7 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
         type.setName(name);
         type.setCategory(category);
         type.setCreateAt(System.currentTimeMillis());
-        return Result.WithData(typeDao.save(type));
+        return Result.WithData(typeDao.save(type) != null);
     }
 
     @RemoteMethod
@@ -64,13 +66,31 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
         if (!checkAdminSession(session)) {
             return Result.NoSession();
         }
-        try {
-            typeDao.delete(tid);
-            return Result.WithData(true);
-        } catch (Exception e) {
-            e.printStackTrace();
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
             return Result.WithData(false);
         }
+        switch (type.getCategory()) {
+            case TypeCategoryReport:
+                if (reportDao.getCount(type, null, null, null) > 0) {
+                    return Result.WithData(false);
+                }
+                break;
+            case TypeCategoryDocument:
+                if (documentDao.getCountByType(type) > 0) {
+                    return Result.WithData(false);
+                }
+                break;
+            case TypeCategoryExpiration:
+                if (expirationDao.getSearchCount(type, null, null, null) > 0) {
+                    return Result.WithData(false);
+
+                }
+                break;
+        }
+        typeDao.delete(type);
+        return Result.WithData(true);
     }
 
 }
