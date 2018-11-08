@@ -42,7 +42,7 @@ public class ManagerTemplate {
     protected LogDao logDao;
 
     @Autowired
-    protected  AssignDao assignDao;
+    protected AssignDao assignDao;
 
     @Autowired
     protected ServerDao serverDao;
