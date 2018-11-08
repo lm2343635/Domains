@@ -93,4 +93,20 @@ public class TypeManagerImpl extends ManagerTemplate implements TypeManager {
         return Result.WithData(true);
     }
 
+    @RemoteMethod
+    @Transactional
+    public Result edit(String tid, String name, HttpSession session) {
+        if (!checkAdminSession(session)) {
+            return Result.NoSession();
+        }
+        Type type = typeDao.get(tid);
+        if (type == null) {
+            Debug.error("Cannot find a type by this tid.");
+            return Result.WithData(false);
+        }
+        type.setName(name);
+        typeDao.update(type);
+        return Result.WithData(true);
+    }
+
 }

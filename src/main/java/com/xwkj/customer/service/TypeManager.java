@@ -46,4 +46,14 @@ public interface TypeManager {
      */
     Result remove(String tid, HttpSession session);
 
+    /**
+     * Edit the name of a type.
+     *
+     * @param tid
+     * @param name
+     * @param session
+     * @return
+     */
+    Result edit(String tid, String name, HttpSession session);
+
 }
