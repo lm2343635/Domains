@@ -29,6 +29,14 @@ public interface DocumentDao extends BaseDao<Document> {
     int getPublicCount(Type type, String filename, Long start, Long end);
 
     /**
+     * Get count by type.
+     *
+     * @param type
+     * @return
+     */
+    int getCountByType(Type type);
+
+    /**
      * Find all public documents by file name and update date.
      *
      * @param type
