@@ -1,13 +1,9 @@
 package com.xwkj.customer.service.impl;
 
-import com.sun.org.apache.bcel.internal.generic.FADD;
 import com.xwkj.common.util.Debug;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.bean.TypeBean;
-import com.xwkj.customer.domain.Employee;
 import com.xwkj.customer.domain.Type;
-import com.xwkj.customer.service.CustomerManager;
-import com.xwkj.customer.service.RoleManager;
 import com.xwkj.customer.service.TypeManager;
 import com.xwkj.customer.service.common.ManagerTemplate;
 import org.directwebremoting.annotations.RemoteMethod;
