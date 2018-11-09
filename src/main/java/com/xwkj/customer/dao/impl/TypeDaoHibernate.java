@@ -19,4 +19,5 @@ public class TypeDaoHibernate extends BaseHibernateDaoSupport<Type> implements T
         String hql = "from Type where category = ? order by createAt";
         return (List<Type>) getHibernateTemplate().find(hql, category);
     }
+
 }
