@@ -77,6 +77,9 @@ public class ManagerTemplate {
     @Autowired
     protected CheckDao checkDao;
 
+    @Autowired
+    protected DeviceDao deviceDao;
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }

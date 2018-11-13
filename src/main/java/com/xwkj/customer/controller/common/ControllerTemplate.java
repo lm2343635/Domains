@@ -3,6 +3,7 @@ package com.xwkj.customer.controller.common;
 import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.component.ConfigComponent;
 import com.xwkj.customer.service.AdminManager;
+import com.xwkj.customer.service.DeviceManager;
 import com.xwkj.customer.service.DocumentManager;
 import com.xwkj.customer.service.EmployeeManager;
 import org.apache.commons.fileupload.FileItem;
@@ -32,6 +33,12 @@ public class ControllerTemplate {
 
     @Autowired
     protected DocumentManager documentManager;
+
+    @Autowired
+    protected DeviceManager deviceManager;
+
+    @Autowired
+    protected EmployeeManager employeeManager;
 
     protected ResponseEntity generateOK(Map<String, Object> result) {
         return generateResponseEntity(result, HttpStatus.OK, null, null);
@@ -154,6 +161,26 @@ public class ControllerTemplate {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get device remote IP by HttpServletRequest.
+     *
+     * @param request
+     * @return
+     */
+    protected static String getRemoteIP(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 
 }

@@ -133,6 +133,10 @@ public class Device implements Serializable {
         this.employee = employee;
     }
 
+    public Device() {
+        super();
+    }
+
     public Device(Long createAt, Long updateAt, String identifier, String token, String deviceToken, String ip, String os, String version, String lan, Employee employee) {
         this.createAt = createAt;
         this.updateAt = updateAt;
