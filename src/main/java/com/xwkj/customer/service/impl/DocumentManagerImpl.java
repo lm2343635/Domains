@@ -1,5 +1,6 @@
 package com.xwkj.customer.service.impl;
 
+import com.aliyun.oss.OSSClient;
 import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
 import com.xwkj.common.util.FileTool;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,11 @@ import java.util.UUID;
 @Service
 @RemoteProxy(name = "DocumentManager")
 public class DocumentManagerImpl extends ManagerTemplate implements DocumentManager {
+
+    @RemoteMethod
+    public void upload() {
+
+    }
 
     @Transactional
     public Result handleCustomerDocument(String cid, String filename, HttpSession session) {

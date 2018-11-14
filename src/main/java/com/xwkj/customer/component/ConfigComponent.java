@@ -1,6 +1,7 @@
 package com.xwkj.customer.component;
 
 import com.xwkj.common.util.JSONTool;
+import com.xwkj.customer.component.config.AliyunOSS;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,6 +26,8 @@ public class ConfigComponent {
     public String rootPath;
     public JSONTool configTool = null;
 
+    public AliyunOSS aliyunOSS;
+
     public ConfigComponent() {
         rootPath = this.getClass().getClassLoader().getResource("/").getPath().split("WEB-INF")[0];
         load();
@@ -33,6 +36,7 @@ public class ConfigComponent {
     public void load() {
         String pathname = rootPath + ConfigPath;
         configTool = new JSONTool(pathname);
+        aliyunOSS = new AliyunOSS(configTool.getJSONObject("aliyunoss"));
     }
 
 }
