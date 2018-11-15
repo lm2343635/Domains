@@ -37,7 +37,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
 
     @Transactional
     public Result handleCustomerDocument(String cid, String filename, HttpSession session) {
-        String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + cid;
+        String path = getRootPath() + File.separator + configComponent.UploadFolder + File.separator + cid;
         File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -103,7 +103,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             Debug.error("Type category error!");
             return Result.WithData(null);
         }
-        String path = configComponent.rootPath + File.separator + configComponent.PublicDocumentFolder;
+        String path = getRootPath() + File.separator + configComponent.PublicDocumentFolder;
         File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -285,10 +285,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 }
             }
         }
-        String path = configComponent.rootPath;
-        path += document.getCustomer() == null ? configComponent.PublicDocumentFolder :
-                (configComponent.UploadFolder + File.separator + document.getCustomer().getCid());
-        File file = new File(path + File.separator + document.getStore());
+        File file = new File(getRootPath() + document.getPath());
         if (file.exists()) {
             file.delete();
         }

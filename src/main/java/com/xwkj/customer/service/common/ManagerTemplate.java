@@ -80,6 +80,15 @@ public class ManagerTemplate {
     @Autowired
     protected DeviceDao deviceDao;
 
+    private String rootPath;
+
+    public String getRootPath() {
+        if (rootPath == null) {
+            rootPath = this.getClass().getClassLoader().getResource("/").getPath().split("WEB-INF")[0];
+        }
+        return rootPath;
+    }
+
     public boolean checkAdminSession(HttpSession session) {
         return session.getAttribute(AdminManager.AdminFlag) != null;
     }

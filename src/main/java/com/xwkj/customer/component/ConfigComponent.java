@@ -16,15 +16,15 @@ import java.util.Map;
 public class ConfigComponent {
 
     // Default file upload folder.
-    public final static String UploadFolder = "/files";
+    public final static String UploadFolder = "files";
 
     // Public document folder.
-    public final static String PublicDocumentFolder = "/files/public";
+    public final static String PublicDocumentFolder = "files/public";
 
     // Public document folder.
-    public final static String PublicIndexFolder = "/files/index";
+    public final static String PublicIndexFolder = "files/index";
 
-    public final static String PublicKeyFolder = "/WEB-INF/publickeys";
+    public final static String PublicKeyFolder = "WEB-INF/publickeys";
 
     // Limitation of uploaded file.
     public final static int FileMaxSize = 512 * 1024 * 1024;
@@ -36,16 +36,8 @@ public class ConfigComponent {
         return configDao;
     }
 
-    public String rootPath;
-
-
     private AliyunOSS aliyunOSS;
     private Admin admin;
-
-    public ConfigComponent() {
-        rootPath = this.getClass().getClassLoader().getResource("/").getPath().split("WEB-INF")[0];
-
-    }
 
     @Transactional
     public AliyunOSS getAliyunOSS() {

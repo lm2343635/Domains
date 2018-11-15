@@ -289,7 +289,7 @@ public class DomainManagerImpl extends ManagerTemplate implements DomainManager 
         if (site == null || site.equals("")) {
             return  Result.WithData(null);
         }
-        String path = configComponent.rootPath + configComponent.PublicIndexFolder + File.separator + domain.getDid();
+        String path = getRootPath() + configComponent.PublicIndexFolder + File.separator + domain.getDid();
         FileTool.createDirectoryIfNotExsit(path);
         File file = new File(path + File.separator + "index.html");
         try {

@@ -102,4 +102,9 @@ public class DocumentDaoHibernate extends BaseHibernateDaoSupport<Document> impl
         });
     }
 
+    public List<Document> findByOSS(boolean oss) {
+        String hql = "from Document where oss = ?";
+        return (List<Document>) getHibernateTemplate().find(hql, oss);
+    }
+
 }
