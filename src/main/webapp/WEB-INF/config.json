@@ -1,8 +1,0 @@
-{
-  "aliyunoss": {
-    "endpoint": "https://oss-cn-zhangjiakou.aliyuncs.com",
-    "accessKeyId": "",
-    "accessKeySecret": "",
-    "bucketName": ""
-  }
-}
