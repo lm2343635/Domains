@@ -41,6 +41,8 @@ public class AliyunOSSComponent {
         String path = document.getPath();
         File file = new File(getRootPath() + path);
         if (!file.exists()) {
+            // Delete the database reference if the file is not existing.
+            documentDao.delete(document);
             return false;
         }
         System.out.println("[" + new Date() + "] Uploading " + document.getFilename() + " to Aliyun OSS at " + path);
@@ -88,12 +90,15 @@ public class AliyunOSSComponent {
             return;
         }
         for (File dir : files.listFiles()) {
-            if (dir.equals("index")) {
+            if (dir.getName().equals("index")) {
                 continue;
             }
             System.out.println("[" + new Date() + "] " + dir + ", isDir = " + dir.isDirectory());
 
             for (File file : dir.listFiles()) {
+                if (!file.isFile()) {
+                    continue;
+                }
                 if (documentDao.getByStore(file.getName()) == null) {
                     System.out.println("    " + file.getName() + " has no database reference, delete it.");
                     file.delete();
