@@ -73,6 +73,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 break;
         }
         Document document = new Document();
+        document.setOss(false);
         document.setFilename(filename);
         document.setUploadAt(System.currentTimeMillis());
         document.setStore(UUID.randomUUID().toString());
@@ -113,6 +114,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             return Result.NoSession();
         }
         Document document = new Document();
+        document.setOss(false);
         document.setFilename(filename);
         document.setUploadAt(System.currentTimeMillis());
         document.setStore(UUID.randomUUID().toString());

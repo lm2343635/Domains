@@ -72,4 +72,12 @@ public interface DocumentDao extends BaseDao<Document> {
      */
     List<Document> findByOSS(boolean oss);
 
+    /**
+     * Get document by store name.
+     *
+     * @param store
+     * @return
+     */
+    Document getByStore(String store);
+
 }

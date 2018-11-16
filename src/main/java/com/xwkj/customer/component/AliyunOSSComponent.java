@@ -43,7 +43,7 @@ public class AliyunOSSComponent {
         if (!file.exists()) {
             return false;
         }
-        System.out.println("[" + new Date() + "]Uploading " + document.getFilename() + " to Aliyun OSS at " + path);
+        System.out.println("[" + new Date() + "] Uploading " + document.getFilename() + " to Aliyun OSS at " + path);
         OSSClient ossClient = new OSSClient(config.getAliyunOSS().endpoint, config.getAliyunOSS().accessKeyId, config.getAliyunOSS().accessKeySecret);
         try {
             ossClient.putObject(config.getAliyunOSS().bucketName, path, new FileInputStream(file));
@@ -71,12 +71,40 @@ public class AliyunOSSComponent {
     @Scheduled(fixedRate = 1000 * 3600 * 24)
     @Transactional
     public void monitoring() {
-        if (!config.getAliyunOSS().enable) {
+        if (config.getAliyunOSS().enable) {
+            // Checking the documents which are not uploaded to Aliyun OSS
+            documentDao.findByOSS(false).forEach(document -> {
+                upload(document);
+            });
+        }
+
+        // Checking unuseful files.
+        deleteUnusefulFiles();
+    }
+
+    private void deleteUnusefulFiles() {
+        File files = new File(rootPath + config.UploadFolder);
+        if (!files.isDirectory()) {
             return;
         }
-        documentDao.findByOSS(false).forEach(document -> {
-            upload(document);
-        });
+        for (File dir : files.listFiles()) {
+            if (dir.equals("index")) {
+                continue;
+            }
+            System.out.println("[" + new Date() + "] " + dir + ", isDir = " + dir.isDirectory());
+
+            for (File file : dir.listFiles()) {
+                if (documentDao.getByStore(file.getName()) == null) {
+                    System.out.println("    " + file.getName() + " has no database reference, delete it.");
+                    file.delete();
+
+                }
+            }
+            if (dir.listFiles().length == 0) {
+                dir.delete();
+                System.out.println("    empty dir, delete it.");
+            }
+        }
     }
 
 }
