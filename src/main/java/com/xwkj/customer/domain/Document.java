@@ -1,8 +1,10 @@
 package com.xwkj.customer.domain;
 
+import com.xwkj.customer.component.ConfigComponent;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 @Entity
@@ -27,6 +29,9 @@ public class Document implements Serializable {
 
     @Column(nullable = false)
     private Long uploadAt;
+
+    @Column(nullable = false)
+    private Boolean oss;
 
     @ManyToOne
     @JoinColumn(name = "cid")
@@ -84,6 +89,14 @@ public class Document implements Serializable {
         this.uploadAt = uploadAt;
     }
 
+    public Boolean getOss() {
+        return oss;
+    }
+
+    public void setOss(Boolean oss) {
+        this.oss = oss;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -116,6 +129,17 @@ public class Document implements Serializable {
             unit++;
         }
         return size + " " + units[unit];
+    }
+
+    public String getPath() {
+        String path = "";
+        if (customer == null) {
+            path += ConfigComponent.PublicDocumentFolder;
+        } else {
+            path += ConfigComponent.UploadFolder + File.separator + customer.getCid();
+        }
+        path += File.separator + store;
+        return path;
     }
 
 }

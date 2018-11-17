@@ -305,4 +305,14 @@ public class EmployeeManagerImpl extends ManagerTemplate implements EmployeeMana
         }});
     }
 
+    // For api.
+    @Override
+    public EmployeeBean getByName(String name) {
+        Employee employee = employeeDao.getByName(name);
+        if (employee == null) {
+            Debug.error("Cannot find a employee by this name.");
+            return null;
+        }
+        return new EmployeeBean(employee, true);
+    }
 }

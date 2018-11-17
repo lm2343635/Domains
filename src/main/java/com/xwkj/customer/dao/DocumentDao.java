@@ -64,4 +64,20 @@ public interface DocumentDao extends BaseDao<Document> {
      */
     int deleteByCustomer(Customer customer);
 
+    /**
+     * Find by oss uploaded state.
+     * 
+     * @param oss
+     * @return
+     */
+    List<Document> findByOSS(boolean oss);
+
+    /**
+     * Get document by store name.
+     *
+     * @param store
+     * @return
+     */
+    Document getByStore(String store);
+
 }

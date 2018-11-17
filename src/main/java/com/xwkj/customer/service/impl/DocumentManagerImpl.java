@@ -1,5 +1,6 @@
 package com.xwkj.customer.service.impl;
 
+import com.aliyun.oss.OSSClient;
 import com.xwkj.common.util.DateTool;
 import com.xwkj.common.util.Debug;
 import com.xwkj.common.util.FileTool;
@@ -18,7 +19,9 @@ import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpSession;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +31,14 @@ import java.util.UUID;
 @RemoteProxy(name = "DocumentManager")
 public class DocumentManagerImpl extends ManagerTemplate implements DocumentManager {
 
+    @RemoteMethod
+    public void upload() {
+
+    }
+
     @Transactional
     public Result handleCustomerDocument(String cid, String filename, HttpSession session) {
-        String path = configComponent.rootPath + File.separator + configComponent.UploadFolder + File.separator + cid;
+        String path = getRootPath() + File.separator + configComponent.UploadFolder + File.separator + cid;
         File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -66,6 +74,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 break;
         }
         Document document = new Document();
+        document.setOss(false);
         document.setFilename(filename);
         document.setUploadAt(System.currentTimeMillis());
         document.setStore(UUID.randomUUID().toString());
@@ -82,6 +91,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
+        aliyunOSSComponent.upload(document);
         return Result.WithData(new DocumentBean(document, false));
     }
 
@@ -96,7 +106,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             Debug.error("Type category error!");
             return Result.WithData(null);
         }
-        String path = configComponent.rootPath + File.separator + configComponent.PublicDocumentFolder;
+        String path = getRootPath() + File.separator + configComponent.PublicDocumentFolder;
         File file = new File(path + File.separator + filename);
         Employee employee = getEmployeeFromSession(session);
         if (employee == null) {
@@ -106,6 +116,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
             return Result.NoSession();
         }
         Document document = new Document();
+        document.setOss(false);
         document.setFilename(filename);
         document.setUploadAt(System.currentTimeMillis());
         document.setStore(UUID.randomUUID().toString());
@@ -122,6 +133,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
+        aliyunOSSComponent.upload(document);
         return Result.WithData(new DocumentBean(document, false));
     }
 
@@ -278,12 +290,13 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 }
             }
         }
-        String path = configComponent.rootPath;
-        path += document.getCustomer() == null ? configComponent.PublicDocumentFolder :
-                (configComponent.UploadFolder + File.separator + document.getCustomer().getCid());
-        File file = new File(path + File.separator + document.getStore());
+
+        File file = new File(getRootPath() + document.getPath());
         if (file.exists()) {
             file.delete();
+        }
+        if (configComponent.getAliyunOSS().enable && document.getOss()) {
+            aliyunOSSComponent.delete(document);
         }
         documentDao.delete(document);
         return Result.WithData(true);

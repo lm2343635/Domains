@@ -150,5 +150,7 @@ public interface EmployeeManager {
      */
     Result globalSearch(String keyword, HttpSession session);
 
+    // For api.
+    EmployeeBean getByName(String name);
 
 }

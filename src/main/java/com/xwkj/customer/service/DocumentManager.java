@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 public interface DocumentManager {
 
+    void upload();
+
     /**
      * Save document info of a customer into database.
      *

@@ -40,6 +40,16 @@ public class DomainComponent {
     @Autowired
     private CheckDao checkDao;
 
+
+    private String rootPath;
+
+    public String getRootPath() {
+        if (rootPath == null) {
+            rootPath = this.getClass().getClassLoader().getResource("/").getPath().split("WEB-INF")[0];
+        }
+        return rootPath;
+    }
+
     /**
      * Monitoring domains every 10 minitus (FixedRate).
      */
@@ -47,7 +57,7 @@ public class DomainComponent {
     @Transactional
     public void monitoring() {
         Long now = System.currentTimeMillis();
-        String basePath = config.rootPath + config.PublicIndexFolder;
+        String basePath = getRootPath() + config.PublicIndexFolder;
         NormalizedLevenshtein levenshtein = new NormalizedLevenshtein();
 
         List<Domain> domains = new ArrayList<Domain>();
@@ -115,7 +125,7 @@ public class DomainComponent {
     }
 
     private String getPublicKeyPath(Server server) {
-        String path = config.rootPath + config.PublicKeyFolder + File.separator + server.getSid();
+        String path = getRootPath() + config.PublicKeyFolder + File.separator + server.getSid();
         if (new File(path).exists()) {
             return path;
         }
@@ -130,7 +140,7 @@ public class DomainComponent {
         if (!server.getUsingPublicKey()) {
             return false;
         }
-        String path = config.rootPath + config.PublicKeyFolder;
+        String path = getRootPath() + config.PublicKeyFolder;
         FileTool.createDirectoryIfNotExsit(path);
         String pathname = path + File.separator + server.getSid();
         File file = new File(pathname);

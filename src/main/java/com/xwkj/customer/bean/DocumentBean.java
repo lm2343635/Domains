@@ -1,8 +1,10 @@
 package com.xwkj.customer.bean;
 
+import com.xwkj.customer.component.ConfigComponent;
 import com.xwkj.customer.domain.Document;
 import org.directwebremoting.annotations.DataTransferObject;
 
+import java.io.File;
 import java.util.Date;
 
 @DataTransferObject
@@ -13,6 +15,7 @@ public class DocumentBean {
     private String store;
     private String size;
     private Date uploadAt;
+    private boolean oss;
     private String employee;
     private String cid;
     private TypeBean type;
@@ -57,6 +60,14 @@ public class DocumentBean {
         this.uploadAt = uploadAt;
     }
 
+    public boolean isOss() {
+        return oss;
+    }
+
+    public void setOss(boolean oss) {
+        this.oss = oss;
+    }
+
     public String getCid() {
         return cid;
     }
@@ -87,11 +98,23 @@ public class DocumentBean {
         this.size = document.getSizeString();
         this.uploadAt = new Date(document.getUploadAt());
         this.employee = document.getEmployee().getName();
+        this.oss = document.getOss();
         this.cid = document.getCustomer() == null ? null : document.getCustomer().getCid();
         this.type = document.getType() == null ? null : new TypeBean(document.getType());
         if (full) {
             this.store = document.getStore();
         }
+    }
+
+    public String getPath() {
+        String path = "";
+        if (cid == null) {
+            path += ConfigComponent.PublicDocumentFolder;
+        } else {
+            path += ConfigComponent.UploadFolder + File.separator + cid;
+        }
+        path += File.separator + store;
+        return path;
     }
 
 }
