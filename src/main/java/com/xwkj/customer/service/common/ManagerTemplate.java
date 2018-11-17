@@ -1,6 +1,7 @@
 package com.xwkj.customer.service.common;
 
 import com.xwkj.common.util.Debug;
+import com.xwkj.customer.component.AliyunOSSComponent;
 import com.xwkj.customer.component.ConfigComponent;
 import com.xwkj.customer.component.DomainComponent;
 import com.xwkj.customer.dao.*;
@@ -22,6 +23,9 @@ public class ManagerTemplate {
 
     @Autowired
     protected DomainComponent domainComponent;
+
+    @Autowired
+    protected AliyunOSSComponent aliyunOSSComponent;
 
     @Autowired
     protected RoleDao roleDao;

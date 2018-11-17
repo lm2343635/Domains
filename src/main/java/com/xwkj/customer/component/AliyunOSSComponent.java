@@ -70,6 +70,12 @@ public class AliyunOSSComponent {
         return  ossClient.getObject(signedUrl, new HashMap<String, String>());
     }
 
+    public void delete(Document document) {
+        OSSClient ossClient = new OSSClient(config.getAliyunOSS().endpoint, config.getAliyunOSS().accessKeyId, config.getAliyunOSS().accessKeySecret);
+        ossClient.deleteObject(config.getAliyunOSS().bucketName, document.getPath());
+        ossClient.shutdown();
+    }
+
     @Scheduled(fixedRate = 1000 * 3600 * 24)
     @Transactional
     public void monitoring() {

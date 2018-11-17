@@ -287,9 +287,13 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
                 }
             }
         }
+
         File file = new File(getRootPath() + document.getPath());
         if (file.exists()) {
             file.delete();
+        }
+        if (configComponent.getAliyunOSS().enable && document.getOss()) {
+            aliyunOSSComponent.delete(document);
         }
         documentDao.delete(document);
         return Result.WithData(true);
