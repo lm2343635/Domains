@@ -1,5 +1,6 @@
 package com.xwkj.customer.controller;
 
+import com.xwkj.common.util.FileTool;
 import com.xwkj.customer.bean.DocumentBean;
 import com.xwkj.customer.bean.Result;
 import com.xwkj.customer.controller.common.ControllerTemplate;
@@ -47,7 +48,9 @@ public class DocumentController extends ControllerTemplate {
         if (!checkEmployeeSession(request.getSession())) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
         }
-        String filename = upload(request, getRootPath() + configComponent.PublicDocumentFolder);
+        String filepath = getRootPath() + configComponent.PublicDocumentFolder;
+        FileTool.createDirectoryIfNotExsit(filepath);
+        String filename = upload(request, filepath);
         Result result = documentManager.handlePublicDocument(tid, filename, request.getSession());
         if (!result.isSession()) {
             return generateBadRequest(ErrorCode.ErrorNoSession);
