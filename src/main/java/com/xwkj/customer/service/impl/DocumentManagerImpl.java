@@ -91,9 +91,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
-        new Thread(() -> {
-            aliyunOSSComponent.upload(document);
-        }).start();
+        aliyunOSSComponent.upload(document);
         return Result.WithData(new DocumentBean(document, false));
     }
 
@@ -135,9 +133,7 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
-        new Thread(() -> {
-            aliyunOSSComponent.upload(document);
-        }).start();
+        aliyunOSSComponent.upload(document);
         return Result.WithData(new DocumentBean(document, false));
     }
 
