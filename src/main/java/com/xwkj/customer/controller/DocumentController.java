@@ -77,10 +77,8 @@ public class DocumentController extends ControllerTemplate {
         }
         DocumentBean documentBean = (DocumentBean) result.getData();
         if (documentBean.isOss()) {
-            System.out.println("Aliyun OSS");
             downloadFromAliyunOSS(documentBean, response);
         } else {
-            System.out.println("System");
             download(getRootPath() + documentBean.getPath(), documentBean.getFilename(), response);
         }
     }

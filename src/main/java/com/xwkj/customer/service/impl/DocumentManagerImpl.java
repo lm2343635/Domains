@@ -19,6 +19,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -90,6 +91,9 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
+        new Thread(() -> {
+            aliyunOSSComponent.upload(document);
+        }).start();
         return Result.WithData(new DocumentBean(document, false));
     }
 
@@ -131,6 +135,9 @@ public class DocumentManagerImpl extends ManagerTemplate implements DocumentMana
         }
         // Modify file name.
         FileTool.modifyFileName(path, filename, document.getStore());
+        new Thread(() -> {
+            aliyunOSSComponent.upload(document);
+        }).start();
         return Result.WithData(new DocumentBean(document, false));
     }
 

@@ -38,6 +38,9 @@ public class AliyunOSSComponent {
 
     @Transactional
     public boolean upload(Document document) {
+        if (!config.getAliyunOSS().enable) {
+            return false;
+        }
         String path = document.getPath();
         File file = new File(getRootPath() + path);
         if (!file.exists()) {
