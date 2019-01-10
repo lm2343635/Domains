@@ -79,9 +79,17 @@ public class ConfigComponent {
                 } else if (field.getType().equals(boolean.class)) {
                     field.setBoolean(object, Boolean.valueOf(content));
                 } else if (field.getType().equals(int.class)) {
-                    field.setInt(object, Integer.valueOf(content));
+                    if (content.equals("")) {
+                        field.setInt(object, 0);
+                    } else {
+                        field.setInt(object, Integer.valueOf(content));
+                    }
                 } else if (field.getType().equals(double.class)) {
-                    field.setDouble(object, Double.valueOf(content));
+                    if (content.equals("")) {
+                        field.setInt(object, 0);
+                    } else {
+                        field.setDouble(object, Double.valueOf(content));
+                    }
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();

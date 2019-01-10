@@ -297,7 +297,7 @@ public class CustomerManagerImpl extends ManagerTemplate implements CustomerMana
         expirationDao.deleteByCustomer(customer);
         // Remove all documents and folder of this customer.
         documentDao.deleteByCustomer(customer);
-        FileTool.delFolder(getRootPath() + File.separator + configComponent.UploadFolder + File.separator + customer.getCid());
+        FileTool.delDirectory(getRootPath() + File.separator + configComponent.UploadFolder + File.separator + customer.getCid());
         // Remove the customer.
         customerDao.delete(customer);
         return Result.WithData(true);

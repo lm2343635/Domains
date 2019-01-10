@@ -3,19 +3,14 @@ package com.xwkj.common.util;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * 文件操作工具
- *
- * @author 浮尘追梦
- * @version 2.0
- */
+
 public class FileTool {
 
     /**
-     * 复制文件从源文件到目标文件
+     * Copy file from the source to the target.
      *
-     * @param sourceFile 源文件
-     * @param targetFile 目标文件
+     * @param sourceFile
+     * @param targetFile
      * @throws IOException
      */
     public static void copyFile(File sourceFile, File targetFile) {
@@ -44,20 +39,20 @@ public class FileTool {
     }
 
     /**
-     * 复制文件从源文件路径到目标文件路径
+     * Copy file from the source path to the target path.
      *
-     * @param sourceFile 源文件
-     * @param targetFile 目标文件
+     * @param sourceFile
+     * @param targetFile
      */
     public static void copyFile(String sourceFile, String targetFile) {
         copyFile(new File(sourceFile), new File(targetFile));
     }
 
     /**
-     * 移动文件从源文件到目标文件
+     * Move file from the srouce to the target.
      *
-     * @param sourceFile 源文件路径字符串
-     * @param targetFile 目标文件路径字符串
+     * @param sourceFile
+     * @param targetFile
      */
     public static void moveFile(File sourceFile, File targetFile) {
         copyFile(sourceFile, targetFile);
@@ -65,17 +60,17 @@ public class FileTool {
     }
 
     /**
-     * 移动文件从源文件路径到目标文件路径
+     * Move file from the srouce path to the target path.
      *
-     * @param sourceFile 源文件路径字符串
-     * @param targetFile 目标文件路径字符串
+     * @param sourceFile
+     * @param targetFile
      */
     public static void moveFile(String sourceFile, String targetFile) {
         moveFile(new File(sourceFile), new File(targetFile));
     }
 
     /**
-     * 如果不存在文件夹，新建文件夹
+     * Create a directory if not existing.
      *
      * @param path
      */
@@ -86,10 +81,9 @@ public class FileTool {
     }
 
     /**
-     * 判断文件夹是否为空
      *
-     * @param path 文件夹路径
-     * @return 文件夹是否为空
+     * @param path
+     * @return
      */
     public static boolean isEmptyDirectory(String path) {
         File file = new File(path);
@@ -100,10 +94,10 @@ public class FileTool {
     }
 
     /**
-     * 得到文件格式
+     * Get file formate
      *
-     * @param fileName 文件全名
-     * @return 文件格式
+     * @param fileName
+     * @return
      */
     public static String getFormat(String fileName) {
         int index = fileName.lastIndexOf(".");
@@ -124,29 +118,31 @@ public class FileTool {
     }
 
     /**
-     * 得到指定路径下指定格式的文件列表
+     * Get all files of a same format in a path.
      *
-     * @param path   指定路径
-     * @param format 指定格式
-     * @return 指定格式文件列表
+     * @param path
+     * @param format
+     * @return
      */
     public static ArrayList<File> getFiles(String path, String format) {
         File dir = new File(path);
         File[] files = dir.listFiles();
         ArrayList<File> fileList = new ArrayList<File>();
-        for (int i = 0; i < files.length; i++)
-            if (format.equals(getFormat(files[i].getName())))
+        for (int i = 0; i < files.length; i++) {
+            if (format.equals(getFormat(files[i].getName()))) {
                 fileList.add(files[i]);
+            }
+        }
         return fileList;
     }
 
     /**
-     * 修改文件名
+     * Rename file
      *
-     * @param path        文件路径
-     * @param fileName    文件名
-     * @param newFileName 新文件名
-     * @return 更改是否成功
+     * @param path
+     * @param fileName
+     * @param newFileName
+     * @return
      */
     public static void modifyFileName(String path, String fileName, String newFileName) {
         copyFile(path + File.separator + fileName, path + File.separator + newFileName);
@@ -155,23 +151,7 @@ public class FileTool {
     }
 
     /**
-     * 批量更改文件名
-     *
-     * @param path
-     * @param format
-     * @param fileName
-     * @param start
-     * @return
-     */
-    public static int modifyFiles(String path, String format, String fileName, int start) {
-        ArrayList<File> files = getFiles(path, format);
-        for (int i = 0; i < files.size(); i++)
-            modifyFileName(path, files.get(i).getName(), fileName + (start + i) + "." + format);
-        return files.size();
-    }
-
-    /**
-     * 删除所有文件
+     * Delete all files
      *
      * @param path
      * @return
@@ -197,8 +177,8 @@ public class FileTool {
                 temp.delete();
             }
             if (temp.isDirectory()) {
-                delAllFile(path + "/" + tempList[i]);//先删除文件夹里面的文件
-                delFolder(path + "/" + tempList[i]);//再删除空文件夹
+                delAllFile(path + "/" + tempList[i]);
+                delDirectory(path + "/" + tempList[i]);
                 flag = true;
             }
         }
@@ -206,20 +186,20 @@ public class FileTool {
     }
 
     /**
-     * 删除指定文件夹和文件夹中的所有内容
+     * Delete directory.
      *
-     * @param folderPath
+     * @param path
      */
-    public static void delFolder(String folderPath) {
+    public static void delDirectory(String path) {
         try {
-            delAllFile(folderPath); //删除完里面所有内容
-            String filePath = folderPath;
+            delAllFile(path);
+            String filePath = path;
             filePath = filePath.toString();
             File myFilePath = new File(filePath);
-            myFilePath.delete(); //删除空文件夹
+            myFilePath.delete();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
 }
