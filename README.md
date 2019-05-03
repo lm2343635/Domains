@@ -25,6 +25,30 @@ yum install sshpass
 
 ![entity](https://raw.githubusercontent.com/lm2343635/Customer/master/doc/entity.png)
 
+### Run with Docker
+
+Build with docker.
+
+```shell
+docker build . --tag customer:latest
+```
+
+Run with docker.
+
+```shell
+docker run \
+    --name customer \
+    --restart=always \
+    --net="host" \
+    -d -p 8080:8080 customer:latest
+```
+
+Check the logs.
+
+```shell
+docker logs customer --follow
+```
+
 ### Copyright
 Any commercial purposes without permission is prohibited.
 Contact lm2343635@126.com for commercial purposes.
