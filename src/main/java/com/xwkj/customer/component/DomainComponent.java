@@ -3,7 +3,7 @@ package com.xwkj.customer.component;
 import com.xwkj.common.util.Debug;
 import com.xwkj.common.util.FileTool;
 import com.xwkj.common.util.HTTPTool;
-import com.xwkj.common.util.RumtimeTool;
+import com.xwkj.common.util.RuntimeTool;
 import com.xwkj.customer.dao.CheckDao;
 import com.xwkj.customer.dao.DomainDao;
 import com.xwkj.customer.domain.Check;
@@ -104,7 +104,7 @@ public class DomainComponent {
                 } else {
                     cmd = "sshpass -p " + server.getCredential() + " scp -oStrictHostKeyChecking=no " + cmd;
                 }
-                check.setReplaced(RumtimeTool.run(cmd));
+                check.setReplaced(RuntimeTool.run(cmd));
                 domain.setAlert(true);
             }
             // Update check time.
