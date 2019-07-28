@@ -16,3 +16,14 @@ FROM tomcat:8
 RUN rm -rf /usr/local/tomcat/webapps/ROOT/*
 
 COPY --from=0 /app/target/customer/ /usr/local/tomcat/webapps/ROOT
+COPY docker-entrypoint.sh /usr/local
+
+RUN chmod +x /usr/local/docker-entrypoint.sh
+
+ENV DB_SERVER="127.0.0.1"
+ENV DB_PORT="3306"
+ENV DB_NAME="customer"
+ENV DB_USER="www"
+ENV DB_PASSWORD=""
+
+ENTRYPOINT ["/usr/local/docker-entrypoint.sh"]
